@@ -3,13 +3,13 @@ package stepdefs
 import java.util.concurrent.TimeUnit
 
 import cucumber.api.scala.{EN, ScalaDsl}
-import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
+import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.{By, WebElement}
 import org.scalatest.Matchers
 
 class CreateNewFulfilmentOrderSteps extends ScalaDsl with EN with Matchers {
-  val capabilities = DesiredCapabilities.chrome()
-  val driver = new RemoteWebDriver(new java.net.URL("http", "10.206.45.185", 8080, "/wd/hub"), capabilities)
+  //val driver = new RemoteWebDriver(new java.net.URL("http", "10.206.45.185", 8080, "/wd/hub"), DesiredCapabilities.chrome())
+  val driver = new ChromeDriver()
   driver.manage().timeouts().implicitlyWait(30 , TimeUnit.SECONDS)
 
   Given("""^I have navigated to the new fulfilment request page$""") { () =>
