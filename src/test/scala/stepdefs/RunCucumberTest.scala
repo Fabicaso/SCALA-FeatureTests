@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 @CucumberOptions(
   features = Array("src/test/resources/features"),
   glue = Array("stepdefs"),
-  plugin = Array("pretty", "html:target/cucumber-report")
+  plugin = Array("pretty", "html:target/cucumber-report", "junit:target/junit-report.xml")
 )
 class RunCucumberTest {
 }
