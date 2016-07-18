@@ -6,7 +6,7 @@ import org.junit.runner.RunWith
 
 @RunWith(classOf[Cucumber])
 @CucumberOptions(
-  features = Array("src/test/resources/features"),
+  features = Array("/Users/fabicaso/dev/fulfilmentplanning-featuretests/src/test/resources/features"),
   glue = Array("stepdefs"),
   plugin = Array("pretty", "html:target/cucumber-report", "junit:target/junit-report.xml")
 )
