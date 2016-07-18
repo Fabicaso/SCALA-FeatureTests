@@ -24,7 +24,7 @@ class SkipAllAssets extends ScalaDsl with EN with Matchers {
 
     ()=> driver.navigate().to("http://frontend.stg.fp.itv.com/new-fulfilment-request")
 
-      print("I'm in the fulfilment order page ")
+      println("I'm in the fulfilment order page ")
       driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS)
   }
 
@@ -38,25 +38,25 @@ class SkipAllAssets extends ScalaDsl with EN with Matchers {
   val SelectAssetButton: WebElement = driver.findElementByClassName("Button")
   SelectAssetButton.click()
     println("Select Asset Button clicked")
-    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS)
+    driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS)
   }
 
 When ("""^I click on skip all button$""")
   {
     () => val SkipButton : WebElement =driver.findElementByXPath("html/body/div[1]/div/main/article/div/div/div[2]/div/div/section[1]/header/div/button")
       SkipButton.click()
-      println("SkipAllButton 1 clicked")
-      driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
+      println("SkipAll Button 1 clicked")
+      driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS)
 
       val SkipButton2 : WebElement =driver.findElementByXPath("html/body/div[1]/div/main/article/div/div/div[2]/div/div/section[2]/header/div/button")
         SkipButton2.click()
-        println("SkipAllButton 2 clicked")
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
+        println("SkipAll Button 2 clicked")
+        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS)
 
-      val SkipButton3 : WebElement =driver.findElementByXPath("html/body/div[1]/div/main/article/div/div/div[2]/div/div/section[3]/header/div/button")
+     val SkipButton3 : WebElement =driver.findElementByXPath("html/body/div[1]/div/main/article/div/div/div[2]/div/div/section[3]/header/div/button")
       SkipButton3.click()
-      println("SkipAllButton 3 clicked")
-      driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS)
+      println("SkipAll Button 3 clicked")
+      driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS)
 
   }
 
@@ -65,20 +65,25 @@ When ("""^I click on skip all button$""")
   {
 
     () => val AssetStatusWebElem : WebElement = driver.findElementsByCssSelector("[data-hook='open-picker']").get(0)
+          val AssetStatus = AssetStatusWebElem.getText
+          assert(AssetStatus =="Skipped")
 
-      println(s"AssetStatusWebElem: $AssetStatusWebElem ${AssetStatusWebElem.getText}")
 
-      AssetStatusWebElem.getText
-     val AssetStatus = AssetStatusWebElem.getText // AssetStatusWebElem.getCssValue("title='Change selection'").toString
+     val Episode : WebElement= driver.findElementsByCssSelector("[id='itemTitle-1/5634/0032/33#004']").get(0)
+     val EpisodeText =  Episode.getText
 
-    println("This is the Asset Status: " + AssetStatus)
 
-      assert(AssetStatus =="Skipped")
 
-      println("Prod ID Status is SKIPPED!")
+     println(s"Episode : $EpisodeText has Asset status: $AssetStatus")
+
+
+
+
+
+
 
   }
 
 
-  After(_ => driver.quit())
+  //After(_ => driver.close())
 }

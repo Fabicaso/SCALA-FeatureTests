@@ -33,5 +33,5 @@ class CreateNewFulfilmentOrderSteps extends ScalaDsl with EN with Matchers {
     driver.findElementsByTagName("h1") shouldNot be(empty)
   }
 
-  After(_ => driver.quit())
+  //After(_ => driver.quit())
 }
