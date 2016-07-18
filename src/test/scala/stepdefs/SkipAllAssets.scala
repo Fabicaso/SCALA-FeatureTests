@@ -80,5 +80,5 @@ When ("""^I click on skip all button$""")
   }
 
 
-  //After(_ => driver.quit())
+  After(_ => driver.quit())
 }
