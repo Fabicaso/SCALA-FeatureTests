@@ -23,7 +23,7 @@ class CreateNewFulfilmentOrderSteps extends ScalaDsl with EN with Matchers {
   }
 
   When("""^I click to create the new work fulfilment request$""") { () =>
-    val selectAssetsElem: WebElement = driver.findElementByClassName("Button") //findElement(By.partialLinkText("Select Assets"))
+    val selectAssetsElem: WebElement = driver.findElementByClassName("FormGroup-input") //findElement(By.partialLinkText("Select Assets"))
 
     println(s"select assets elem: $selectAssetsElem with text '${selectAssetsElem.getText}'")
     selectAssetsElem.click()
