@@ -48,34 +48,22 @@ When ("""^I click on skip all button$""")
       SkipButton3.click()
       println("SkipAll Button 3 clicked")
       driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS)
-
   }
 
 
   Then ("""^All Assets should be Skipped$""")
   {
-
-
-    () => val AssetStatusWebElem : WebElement = driver.findElementsByCssSelector("[data-hook='open-picker']").get(0)
+    () => val AssetStatusWebElem : WebElement = driver.findElementByXPath("//*[@id=\"app\"]/div/main/article/div/div/div[2]/div/div/section[1]/div/ul/li/div[2]/div/button")
       val AssetStatus = AssetStatusWebElem.getText
+      println(s"Asset status: $AssetStatus")
       assert(AssetStatus =="Skipped")
 
 
       val Episode : WebElement= driver.findElementsByCssSelector("[id='itemTitle-1/5634/0032/33#004']").get(0)
       val EpisodeText =  Episode.getText
-
-
-
       println(s"Episode : $EpisodeText has Asset status: $AssetStatus")
-
-
-
-
-
-
-
   }
 
 
-  //After(_ => driver.quit())
+  driver.close()
 }
