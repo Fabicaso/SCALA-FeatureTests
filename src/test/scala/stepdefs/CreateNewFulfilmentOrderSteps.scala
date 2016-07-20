@@ -34,6 +34,6 @@ class CreateNewFulfilmentOrderSteps extends ScalaDsl with EN with Matchers {
   }
 
 
-  driver.close()
+
 
 }

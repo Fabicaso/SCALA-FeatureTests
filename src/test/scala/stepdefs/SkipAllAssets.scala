@@ -65,5 +65,5 @@ When ("""^I click on skip all button$""")
   }
 
 
-  driver.close()
+
 }

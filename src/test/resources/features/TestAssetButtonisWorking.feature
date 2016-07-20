@@ -6,6 +6,6 @@ Feature: Test that the Asset button is working on the New Fulfilment Request pag
 
   Scenario: Navigate to new fulfilment order page from a licence
     Given I go to the the new fulfilment request page
-    And I have enter the licence id "TESTLICENCE-123"
+    And I have enter the licence id "TESTAssetButton-123"
     When I click the Asset button
     Then I can select the asset format
