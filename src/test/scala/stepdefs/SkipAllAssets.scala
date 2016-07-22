@@ -1,5 +1,6 @@
 package stepdefs
 import java.util.concurrent.TimeUnit
+
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.{By, WebElement}
@@ -7,16 +8,19 @@ import org.scalatest.Matchers
 
 class SkipAllAssets extends ScalaDsl with EN with Matchers {
     val driver = new ChromeDriver()
-  driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS)
+  driver.manage().window().maximize()
+  driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS)
 
 
   println("Scenario 3: Navigate to new fulfilment order page from a licence and hit the Skip All asset button")
 
 
   Given ("""^I open the new fulfilment request page$""") {
-    ()=> driver.navigate().to("http://frontend.stg.fp.itv.com/new-fulfilment-request")
+    ()=> driver.navigate().to("http://craft.stg.fp.itv.com")
       println("I'm in the fulfilment order page ")
       driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS)
+
+
   }
 
   And ("""^I have typed in the licence id "(.+)"$""") { (licenceID : String)
@@ -62,6 +66,8 @@ When ("""^I click on skip all button$""")
       val Episode : WebElement= driver.findElementsByCssSelector("[id='itemTitle-1/5634/0032/33#004']").get(0)
       val EpisodeText =  Episode.getText
       println(s"Episode : $EpisodeText has Asset status: $AssetStatus")
+
+          driver.close()
   }
 
 

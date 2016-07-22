@@ -1,5 +1,6 @@
 package stepdefs
 import java.util.concurrent.TimeUnit
+
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.{By, WebElement}
@@ -8,12 +9,17 @@ import org.scalatest.Matchers
 class AssetButtonWorking extends ScalaDsl with EN with Matchers {
   //val driver = new RemoteWebDriver(new java.net.URL("http", "10.206.45.185", 8080, "/wd/hub"), DesiredCapabilities.chrome())
   val driver = new ChromeDriver()
+  driver.manage().window().maximize()
   driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS)
   println("Scenario 4: Test that the Asset button is working on the New Fulfilment Request page")
 
 
+
   Given("""^I go to the the new fulfilment request page$""") { () =>
-    driver.navigate().to("http://frontend.stg.fp.itv.com/new-fulfilment-request")
+    driver.navigate().to("http://craft.stg.fp.itv.com")
+
+
+
   }
 
   And("""^I have enter the licence id "(.+)"$""") { (licenceId: String) =>
@@ -43,9 +49,14 @@ class AssetButtonWorking extends ScalaDsl with EN with Matchers {
         selectFormatButton.click()
     println("select Format elem clicked and Format pop-up window closed'")
 
+    driver.close()
+
+   }
 
 
-  }
+
+
+
 
 
 }

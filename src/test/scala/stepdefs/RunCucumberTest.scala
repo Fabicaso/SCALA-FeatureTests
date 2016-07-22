@@ -15,10 +15,5 @@ class RunCucumberTest {
 }
 
 
-class CloseDriver {
-
-
-}
-
 
 
