@@ -1,19 +1,21 @@
 package stepdefs
 
+import com.typesafe.config.ConfigFactory
 import cucumber.api.scala.{EN, ScalaDsl}
+import itv.fulfilmentplanning.Config
 import org.scalatest.Matchers
 
 
 class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN with Matchers {
 
+  val config = Config.load(ConfigFactory.load())
   val NewFulfilmentRequestPage = new PageObject
 
 
   //---------------------[Type licence]--------------------
   Given("""^I open the new Fulfilment Page$""") { () =>
-    NewFulfilmentRequestPage.OpenHomePage("http://craft.stg.fp.itv.com/")
+    NewFulfilmentRequestPage.OpenHomePage(config.homePageUrl)
     println("Fulfilment page opened")
-
   }
 
 
