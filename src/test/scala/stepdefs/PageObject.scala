@@ -6,8 +6,6 @@ import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.{By, WebElement}
 
 
-
-
 class PageObject {
 
   val driver = new ChromeDriver()
@@ -52,26 +50,25 @@ class PageObject {
   //--------SKIP
 
 
-    //*** Select Skip All button ***
-    def SkipAllButton: WebElement = driver.findElementByCssSelector("[data-hook='pick-skip-group']")
+  //*** Select Skip All button ***
+  def SkipAllButton: WebElement = driver.findElementByCssSelector("[data-hook='pick-skip-group']")
 
 
-    //*** Select a Skipped Asset ***
-    def SelectSkippedAsset: WebElement = driver.findElementByCssSelector("[data-hook='picker-button-skipped']")
+  //*** Select a Skipped Asset ***
+  def SelectSkippedAsset: WebElement = driver.findElementByCssSelector("[data-hook='picker-button-skipped']")
 
 
+  //--------Asset Format
+
+  //*** Format Popup Window ***
+  def SelectFormat: WebElement = driver.findElementByCssSelector("[data-hook='production-asset-row']")
 
 
-    //--------Asset Format
+  //*** Create Button ***
+  def CreateButton: WebElement = driver.findElementByCssSelector("[data-hook='pick-assets-submit']")
 
-    //*** Format Popup Window ***
-    def SelectFormat: WebElement = driver.findElementByCssSelector("[data-hook='production-asset-row']")
+  //*** Select firstProduction ID
+  def ProductionID: String = driver.findElementByCssSelector("div.Grid-cell.u-md-size2of3.u-lg-size3of6>div>div>section>div>ul>li:nth-child(1)>div>div>div:nth-child(1)>label").getText()
 
 
-    //*** Create Button ***
-    def CreateButton: WebElement = driver.findElementByCssSelector("[data-hook='pick-assets-submit']")
-
-    //*** Select firstProduction ID
-    def ProductionID: String = driver.findElementByCssSelector("div.Grid-cell.u-md-size2of3.u-lg-size3of6>div>div>section>div>ul>li:nth-child(1)>div>div>div:nth-child(1)>label").getText()
-
-  }
+}
