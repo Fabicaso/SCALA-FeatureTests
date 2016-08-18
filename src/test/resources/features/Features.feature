@@ -15,7 +15,7 @@ Feature: Create a new fulfilment order
   @test
   Scenario: Navigate to new fulfilment order page from a licence and select all the Assets to Create an Order
     Given I open the new Fulfilment Page
-    And I enter the licence id "987654321"
+    And I enter the licence id "120793"
     When I select all the Asset Formats
     And the Create button is clicked
 
