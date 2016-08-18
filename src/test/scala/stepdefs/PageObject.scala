@@ -70,5 +70,5 @@ class PageObject {
   //*** Select firstProduction ID
   def ProductionID: String = driver.findElementByCssSelector("div.Grid-cell.u-md-size2of3.u-lg-size3of6>div>div>section>div>ul>li:nth-child(1)>div>div>div:nth-child(1)>label").getText()
 
-
+  def clientProfileInput = driver.findElementByName("clientProfile")
 }

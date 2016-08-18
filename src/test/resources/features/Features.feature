@@ -17,6 +17,7 @@ Feature: Create a new fulfilment order
     Given I open the new Fulfilment Page
     And I enter the licence id "120793"
     When I select all the Asset Formats
+    And I enter client profile "Sky Italia HD"
     And the Create button is clicked
 
 
