@@ -10,7 +10,6 @@ libraryDependencies ++= {
     "org.scalatest" %% "scalatest" % "2.2.6" % "test",
     "info.cukes" %% "cucumber-scala" % cucumberVersion % "test",
     "info.cukes" % "cucumber-junit" % cucumberVersion % "test",
-    "info.cukes" % "cucumber-picocontainer" % cucumberVersion % "test",
     "com.novocode" % "junit-interface" % "0.11" % "test",
     "org.seleniumhq.selenium" % "selenium-java" % "2.53.0" % "test"
   )
