@@ -3,6 +3,7 @@ package stepdefs
 import com.typesafe.config.ConfigFactory
 import cucumber.api.scala.{EN, ScalaDsl}
 import itv.fulfilmentplanning.Config
+import org.openqa.selenium.WebElement
 import org.scalatest.{Inspectors, Matchers}
 import org.scalatest.concurrent.Eventually
 
@@ -13,7 +14,7 @@ class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN with 
 
   val config = Config.load(ConfigFactory.load())
 
-  implicit val patience = PatienceConfig(5.seconds, 1.second)
+  implicit val patience = PatienceConfig(5.seconds, 500.milliseconds)
 
   val NewFulfilmentRequestPage = new PageObject
 
@@ -29,7 +30,7 @@ class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN with 
     println("Typing licence ID")
     NewFulfilmentRequestPage.LicenceNumberField.sendKeys(licenceId)
 
-    NewFulfilmentRequestPage.SelectAssetButton.click()
+    NewFulfilmentRequestPage.SelectAssetButton.clickIfEnabled
     println("I've clicked the 'Select Asset' Button")
 
     println(s"I've typed in licence: $licenceId")
@@ -39,22 +40,25 @@ class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN with 
 
 
   When("""^I select all the Asset Formats$""") { () =>
-    val numberOfProductions = eventually {
-      val numberOfProductions: Int = NewFulfilmentRequestPage.AssetButtonList.size()
-      numberOfProductions shouldBe 7
-      numberOfProductions
+    eventually {
+      NewFulfilmentRequestPage.AssetButtonList should have size 7
     }
-    forAll (0 until numberOfProductions) { i =>
-      val button = eventually {
-        val button = NewFulfilmentRequestPage.AssetButtonList.get(i)
-        button.getText should be("Assets").or(be("No assets found"))
-        button
+    forEvery(NewFulfilmentRequestPage.AssetButtonList) { assetSelectionButton =>
+      eventually {
+        assetSelectionButton.isDisplayed shouldBe true
+        assetSelectionButton.getText should be("Assets").or(be("No assets found"))
       }
-      if (button.getText == "Assets") {
-        button.click()
-        eventually(NewFulfilmentRequestPage.SelectFormat).click()
+
+      if (assetSelectionButton.getText == "Assets") {
+        assetSelectionButton.clickIfEnabled
+        eventually {
+          val availableAssetSelector = NewFulfilmentRequestPage.SelectFormat.getOrElse[WebElement](fail("Asset selector not found"))
+          availableAssetSelector.isDisplayed shouldBe true
+          availableAssetSelector.isEnabled shouldBe true
+          availableAssetSelector
+        }.clickIfEnabled
+        eventually(NewFulfilmentRequestPage.SelectFormat shouldBe 'empty)
       }
-      button.isDisplayed shouldBe true
     }
   }
 
@@ -63,7 +67,8 @@ class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN with 
   }
 
   And("""^the Create button is clicked$""") { () =>
-    eventually(NewFulfilmentRequestPage.CreateButton).click()
+    val createButton = eventually(NewFulfilmentRequestPage.CreateButton)
+    createButton.clickIfEnabled
     println(s"Order Creation: Complete")
   }
 

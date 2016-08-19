@@ -43,7 +43,7 @@ class CreateFulfilmentOrder_SkipAll_ExceptOne extends ScalaDsl with EN with Matc
       NewFulfilmentRequestPage.SelectSkippedAsset.click()
       println("I've selected the first Skipped Format")
       Thread.sleep(1000)
-      NewFulfilmentRequestPage.SelectFormat.click()
+      NewFulfilmentRequestPage.SelectFormat.foreach(_.click())
       println("I've selected the Format: GE MEZZ HD FILE for ProductionID : "+NewFulfilmentRequestPage.ProductionID)
   }
 

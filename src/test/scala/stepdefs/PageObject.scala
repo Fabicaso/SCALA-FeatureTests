@@ -1,10 +1,9 @@
 package stepdefs
 
-import java.util
-
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.{By, WebElement}
 
+import scala.collection.JavaConversions._
 
 class PageObject {
 
@@ -37,10 +36,10 @@ class PageObject {
   //loop count number of Asset buttons
 
 
-  def AssetButtonList: util.List[WebElement] = driver.findElementsByCssSelector("div.u-flex.u-flexAlignItemsCenter.u-flexJustifyEnd")
+  def AssetButtonList: Vector[WebElement] = driver.findElementsByCssSelector("div.u-flex.u-flexAlignItemsCenter.u-flexJustifyEnd").toVector
 
 
-  def ProductionIDList: util.List[WebElement] = driver.findElementsByCssSelector("div>div>div:nth-child(1)>label")
+  def ProductionIDList: Vector[WebElement] = driver.findElementsByCssSelector("div>div>div:nth-child(1)>label").toVector
 
 
   //def NoAssetFoundList: util.List[WebElement] = driver.findElementsByCssSelector("#div.u-flex.u-flexAlignItemsCenter.u-flexJustifyEnd>div>span>")
@@ -61,7 +60,7 @@ class PageObject {
   //--------Asset Format
 
   //*** Format Popup Window ***
-  def SelectFormat: WebElement = driver.findElementByCssSelector("[data-hook='production-asset-row']")
+  def SelectFormat: Option[WebElement] = driver.findElementsByCssSelector("[data-hook='production-asset-row']").toVector.headOption
 
 
   //*** Create Button ***
