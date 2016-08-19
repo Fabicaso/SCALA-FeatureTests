@@ -14,8 +14,8 @@ class PageObject {
   //*** Page Title ***
   def PageTitle: String = driver.getTitle()
 
-  //*** Close WebDriver ***
-  def Close() = driver.close()
+  //*** Quit WebDriver ***
+  def Quit() = driver.quit()
 
 
   //*** Opens Homepages ***

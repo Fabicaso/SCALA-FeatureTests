@@ -67,7 +67,10 @@ class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN with 
     println(s"Order Creation: Complete")
   }
 
-  After(_ => NewFulfilmentRequestPage.Close())
+  After { _ =>
+    println("Shutting down new fulfilment request page")
+    NewFulfilmentRequestPage.Quit()
+  }
 
 }
 

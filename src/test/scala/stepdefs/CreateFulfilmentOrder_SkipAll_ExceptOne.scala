@@ -51,7 +51,7 @@ Then ("""^After I have clicked on the Create button the Fulfilment Order is COMP
   () => NewFulfilmentRequestPage.CreateButton.click()
     println (s"Order Creation: Complete")
     Thread.sleep(10000)
-   NewFulfilmentRequestPage.Close
+   NewFulfilmentRequestPage.Quit
 
 
 }
