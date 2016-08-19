@@ -51,9 +51,12 @@ Then ("""^After I have clicked on the Create button the Fulfilment Order is COMP
   () => NewFulfilmentRequestPage.CreateButton.click()
     println (s"Order Creation: Complete")
     Thread.sleep(10000)
-   NewFulfilmentRequestPage.Quit
 
 
 }
 
+  After { _ =>
+    println("Shutting down new fulfilment request page")
+    NewFulfilmentRequestPage.Quit()
+  }
 }
