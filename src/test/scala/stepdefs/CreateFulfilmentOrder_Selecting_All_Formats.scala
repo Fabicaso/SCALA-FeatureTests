@@ -26,7 +26,7 @@ class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN
 
   And("""^I enter the licence id "(.+)"$""") { (licenceId: String) =>
     println("Typing licence ID")
-    textField("licence-input").value = licenceId
+    textField(LicenceNumberField).value = licenceId
 
     click on SelectAssetButton.findElementOrFail
     println("I've clicked the 'Select Asset' Button")
@@ -36,11 +36,14 @@ class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN
     println("I'm in 'Type licence--> Pick assets' page ")
   }
 
+  Then("""^There should be some productions available$""") { () =>
+    eventually {
+      AssetButtonList.findAllElements should not be 'empty
+    }
+  }
+
 
   When("""^I select all the Asset Formats$""") { () =>
-    eventually {
-      AssetButtonList.findAllElements should have size 7
-    }
     forEvery(AssetButtonList.findAllElements.toList) { assetSelectionButton =>
       eventually {
         assetSelectionButton.isDisplayed shouldBe true

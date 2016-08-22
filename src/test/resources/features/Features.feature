@@ -16,6 +16,7 @@ Feature: Create a new fulfilment order
   Scenario: Navigate to new fulfilment order page from a licence and select all the Assets to Create an Order
     Given I open the new Fulfilment Page
     And I enter the licence id "120793"
+    Then There should be some productions available
     When I select all the Asset Formats
     And I enter client profile "Sky Italia HD"
     And the Create button is clicked
