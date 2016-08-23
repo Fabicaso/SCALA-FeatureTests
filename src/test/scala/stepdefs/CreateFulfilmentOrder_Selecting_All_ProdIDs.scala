@@ -10,7 +10,7 @@ import org.scalatest.{Inspectors, Matchers}
 import scala.concurrent.duration._
 
 
-class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN
+class CreateFulfilmentOrder_Selecting_All_ProdIDs extends ScalaDsl with EN
   with NewFulfilmentOrderPageObject with Chrome with WebDriverUtils with Matchers with Inspectors with Eventually {
 
   val config = Config.load(ConfigFactory.load())
@@ -71,11 +71,11 @@ class CreateFulfilmentOrder_Selecting_All_Formats extends ScalaDsl with EN
     clickIfEnabled(eventually(CreateButton.findElementOrFail))
     println(s"Order Creation: Complete")
   }
-
+/*
   After { _ =>
     println("Shutting down new fulfilment request page")
     quit()
   }
-
+*/
 }
 
