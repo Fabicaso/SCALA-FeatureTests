@@ -1,8 +1,8 @@
 package stepdefs
 
-import org.scalatest.selenium.{Driver, WebBrowser}
+import org.scalatest.selenium.WebBrowser
 
-trait NewFulfilmentOrderPageObject extends WebBrowser with Driver {
+trait NewFulfilmentOrderPageObject extends WebBrowser {
 
   //*** Licence Number Field ***
   def LicenceNumberField: IdQuery = id("licence-input")

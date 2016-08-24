@@ -4,14 +4,15 @@ import com.typesafe.config.ConfigFactory
 import cucumber.api.scala.{EN, ScalaDsl}
 import itv.fulfilmentplanning.Config
 import org.scalatest.concurrent.Eventually
-import org.scalatest.selenium.Chrome
+import org.scalatest.selenium.WebBrowser
 import org.scalatest.{Inspectors, Matchers}
 
 import scala.concurrent.duration._
 
 
-class CreateFulfilmentOrder_Selecting_All_ProdIDs extends ScalaDsl with EN
-  with NewFulfilmentOrderPageObject with WebDriverUtils with Chrome with Matchers with Inspectors with Eventually {
+class CreateFulfilmentOrderSteps extends ScalaDsl with EN
+  with NewFulfilmentOrderPageObject with WebBrowserUtils with WebBrowser with WebDriverOps
+  with Matchers with Inspectors with Eventually {
 
   val config = Config.load(ConfigFactory.load())
 
@@ -58,10 +59,8 @@ class CreateFulfilmentOrder_Selecting_All_ProdIDs extends ScalaDsl with EN
   }
 
   When("""^I Skip All the Product IDs$""") { () =>
-    eventually{
-
+    eventually {
       SkipAllButton.findAllElements should not be empty
-
     }
     click on SkipAllButton
     println("I've click the Skip All Button")
@@ -99,12 +98,5 @@ class CreateFulfilmentOrder_Selecting_All_ProdIDs extends ScalaDsl with EN
 
   }
 
-
-
-  After("@test") { _ =>
-    println("Shutting down new fulfilment request page from CloseAll Class")
-    //Try(close())
-
-  }
 }
 
