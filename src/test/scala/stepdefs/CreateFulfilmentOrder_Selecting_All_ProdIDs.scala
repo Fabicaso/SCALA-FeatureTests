@@ -73,10 +73,10 @@ class CreateFulfilmentOrder_Selecting_All_ProdIDs extends ScalaDsl with EN
 
   And("""^I select only one asset for the firstProdID$""") {
     () =>
-      click on SelectSkippedAsset
+      click on eventually(SelectSkippedAsset.findElementOrFail)
       println("I've selected the Asset: for ProductionID : " + ProductionID)
 
-      click on SelectFormat
+      click on eventually(SelectFormat.findElementOrFail)
 
   }
 
