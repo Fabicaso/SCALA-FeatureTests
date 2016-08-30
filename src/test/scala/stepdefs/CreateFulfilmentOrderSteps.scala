@@ -81,12 +81,22 @@ class CreateFulfilmentOrderSteps extends ScalaDsl with EN
 
   And("""^I enter client profile "(.+)"$""") { (clientProfile: String) =>
     eventually(textField(clientProfileInput)).value = clientProfile
+    println(s"I've typed  in the ClientProfile: $clientProfile")
   }
 
   And("""^I have clicked on the Create button$""") { () =>
     clickIfEnabled(eventually(CreateButton.findElementOrFail))
     println(s"Order Creation: Complete")
   }
+
+
+  And ("""^I enter Required By Date "(.+)"$""") { (requiredBy: String) =>
+    eventually(textField(RequiredByInput)).value = requiredBy
+    println(s"I've typed in the Required By Date : $requiredBy")
+
+    Thread.sleep(5000)
+  }
+
 
   Then("""^There should be some productions available$""") { () =>
     eventually {
