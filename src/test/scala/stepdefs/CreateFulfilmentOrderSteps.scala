@@ -26,7 +26,7 @@ class CreateFulfilmentOrderSteps extends ScalaDsl with EN
 
   And("""^I enter the licence id "(.+)"$""") { (licenceId: String) =>
     println("Typing licence ID")
-    textField(LicenceNumberField).value = licenceId
+    numberField(LicenceNumberField).value = licenceId
 
     click on SelectAssetButton.findElementOrFail
     println("I've clicked the 'Select Asset' Button")
