@@ -24,7 +24,6 @@ class CreateFulfilmentOrderSteps extends ScalaDsl with EN
     println("Fulfilment page opened")
   }
 
-
   And("""^I enter the licence id "(.+)"$""") { (licenceId: String) =>
     println("Typing licence ID")
     textField(LicenceNumberField).value = licenceId
@@ -36,7 +35,6 @@ class CreateFulfilmentOrderSteps extends ScalaDsl with EN
     println("Pick assets Page Title: " + pageTitle)
     println("I'm in 'Type licence--> Pick assets' page ")
   }
-
 
   When("""^I select all the Asset Formats$""") { () =>
     forEvery(AssetButtonList.findAllElements.toList) { assetSelectionButton =>
@@ -64,24 +62,19 @@ class CreateFulfilmentOrderSteps extends ScalaDsl with EN
     }
     click on SkipAllButton
     println("I've click the Skip All Button")
-
-
   }
 
-  //---------------------[Type licence--> Pick assets]--------------------
+  And("""^I select only one asset for the firstProdID$""") { () =>
+    click on eventually(SelectSkippedAsset.findElementOrFail)
+    println("I've selected the Asset: for ProductionID : " + ProductionID)
 
-  And("""^I select only one asset for the firstProdID$""") {
-    () =>
-      click on eventually(SelectSkippedAsset.findElementOrFail)
-      println("I've selected the Asset: for ProductionID : " + ProductionID)
-
-      click on eventually(SelectFormat.findElementOrFail)
-
+    click on eventually(SelectFormat.findElementOrFail)
   }
 
-  And("""^I enter client profile "(.+)"$""") { (clientProfile: String) =>
-    eventually(textField(clientProfileInput)).value = clientProfile
-    println(s"I've typed  in the ClientProfile: $clientProfile")
+  And("""^I enter client "([^"]+)" and profile "([^"]+)"$""") { (client: String, profile: String) =>
+    eventually(textField(clientInput)).value = client
+    eventually(textField(profileInput)).value = profile
+    println(s"I've typed in the Client $client and Profile $profile")
   }
 
   And("""^I have clicked on the Create button$""") { () =>
@@ -89,14 +82,10 @@ class CreateFulfilmentOrderSteps extends ScalaDsl with EN
     println(s"Order Creation: Complete")
   }
 
-
   And ("""^I enter Required By Date "(.+)"$""") { (requiredBy: String) =>
     eventually(textField(RequiredByInput)).value = requiredBy
-    println(s"I've typed in the Required By Date : $requiredBy")
-
-    Thread.sleep(5000)
+    println(s"I've typed in the Required By Date $requiredBy")
   }
-
 
   Then("""^There should be some productions available$""") { () =>
     eventually {

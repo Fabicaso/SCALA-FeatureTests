@@ -51,7 +51,9 @@ trait NewFulfilmentOrderPageObject extends WebBrowser {
   //*** Select firstProduction ID
   def ProductionID: CssSelectorQuery = cssSelector("div.Grid-cell.u-md-size2of3.u-lg-size3of6>div>div>section>div>ul>li:nth-child(1)>div>div>div:nth-child(1)>label")
 
-  def clientProfileInput: NameQuery = name("clientProfile")
+  def clientInput: NameQuery = name("client")
 
-  def RequiredByInput: CssSelectorQuery = cssSelector("div > div:nth-child(2) > div > div > input")
+  def profileInput: NameQuery = name("profile")
+
+  def RequiredByInput: ClassNameQuery = className("Date-picker-field")
 }
