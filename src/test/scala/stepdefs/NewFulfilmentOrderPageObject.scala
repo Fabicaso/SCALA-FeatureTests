@@ -44,7 +44,7 @@ trait NewFulfilmentOrderPageObject extends WebBrowser {
   //--------Asset Format
 
   //*** Format Popup Window ***
-  def SelectFormat: CssSelectorQuery = cssSelector("[data-hook='production-asset-row']")
+  def SelectFormat: CssSelectorQuery = cssSelector("div.Table.u-pt1 > table > tbody > tr > td")
 
 
   //*** Create Button ***
