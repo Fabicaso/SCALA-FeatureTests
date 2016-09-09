@@ -32,8 +32,10 @@ trait NewFulfilmentOrderPageObject extends WebBrowser {
 
 
   //*** Select Skip All button ***
-  def SkipAllButton: CssSelectorQuery = cssSelector("[data-hook='pick-skip-group']")
+  def SkipAllButton: CssSelectorQuery = cssSelector("[data-hook='SkipAllButton']")
 
+  //*** Select Batch button ***
+  def BatchButton: CssSelectorQuery = cssSelector("#app > div > main > article > div > div > div.Grid-cell.u-md-size2of3.u-lg-size3of6 > div > div > section > header > section > button")
 
   //*** Select a Skipped Asset ***
   def SelectSkippedAsset: CssSelectorQuery = cssSelector("[data-hook='picker-button-skipped']")

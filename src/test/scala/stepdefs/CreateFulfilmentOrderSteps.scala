@@ -60,6 +60,10 @@ class CreateFulfilmentOrderSteps extends ScalaDsl with EN
     eventually {
       SkipAllButton.findAllElements should not be empty
     }
+
+    click on BatchButton
+    println("I've click the Batch Button")
+
     click on SkipAllButton
     println("I've click the Skip All Button")
   }
