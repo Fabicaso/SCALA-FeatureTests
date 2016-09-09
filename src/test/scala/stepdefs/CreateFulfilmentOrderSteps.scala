@@ -5,14 +5,14 @@ import cucumber.api.scala.{EN, ScalaDsl}
 import itv.fulfilmentplanning.Config
 import org.scalatest.concurrent.Eventually
 import org.scalatest.selenium.WebBrowser
-import org.scalatest.{Inspectors, Matchers}
+import org.scalatest.{Assertions, Inspectors, Matchers}
 
 import scala.concurrent.duration._
 
 
 class CreateFulfilmentOrderSteps extends ScalaDsl with EN
   with NewFulfilmentOrderPageObject with WebBrowserUtils with WebBrowser with WebDriverOps
-  with Matchers with Inspectors with Eventually {
+  with Matchers with Inspectors with Eventually with Assertions {
 
   val config = Config.load(ConfigFactory.load())
 
@@ -39,7 +39,7 @@ class CreateFulfilmentOrderSteps extends ScalaDsl with EN
   When("""^I select all the Asset Formats$""") { () =>
     forEvery(AssetButtonList.findAllElements.toList) { assetSelectionButton =>
       eventually {
-        assetSelectionButton.isDisplayed shouldBe true
+        withClue("asset selection button should be displayed")(assetSelectionButton.isDisplayed shouldBe true)
         assetSelectionButton.text should be("Assets").or(be("No assets found"))
       }
 
@@ -47,8 +47,8 @@ class CreateFulfilmentOrderSteps extends ScalaDsl with EN
         clickIfEnabled(assetSelectionButton)
         eventually {
           val availableAssetSelector = SelectFormat.findElementOrFail
-          availableAssetSelector.isDisplayed shouldBe true
-          availableAssetSelector.isEnabled shouldBe true
+          withClue("available asset button should be displayed")(availableAssetSelector.isDisplayed shouldBe true)
+          withClue("available asset button should be enabled")(availableAssetSelector.isEnabled shouldBe true)
           availableAssetSelector
         }.clickIfEnabled
         eventually(SelectFormat.findElement shouldBe 'empty)
