@@ -1,4 +1,4 @@
-package stepdefs
+package itv.fulfilmentplanning.utils
 
 import org.openqa.selenium.WebDriver
 import org.scalatest.Assertions
