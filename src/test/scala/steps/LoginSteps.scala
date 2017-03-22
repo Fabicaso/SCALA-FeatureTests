@@ -5,7 +5,7 @@ import com.typesafe.scalalogging.StrictLogging
 import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
 import itv.fulfilmentplanning.{Config, Credentials}
-import itv.fulfilmentplanning.pageobjects.{CurrentRequestsPageObject, GoogleAuthPageObject, SignInPageObject}
+import itv.fulfilmentplanning.pageobjects.{CurrentRequestsPageObject, GoogleAuthPageObject, OfflineAccess, SignInPageObject}
 import itv.fulfilmentplanning.utils.{WebBrowserUtils, WebDriverOps}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.selenium.WebBrowser
@@ -17,7 +17,8 @@ class LoginSteps
    extends BaseSteps
     with SignInPageObject
     with CurrentRequestsPageObject
-    with GoogleAuthPageObject {
+    with GoogleAuthPageObject
+with OfflineAccess {
 
   val config = Config.load(ConfigFactory.load())
 
@@ -38,6 +39,12 @@ class LoginSteps
     eventually(pwdField(Password)).value = Credentials.testCredentials.password
     logger.info("Set password")
     submit()
+    logger.info("finding submit_approve_access")
+    //Thread.sleep(2000)
+    eventually(AllowOfflineAccess.findElementOrFail.isEnabled shouldBe true)
+    click on AllowOfflineAccess.findElementOrFail
+    logger.info("submit_approve_access is been clicked")
+
   }
 
   Then("""^the 'Current Requests' page is displayed$""") { () =>

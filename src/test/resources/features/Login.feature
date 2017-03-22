@@ -12,3 +12,5 @@ Feature: Login
       |UserName|Password|
       |automationtestcraft@gmail.com|@utomationtestcraft|
     Then the 'Current Requests' page is displayed
+
+

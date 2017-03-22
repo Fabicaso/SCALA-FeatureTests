@@ -12,3 +12,6 @@ trait GoogleAuthPageObject extends WebBrowser {
   def Email: IdQuery = id("Email")
   def Password: IdQuery = id("Passwd")
 }
+trait OfflineAccess extends WebBrowser {
+  def AllowOfflineAccess: IdQuery = id ("submit_approve_access")
+}
