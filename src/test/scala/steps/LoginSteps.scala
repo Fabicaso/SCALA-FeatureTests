@@ -14,11 +14,11 @@ import org.scalatest.{Assertions, Inspectors, Matchers}
 import scala.concurrent.duration._
 
 class LoginSteps
-   extends BaseSteps
+  extends BaseSteps
     with SignInPageObject
     with CurrentRequestsPageObject
     with GoogleAuthPageObject
-with OfflineAccess {
+    with OfflineAccess {
 
   val config = Config.load(ConfigFactory.load())
 
@@ -31,27 +31,25 @@ with OfflineAccess {
 
   When("""^I login with the following valid credentials$""") { (arg0: DataTable) =>
     logger.info("Click on sign in")
-    click on eventually(SignInButton.findElementOrFail)
+    click on SignInButton.whenDisplayed
+
     eventually(emailField(Email)).value = Credentials.testCredentials.email
     logger.info("Set email")
     submit()
-    eventually(Password.findElementOrFail.isDisplayed shouldBe true)
+    Password.whenDisplayed.isDisplayed shouldBe true
     eventually(pwdField(Password)).value = Credentials.testCredentials.password
     logger.info("Set password")
     submit()
     logger.info("finding submit_approve_access")
-    //Thread.sleep(2000)
-    eventually(AllowOfflineAccess.findElementOrFail.isEnabled shouldBe true)
-    click on AllowOfflineAccess.findElementOrFail
+
+    click on AllowOfflineAccess.whenEnabled
     logger.info("submit_approve_access is been clicked")
 
   }
 
   Then("""^the 'Current Requests' page is displayed$""") { () =>
-    eventually {
-      logger.info("Waiting for current request to be displayed")
-      RequestList.findElementOrFail.isDisplayed shouldBe true
-    }
+    logger.info("Go to current request")
+    RequestList.whenDisplayed.isDisplayed shouldBe true
   }
 
 }
