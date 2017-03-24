@@ -6,6 +6,7 @@ import itv.fulfilmentplanning.utils.{WebBrowserUtils, WebDriverOps}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.{Assertions, Inspectors, Matchers}
 import org.scalatest.selenium.WebBrowser
+import org.slf4j.MarkerFactory
 
 trait BaseSteps  extends ScalaDsl
   with EN with WebBrowserUtils
@@ -16,5 +17,9 @@ trait BaseSteps  extends ScalaDsl
   with Eventually
   with Assertions
   with StrictLogging {
+
+  def scenarioId = currentScenario.fold("No id")(_.getId)
+
+  implicit def scenarioMarker = MarkerFactory.getMarker(scenarioId)
 
 }
