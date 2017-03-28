@@ -9,8 +9,6 @@ import org.scalatest.concurrent.Eventually
 import org.scalatest.selenium.WebBrowser
 import org.slf4j.Marker
 
-
-
 trait WebBrowserUtils extends WebBrowser with Assertions with Eventually with StrictLogging { outer =>
   implicit def webDriver: WebDriver
 
@@ -18,8 +16,8 @@ trait WebBrowserUtils extends WebBrowser with Assertions with Eventually with St
     def elementOrFail: Element =
       query.findElement.getOrElse(fail(s"Could not find element by $query"))
 
-    def whenDisplayed(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker) = {
-      eventually(timeout(patienceConfig.timeout), interval(patienceConfig.interval)){
+    def whenIsDisplayed(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker) = {
+      eventually(timeout(patienceConfig.timeout), interval(patienceConfig.interval)) {
         logger.info(scenarioMarker, s"Waiting for $query to be displayed")
 
         val element = query.elementOrFail
@@ -28,14 +26,13 @@ trait WebBrowserUtils extends WebBrowser with Assertions with Eventually with St
       }
     }
 
-    def whenEnabled(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker) =
-      eventually(timeout(patienceConfig.timeout), interval(patienceConfig.interval)){
+    def whenIsEnabled(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker) =
+      eventually(timeout(patienceConfig.timeout), interval(patienceConfig.interval)) {
         logger.info(scenarioMarker, s"Waiting for $query to be enabled")
         val element = query.elementOrFail
         element.isEnabled shouldBe true
         element
       }
-
 
   }
   implicit class WebElementW(element: Element) {

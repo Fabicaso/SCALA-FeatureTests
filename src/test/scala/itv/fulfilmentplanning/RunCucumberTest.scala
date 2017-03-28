@@ -10,6 +10,6 @@ import org.junit.runner.RunWith
   glue = Array("classpath:steps"),
   plugin =
     Array("pretty", "html:target/cucumber-report", "junit:target/junit-report.xml", "json:target/json-report.json"),
-  tags = Array("@login", "~@Ignore")
+  tags = Array("@login, @currentRequests", "~@Ignore")
 )
 class RunCucumberTest {}
