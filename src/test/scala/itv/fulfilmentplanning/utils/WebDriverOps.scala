@@ -16,7 +16,7 @@ trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
 
   private def scenarioId = ScenarioHelper.idFrom(currentScenario)
 
-  def scenarioMarker = ScenarioHelper.scenarioMarker(scenarioId)
+  implicit def scenarioMarker = ScenarioHelper.scenarioMarker(scenarioId)
 
   private var currentScenario: Option[Scenario] = None
 
@@ -73,5 +73,5 @@ object WebDriverOps extends StrictLogging {
 object ScenarioHelper {
   def idFrom(currentScenario: Option[Scenario]) = currentScenario.fold("No id")(_.getId)
 
-  implicit def scenarioMarker(scenarioId: String) = MarkerFactory.getMarker(scenarioId)
+  def scenarioMarker(scenarioId: String) = MarkerFactory.getMarker(scenarioId)
 }
