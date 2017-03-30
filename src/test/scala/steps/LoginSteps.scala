@@ -2,19 +2,14 @@ package steps
 
 import com.typesafe.config.ConfigFactory
 import itv.fulfilmentplanning.{Config, Credentials}
-import itv.fulfilmentplanning.pageobjects.{
-  CurrentRequestsPageObject,
-  GoogleAuthPageObject,
-  OfflineAccess,
-  SignInPageObject
-}
+import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
 
 class LoginSteps
     extends BaseSteps
     with SignInPageObject
-    with CurrentRequestsPageObject
+    with MenuPageObject
     with GoogleAuthPageObject
     with OfflineAccess {
 
@@ -43,14 +38,6 @@ class LoginSteps
     click on AllowOfflineAccess.whenIsEnabled
     logger.info(scenarioMarker, "submit_approve_access is been clicked")
 
-  }
-
-  Then("""^the 'Current Requests' page is displayed$""") { () =>
-    logger.info(scenarioMarker, "Go to current request")
-    val requestListElement =
-      RequestList.whenIsDisplayed(patienceConfig = PatienceConfig(10.seconds, 1.second), scenarioMarker)
-    requestListElement.isDisplayed shouldBe true
-    logger.info(scenarioMarker, "Success!")
   }
 
 }
