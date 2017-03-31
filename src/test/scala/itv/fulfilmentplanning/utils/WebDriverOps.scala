@@ -52,9 +52,8 @@ object WebDriverOps extends StrictLogging {
 
   private val webDriverPerScenario = TrieMap[Scenario, WebDriver]()
 
-  def getDriver(scenario: Scenario): Option[WebDriver] = {
+  def getDriver(scenario: Scenario): Option[WebDriver] =
     webDriverPerScenario.get(scenario)
-  }
 
   def createDriverIfNeeded(scenario: Scenario): Unit = {
     val scenarioMarker = ScenarioHelper.scenarioMarker(scenario.getId)

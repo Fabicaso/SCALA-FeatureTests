@@ -3,6 +3,7 @@ package steps
 import com.typesafe.config.ConfigFactory
 import itv.fulfilmentplanning.{Config, Credentials}
 import itv.fulfilmentplanning.pageobjects._
+import org.openqa.selenium.JavascriptExecutor
 
 import scala.concurrent.duration._
 
@@ -23,21 +24,32 @@ class LoginSteps
   }
 
   When("""^I login with the following valid credentials$""") { () =>
-    logger.info(scenarioMarker, "Click on sign in")
-    click on SignInButton.whenIsDisplayed
+    if (requiresToLogin()) {
+      logger.info(scenarioMarker, "Click on sign in")
+      click on SignInButton.whenIsDisplayed
 
-    eventually(emailField(Email)).value = Credentials.testCredentials.email
-    logger.info(scenarioMarker, "Set email")
-    submit()
-    Password.whenIsDisplayed.isDisplayed shouldBe true
-    eventually(pwdField(Password)).value = Credentials.testCredentials.password
-    logger.info(scenarioMarker, "Set password")
-    submit()
-    logger.info(scenarioMarker, "finding submit_approve_access")
+      eventually(emailField(Email)).value = Credentials.testCredentials.email
+      logger.info(scenarioMarker, "Set email")
+      submit()
+      Password.whenIsDisplayed.isDisplayed shouldBe true
+      eventually(pwdField(Password)).value = Credentials.testCredentials.password
+      logger.info(scenarioMarker, "Set password")
+      submit()
+      logger.info(scenarioMarker, "finding submit_approve_access")
 
-    click on AllowOfflineAccess.whenIsEnabled
-    logger.info(scenarioMarker, "submit_approve_access is been clicked")
+      click on AllowOfflineAccess.whenIsEnabled
+      logger.info(scenarioMarker, "submit_approve_access is been clicked")
+    } else {
+      logger.info(scenarioMarker, "I am already logged in")
+    }
+  }
 
+  def requiresToLogin(): Boolean = !isItemPresentInLocalStorage("usersession")
+
+  def isItemPresentInLocalStorage(item: String) = webDriver match {
+    case executor: JavascriptExecutor =>
+      Option(executor.executeScript(String.format("return window.localStorage.getItem('%s');", item))).nonEmpty
+    case _ => false
   }
 
 }
