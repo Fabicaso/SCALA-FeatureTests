@@ -4,7 +4,9 @@ import org.scalatest.selenium.WebBrowser
 
 trait MenuPageObject extends WebBrowser {
 
-  def EnterLicenceSection: XPathQuery = xpath("//div[contains(text(),'Enter Licence')]")
+  def EnterLicenceSection = id("globalNav-enter-licence")
+
+  def CurrentRequestSection = id("globalNav-current-requests")
 
   def Breadcrumb = id("breadcrumb")
 

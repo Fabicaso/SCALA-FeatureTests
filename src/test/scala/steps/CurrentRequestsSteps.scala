@@ -3,6 +3,7 @@ package steps
 import itv.fulfilmentplanning.pageobjects.{CurrentRequestsPageObject, MenuPageObject}
 
 import scala.concurrent.duration._
+import org.scalatest.Matchers._
 
 class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with MenuPageObject {
 
@@ -15,18 +16,38 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
     submit()
   }
 
-  And(
-    """^the current request for licence number (\d+) is displayed on the 'Current Requests' page under 'No Required By Date' section$""") {
-    (licenceId: Int) =>
-      logger.info(scenarioMarker, s"Verify asset is on the current request page with licence number: $licenceId")
-  }
-
   Then("""^the 'Current Requests' page is displayed$""") { () =>
     logger.info(scenarioMarker, "Go to current request")
-    val requestListElement =
-      CurrentRequestsPageLoaded.whenIsEnabled(patienceConfig = PatienceConfig(10.seconds, 1.second), scenarioMarker)
-    requestListElement.isEnabled shouldBe true
+    waitUntilPageIsLoaded()
     logger.info(scenarioMarker, "Success!")
+  }
+
+  Then(
+    """^the asset requested with production id '(.*)' and licence number (\d+) is displayed on the 'Current Requests' page under 'No Required By Date' section$""") {
+    (productionId: String, licenceId: Int) =>
+      logger.info(scenarioMarker,
+                  s"Verify asset with production id $productionId has been requested for licence number: $licenceId")
+      click on CurrentRequestSection.whenIsDisplayed
+      waitUntilPageIsLoaded()
+
+      click on RequestedAssetsForDate(None)
+
+      val result = AssetWithProductionId(productionId).whenIsDisplayed
+
+      val domIdForProduction = result.attribute("id").getOrElse(fail)
+
+      val list            = domIdForProduction.split("-").init
+      val assetId         = list.last.toInt
+      val actualLicenceId = list.tail.last.toInt
+      actualLicenceId shouldBe (actualLicenceId)
+
+      logger.info(scenarioMarker, "Success!")
+  }
+
+  private def waitUntilPageIsLoaded() = {
+    CurrentRequestsPageLoaded
+      .whenIsEnabled(patienceConfig = PatienceConfig(10.seconds, 1.second), scenarioMarker)
+      .isEnabled shouldBe true
   }
 
 }

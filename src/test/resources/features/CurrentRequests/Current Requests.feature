@@ -15,7 +15,7 @@ Feature: Current Requests
     When I complete the fulfilment request for '1: Desert Seas' of 'Desert Seas' with '2/1761/0001#001'
      #|Delivery Medium | Job | Resolution Output |
       #| Online | Transcode if needed | As per source |
-    Then the current request for licence number 123665 is displayed on the 'Current Requests' page under 'No Required By Date' section
+    Then the asset requested with production id '2/1761/0001#001' and licence number 123665 is displayed on the 'Current Requests' page under 'No Required By Date' section
 
 #  Scenario: Requested asset with required by date is displayed on the 'Current Requests' page
 #    Given I am on the 'New Request' page using the following licence number

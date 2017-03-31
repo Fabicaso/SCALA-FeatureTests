@@ -4,7 +4,7 @@ import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
 
-class CompleteFulfilmentSteps
+class CompleteFulfilmentRequestSteps
     extends BaseSteps
     with CurrentRequestsPageObject
     with MenuPageObject
@@ -30,9 +30,18 @@ class CompleteFulfilmentSteps
       click on RequestConfirmButton.whenIsDisplayed
 
       RequestConfirmLoaded.whenIsEnabled
-      click on SendRequestButton.whenIsEnabled
+      fillPullAndDeliverRequest()
+      eventually(click on SendRequestButton.whenIsEnabled)
 
-      SentRequestConfirmation.whenIsDisplayed
+      SentRequestConfirmation.whenIsDisplayed(PatienceConfig(5.seconds, 100.milliseconds), scenarioMarker)
   }
 
+  def fillPullAndDeliverRequest() = {
+    textField(ClientField).value = "Client"
+    click on DeliveryMediumField.whenIsDisplayed
+    click on OnlineDeliveryMedium.whenIsDisplayed
+    eventually(click on JobField.whenIsDisplayed)
+    eventually(click on PullAndDeliverJob.whenIsDisplayed)
+    textArea(DeliveryMethod).value = "Delivery Method"
+  }
 }

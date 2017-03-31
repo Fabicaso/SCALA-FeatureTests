@@ -1,15 +1,11 @@
 package itv.fulfilmentplanning.utils
 
-import java.util.concurrent.atomic.AtomicReference
-
 import com.typesafe.scalalogging.StrictLogging
 import cucumber.api.Scenario
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.chrome.ChromeDriver
 import org.slf4j.MarkerFactory
-
-import scala.util.Try
 
 trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
   import WebDriverOps._
@@ -28,6 +24,7 @@ trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
   Before { (scenario: Scenario) =>
     currentScenario = Some(scenario)
     createDriverIfNeeded(scenario)
+    getDriver(scenario).foreach(_.manage().window().maximize())
     logger.info(scenarioMarker, s"Init scenario $scenario")
 
   }
@@ -39,33 +36,18 @@ trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
 }
 
 object WebDriverOps extends StrictLogging {
-  private var webDriverPerScenario: AtomicReference[Map[Scenario, WebDriver]] = new AtomicReference(
-    Map.empty[Scenario, WebDriver])
+  import scala.collection.concurrent._
+  private val webDriverPerScenario = TrieMap[Scenario, WebDriver]()
 
   def getDriver(scenario: Scenario): Option[WebDriver] = {
-    webDriverPerScenario.get().get(scenario)
+    webDriverPerScenario.get(scenario)
   }
 
   def createDriverIfNeeded(scenario: Scenario): Unit = {
     val scenarioMarker = ScenarioHelper.scenarioMarker(scenario.getId)
-    while (true) {
-      val oldMap = webDriverPerScenario.get
-      if (oldMap.contains(scenario)) return
-      else {
-        logger.info(scenarioMarker, s"Creating web driver")
-        val driver = new ChromeDriver()
-        val newMap = oldMap + (scenario -> driver)
-        Try(
-          if (webDriverPerScenario.compareAndSet(oldMap, newMap))
-            return
-        ).recover {
-          case exception: Exception =>
-            logger.error(scenarioMarker, s"Error updating the map", exception)
-            driver.quit()
-            throw exception
-        }
-
-      }
+    if (!webDriverPerScenario.contains(scenario)) {
+      logger.info(scenarioMarker, s"Creating web driver")
+      webDriverPerScenario.put(scenario, new ChromeDriver())
     }
   }
 }

@@ -8,4 +8,9 @@ trait CurrentRequestsPageObject extends WebBrowser {
 
   def CurrentRequestsPageLoaded: IdQuery = id("page-loaded-request-list")
 
+  def RequestedAssetsForDate(date: Option[String]) =
+    id(s"request-list-section-header-${date.getOrElse("noDate")}-date")
+
+  def AssetWithProductionId(productionId: String) = xpath(s"//span[contains(text(),'$productionId')] ")
+
 }
