@@ -4,7 +4,7 @@ import com.typesafe.scalalogging.StrictLogging
 import cucumber.api.Scenario
 import cucumber.api.scala.{EN, ScalaDsl}
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.{ChromeDriver, ChromeOptions}
 import org.slf4j.MarkerFactory
 
 trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
@@ -24,7 +24,6 @@ trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
   Before { (scenario: Scenario) =>
     currentScenario = Some(scenario)
     createDriverIfNeeded(scenario)
-    getDriver(scenario).foreach(_.manage().window().maximize())
     logger.info(scenarioMarker, s"Init scenario $scenario")
 
   }
@@ -37,6 +36,20 @@ trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
 
 object WebDriverOps extends StrictLogging {
   import scala.collection.concurrent._
+
+  private val chromeOptions = {
+    val chromeOptions = new ChromeOptions()
+    chromeOptions.addArguments("test-type")
+    chromeOptions.addArguments("start-maximized")
+    chromeOptions.addArguments("--js-flags=--expose-gc")
+    chromeOptions.addArguments("--enable-precise-memory-info")
+    chromeOptions.addArguments("--disable-popup-blocking")
+    chromeOptions.addArguments("--disable-default-apps")
+    chromeOptions.addArguments("test-type=browser")
+    chromeOptions.addArguments("disable-infobars")
+    chromeOptions
+  }
+
   private val webDriverPerScenario = TrieMap[Scenario, WebDriver]()
 
   def getDriver(scenario: Scenario): Option[WebDriver] = {
@@ -47,7 +60,8 @@ object WebDriverOps extends StrictLogging {
     val scenarioMarker = ScenarioHelper.scenarioMarker(scenario.getId)
     if (!webDriverPerScenario.contains(scenario)) {
       logger.info(scenarioMarker, s"Creating web driver")
-      webDriverPerScenario.put(scenario, new ChromeDriver())
+
+      webDriverPerScenario.put(scenario, new ChromeDriver(chromeOptions))
     }
   }
 }

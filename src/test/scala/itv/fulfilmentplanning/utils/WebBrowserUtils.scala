@@ -16,7 +16,10 @@ trait WebBrowserUtils extends WebBrowser with Assertions with Eventually with St
     def elementOrFail: Element =
       query.findElement.getOrElse(fail(s"Could not find element by $query"))
 
-    def whenIsDisplayed(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker) = {
+    def elements: Iterator[Element] =
+      query.findAllElements
+
+    def whenIsDisplayed(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker): Element = {
       eventually(timeout(patienceConfig.timeout), interval(patienceConfig.interval)) {
         logger.info(scenarioMarker, s"Waiting for $query to be displayed")
 
@@ -26,7 +29,7 @@ trait WebBrowserUtils extends WebBrowser with Assertions with Eventually with St
       }
     }
 
-    def whenIsEnabled(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker) =
+    def whenIsEnabled(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker): Element =
       eventually(timeout(patienceConfig.timeout), interval(patienceConfig.interval)) {
         logger.info(scenarioMarker, s"Waiting for $query to be enabled")
         val element = query.elementOrFail
