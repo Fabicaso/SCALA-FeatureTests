@@ -36,7 +36,7 @@ class CompleteFulfilmentRequestSteps
           }
         }
       }
-      click on RequestNextButton.whenIsDisplayed
+      eventually(click on RequestNextButton.whenIsDisplayed)
 
       RequestConfirmLoaded.whenIsEnabled
 
@@ -64,8 +64,8 @@ class CompleteFulfilmentRequestSteps
 
   private def fillCommonRequestFor(job: Query, date: Option[Query]) = {
     textField(ClientField).value = "Client"
-    click on DeliveryMediumField.whenIsDisplayed
-    click on OnlineDeliveryMedium.whenIsDisplayed
+    eventually(click on DeliveryMediumField.whenIsDisplayed)
+    eventually(click on OnlineDeliveryMedium.whenIsDisplayed)
     eventually(click on JobField.whenIsDisplayed)
     eventually(click on job.whenIsDisplayed)
     textArea(DeliveryMethod).value = "Delivery Method"
