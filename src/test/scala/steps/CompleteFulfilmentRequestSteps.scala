@@ -34,6 +34,7 @@ class CompleteFulfilmentRequestSteps
           assetsToSelect.foreach { nextAssetToSelect =>
             click on nextAssetToSelect.whenIsDisplayed
           }
+          SelectMultipleAssets.findElement shouldBe None
         }
       }
       eventually(click on RequestNextButton.whenIsDisplayed)
