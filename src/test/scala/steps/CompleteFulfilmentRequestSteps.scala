@@ -13,7 +13,7 @@ class CompleteFulfilmentRequestSteps
     with NewRequestPageObject
     with ConfirmRequestPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(10.seconds, 100.milliseconds)
 
   When("""^I complete the fulfilment request for '(.*)' with '(.*)' selecting '(.*)'$""") {
     (productionId: String, requiredDate: String, expectedAssetsToSelect: String) =>
