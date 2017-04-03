@@ -7,6 +7,8 @@ trait NewRequestPageObject extends WebBrowser {
   def SelectMultipleAssets                             = id("request-multiselect-checkbox")
   def RequestNextButton                                = id("request-confirm-button")
   def ProductionIdButton(productionId: String)         = id(s"prod-$productionId-selection-button")
+  def ProductionIdSelected(productionId: String)       = id(s"prod-$productionId-selection-button-selected")
+  def ProductionIdMultple(productionId: String)        = id(s"prod-$productionId-selection-multiple")
   def PageLoadedRequest                                = id("page-loaded-request")
 
   def PickFirstAsset(productionId: String) = xpath(s"//div[@id='prod-$productionId-picker-assets']//tr[1]/td[1]")

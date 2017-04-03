@@ -28,15 +28,19 @@ class CompleteFulfilmentRequestSteps
       if (assetsToSelect.isEmpty)
         fail(s"Unsupported assets to select type: $expectedAssetsToSelect")
       else {
+        if (assetsToSelect.size > 1)
+          eventually(click on SelectMultipleAssets.whenIsDisplayed)
         eventually {
-          if (assetsToSelect.size > 1)
-            click on SelectMultipleAssets.whenIsDisplayed
           assetsToSelect.foreach { nextAssetToSelect =>
             click on nextAssetToSelect.whenIsDisplayed
           }
-          SelectMultipleAssets.findElement shouldBe None
+          if (assetsToSelect.size > 1)
+            ProductionIdMultple(productionId).whenIsDisplayed
+          else
+            ProductionIdSelected(productionId).whenIsDisplayed
         }
       }
+
       eventually(click on RequestNextButton.whenIsDisplayed)
 
       RequestConfirmLoaded.whenIsEnabled
