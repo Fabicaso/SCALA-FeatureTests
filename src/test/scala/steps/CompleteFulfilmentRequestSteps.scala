@@ -22,7 +22,7 @@ class CompleteFulfilmentRequestSteps
       eventually(click on CreateNewRequestButton.whenIsDisplayed)
 
       PageLoadedRequest.whenIsEnabled
-      click on ProductionIdButton(productionId).whenIsEnabled
+      eventually(click on ProductionIdButton(productionId).whenIsEnabled)
 
       val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
       if (assetsToSelect.isEmpty)
