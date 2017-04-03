@@ -3,11 +3,12 @@ package itv.fulfilmentplanning.utils
 import com.typesafe.scalalogging.StrictLogging
 import cucumber.api.Scenario
 import cucumber.api.scala.{EN, ScalaDsl}
+import itv.fulfilmentplanning.webdriver.WebDriverPool
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.chrome.{ChromeDriver, ChromeOptions}
 import org.slf4j.MarkerFactory
 
 trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
+
   import WebDriverOps._
 
   private def scenarioId = ScenarioHelper.idFrom(currentScenario)
@@ -23,44 +24,35 @@ trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
 
   Before { (scenario: Scenario) =>
     currentScenario = Some(scenario)
-    createDriverIfNeeded(scenario)
+    setDriveIfNeededFor(scenario)
     logger.info(scenarioMarker, s"Init scenario $scenario")
-
   }
 
   After { scenario =>
     logger.info(scenarioMarker, s"Shutting down $scenario ...")
-    WebDriverOps.getDriver(scenario).foreach(_.quit)
+    WebDriverOps.done(scenario)
+
   }
 }
 
 object WebDriverOps extends StrictLogging {
+
   import scala.collection.concurrent._
 
-  private val chromeOptions = {
-    val chromeOptions = new ChromeOptions()
-    chromeOptions.addArguments("test-type")
-    chromeOptions.addArguments("start-maximized")
-    chromeOptions.addArguments("--js-flags=--expose-gc")
-    chromeOptions.addArguments("--enable-precise-memory-info")
-    chromeOptions.addArguments("--disable-popup-blocking")
-    chromeOptions.addArguments("--disable-default-apps")
-    chromeOptions.addArguments("test-type=browser")
-    chromeOptions.addArguments("disable-infobars")
-    chromeOptions
-  }
+  assert(Option(WebDriverPool.pool).isDefined)
 
   private val webDriverPerScenario = TrieMap[Scenario, WebDriver]()
 
   def getDriver(scenario: Scenario): Option[WebDriver] =
     webDriverPerScenario.get(scenario)
 
-  def createDriverIfNeeded(scenario: Scenario): Unit = {
+  def done(scenario: Scenario) = getDriver(scenario).foreach(WebDriverPool.pool.returnObject)
+
+  def setDriveIfNeededFor(scenario: Scenario): Unit = {
     val scenarioMarker = ScenarioHelper.scenarioMarker(scenario.getId)
     if (!webDriverPerScenario.contains(scenario)) {
-      logger.info(scenarioMarker, s"Creating web driver")
-
-      webDriverPerScenario.put(scenario, new ChromeDriver(chromeOptions))
+      logger.info(scenarioMarker, s"Set web driver for ${scenario.getId}")
+      webDriverPerScenario.put(scenario, WebDriverPool.pool.borrowObject())
     }
   }
 }

@@ -8,7 +8,7 @@ import org.scalatest.Matchers._
 
 class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with MenuPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(2.seconds, 100.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
 
   And("""^I am on the 'New Request' page using the following licence number (\d+)$""") { (licenceId: Int) =>
     logger.info(scenarioMarker, s"Go to licence number: $licenceId")
