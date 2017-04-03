@@ -19,7 +19,7 @@ class LoginSteps
   override implicit val patienceConfig = PatienceConfig(2.seconds, 100.milliseconds)
 
   Given("""^I am on the 'Login' page$""") { () =>
-    logger.info(scenarioMarker, "Open login page")
+    logger.info(scenarioMarker, "Open home page")
     go to config.homePageUrl
   }
 
@@ -40,7 +40,7 @@ class LoginSteps
       click on AllowOfflineAccess.whenIsEnabled
       logger.info(scenarioMarker, "submit_approve_access is been clicked")
     } else {
-      logger.info(scenarioMarker, "I am already logged in")
+      logger.info(scenarioMarker, "I am already logged in!")
     }
   }
 
