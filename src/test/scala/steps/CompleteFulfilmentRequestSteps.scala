@@ -34,11 +34,13 @@ class CompleteFulfilmentRequestSteps
           assetsToSelect.foreach { nextAssetToSelect =>
             click on nextAssetToSelect.whenIsDisplayed
           }
-          if (assetsToSelect.size > 1)
-            ProductionIdMultple(productionId).whenIsDisplayed
-          else
-            ProductionIdSelected(productionId).whenIsDisplayed
+
         }
+        if (assetsToSelect.size > 1) {
+          eventually(click on CloseAssetBoxButton(productionId).whenIsDisplayed)
+          ProductionIdMultiple(productionId).whenIsDisplayed
+        } else
+          ProductionIdSelected(productionId).whenIsDisplayed
       }
 
       eventually(click on RequestNextButton.whenIsDisplayed)
