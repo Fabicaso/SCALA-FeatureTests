@@ -17,6 +17,12 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
     submit()
   }
 
+  Then("""^the 'Invalid Licence Error Msg' is displayed '(.*)'$""") { (licenceInvalidWarningMessage: String) =>
+    logger.info(scenarioMarker, s"Warning message to be displayed is: $licenceInvalidWarningMessage")
+    FindExactText(licenceInvalidWarningMessage).whenIsDisplayed
+    logger.info(scenarioMarker, "Success!")
+  }
+
   Then("""^the 'Current Requests' page is displayed$""") { () =>
     logger.info(scenarioMarker, "Go to current request")
     waitUntilPageIsLoaded()
