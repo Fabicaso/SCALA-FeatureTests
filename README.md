@@ -17,7 +17,5 @@ sbt clean test -Denv=stg
 You can verify the config running `ConfigRunner` app.
 
 ##TODO
- - Make sure the scenario is login (Background?)
- - Verify running multiple test in parallel
  - Build the report
  
