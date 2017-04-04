@@ -17,8 +17,13 @@ libraryDependencies ++= {
     "com.typesafe.scala-logging" %% "scala-logging"  % "3.5.0",
     "ch.qos.logback"             % "logback-classic" % "1.2.2",
     "commons-pool"               % "commons-pool"    % "1.6",
-    "org.postgresql"             % "postgresql"      % "9.4-1201-jdbc41"
+    "org.postgresql"             % "postgresql"      % "9.4-1201-jdbc41",
+    "com.iheart"                 %% "ficus"          % "1.1.3"
   )
 }
 
 parallelExecution in Test := true
+
+resolvers ++= Seq(
+  Resolver.jcenterRepo //com.iheart:ficus
+)

@@ -33,7 +33,7 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
 
       val expectedDate: Option[String] = TestData.dateFrom(requiredBy)
 
-      click on RequestedAssetsForDate(expectedDate)
+      eventually(click on RequestedAssetsForDate(expectedDate))
 
       val result = RequestedAssetRowBy(productionId).whenIsDisplayed
 

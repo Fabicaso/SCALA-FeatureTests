@@ -10,8 +10,6 @@ import scala.util.Try
 
 object WebDriverPool extends StrictLogging {
 
-  logger.info(s"Init web driver pool ...")
-
   private val chromeOptions = {
     val chromeOptions = new ChromeOptions()
     chromeOptions.addArguments("test-type")
@@ -25,43 +23,32 @@ object WebDriverPool extends StrictLogging {
     chromeOptions
   }
 
-  val pool = new GenericObjectPool[WebDriver](new PoolableObjectFactory[WebDriver] {
-    override def destroyObject(obj: WebDriver): Unit = {
-      Try {
-        logger.debug("Closing chrome driver")
-        obj.quit()
-        logger.debug("Chrome driver closed!")
-      }.recover {
-        case e: Exception =>
-          logger.error(s"Couldn't close the driver: ${e.getMessage}", e)
+  def pool() = {
+    val pool = new GenericObjectPool[WebDriver](new PoolableObjectFactory[WebDriver] {
+      override def destroyObject(obj: WebDriver): Unit = {
+        Try {
+          logger.debug("Closing chrome driver")
+          obj.quit()
+          logger.debug("Chrome driver closed!")
+        }.recover {
+          case e: Exception =>
+            logger.error(s"Couldn't close the driver: ${e.getMessage}", e)
+        }
       }
-    }
 
-    override def validateObject(obj: WebDriver): Boolean = true
+      override def validateObject(obj: WebDriver): Boolean = true
 
-    override def activateObject(obj: WebDriver): Unit = ()
+      override def activateObject(obj: WebDriver): Unit = ()
 
-    override def passivateObject(obj: WebDriver): Unit = ()
+      override def passivateObject(obj: WebDriver): Unit = ()
 
-    override def makeObject(): WebDriver = {
-      logger.info("Creating web driver ...")
-      new ChromeDriver(chromeOptions)
-    }
-  })
-  pool.setMaxActive(2)
-  pool.setMaxIdle(-1)
-
-  Runtime.getRuntime.addShutdownHook(new Thread {
-    override def run(): Unit = {
-      Try {
-        logger.debug("Closing pool of chrome drivers")
-        pool.close()
-        logger.debug("Pool of chrome drivers closed!")
-      }.recover {
-        case e: Exception =>
-          logger.error(s"Couldn't close the driver: ${e.getMessage}", e)
+      override def makeObject(): WebDriver = {
+        logger.info("Creating web driver ...")
+        new ChromeDriver(chromeOptions)
       }
-    }
-  })
-
+    })
+    pool.setMaxActive(2)
+    pool.setMaxIdle(-1)
+    pool
+  }
 }
