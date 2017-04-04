@@ -14,4 +14,6 @@ Feature: License Check
     When I am on the 'New Request' page using the following licence number 999999999
     Then the 'Invalid Licence Error Msg' is displayed 'Could not find licence with id LicenceId(999999999)'
 
-
+  Scenario: License number without any productions should give a warning message: 'No productions found for this licence ID'
+    When I am on the 'New Request' page using the following licence number 44900
+    Then the 'No productions found for this licence ID' is displayed

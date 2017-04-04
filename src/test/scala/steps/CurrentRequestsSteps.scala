@@ -17,6 +17,12 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
     submit()
   }
 
+  Then("""^the '(.*)' is displayed$""") { (NoProductionsFound: String) =>
+    logger.info(scenarioMarker, s"Warning message to be displayed is: $NoProductionsFound")
+    FindExactText(NoProductionsFound).whenIsDisplayed
+    logger.info(scenarioMarker, "Success!")
+  }
+
   Then("""^the 'Invalid Licence Error Msg' is displayed '(.*)'$""") { (licenceInvalidWarningMessage: String) =>
     logger.info(scenarioMarker, s"Warning message to be displayed is: $licenceInvalidWarningMessage")
     FindExactText(licenceInvalidWarningMessage).whenIsDisplayed
