@@ -3,7 +3,7 @@ package itv.fulfilmentplanning.utils
 import com.typesafe.scalalogging.StrictLogging
 import cucumber.api.Scenario
 import cucumber.api.scala.{EN, ScalaDsl}
-import itv.fulfilmentplanning.webdriver.WebDriverPool
+import itv.fulfilmentplanning.Config
 import org.openqa.selenium.WebDriver
 import org.slf4j.MarkerFactory
 
@@ -39,20 +39,18 @@ object WebDriverOps extends StrictLogging {
 
   import scala.collection.concurrent._
 
-  assert(Option(WebDriverPool.pool).isDefined)
-
   private val webDriverPerScenario = TrieMap[Scenario, WebDriver]()
 
   def getDriver(scenario: Scenario): Option[WebDriver] =
     webDriverPerScenario.get(scenario)
 
-  def done(scenario: Scenario) = getDriver(scenario).foreach(WebDriverPool.pool.returnObject)
+  def done(scenario: Scenario) = getDriver(scenario).foreach(Config.webDriverPool.returnObject)
 
   def setDriveIfNeededFor(scenario: Scenario): Unit = {
     val scenarioMarker = ScenarioHelper.scenarioMarker(scenario.getId)
     if (!webDriverPerScenario.contains(scenario)) {
       logger.info(scenarioMarker, s"Set web driver for ${scenario.getId}")
-      webDriverPerScenario.put(scenario, WebDriverPool.pool.borrowObject())
+      webDriverPerScenario.put(scenario, Config.webDriverPool.borrowObject())
     }
   }
 }

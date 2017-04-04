@@ -13,7 +13,7 @@ class CompleteFulfilmentRequestSteps
     with NewRequestPageObject
     with ConfirmRequestPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(10.seconds, 100.milliseconds)
 
   When("""^I complete the fulfilment request for '(.*)' with '(.*)' selecting '(.*)'$""") {
     (productionId: String, requiredDate: String, expectedAssetsToSelect: String) =>
@@ -22,21 +22,28 @@ class CompleteFulfilmentRequestSteps
       eventually(click on CreateNewRequestButton.whenIsDisplayed)
 
       PageLoadedRequest.whenIsEnabled
-      click on ProductionIdButton(productionId).whenIsEnabled
+      eventually(click on ProductionIdButton(productionId).whenIsEnabled)
 
       val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
       if (assetsToSelect.isEmpty)
         fail(s"Unsupported assets to select type: $expectedAssetsToSelect")
       else {
+        if (assetsToSelect.size > 1)
+          eventually(click on SelectMultipleAssets.whenIsDisplayed)
         eventually {
-          if (assetsToSelect.size > 1)
-            click on SelectMultipleAssets.whenIsDisplayed
           assetsToSelect.foreach { nextAssetToSelect =>
             click on nextAssetToSelect.whenIsDisplayed
           }
+
         }
+        if (assetsToSelect.size > 1) {
+          eventually(click on CloseAssetBoxButton(productionId).whenIsDisplayed)
+          ProductionIdMultiple(productionId).whenIsDisplayed
+        } else
+          ProductionIdSelected(productionId).whenIsDisplayed
       }
-      click on RequestNextButton.whenIsDisplayed
+
+      eventually(click on RequestNextButton.whenIsDisplayed)
 
       RequestConfirmLoaded.whenIsEnabled
 
@@ -64,8 +71,8 @@ class CompleteFulfilmentRequestSteps
 
   private def fillCommonRequestFor(job: Query, date: Option[Query]) = {
     textField(ClientField).value = "Client"
-    click on DeliveryMediumField.whenIsDisplayed
-    click on OnlineDeliveryMedium.whenIsDisplayed
+    eventually(click on DeliveryMediumField.whenIsDisplayed)
+    eventually(click on OnlineDeliveryMedium.whenIsDisplayed)
     eventually(click on JobField.whenIsDisplayed)
     eventually(click on job.whenIsDisplayed)
     textArea(DeliveryMethod).value = "Delivery Method"

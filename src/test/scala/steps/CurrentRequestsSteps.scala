@@ -12,7 +12,7 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
 
   And("""^I am on the 'New Request' page using the following licence number (\d+)$""") { (licenceId: Int) =>
     logger.info(scenarioMarker, s"Go to licence number: $licenceId")
-    click on EnterLicenceSection.whenIsDisplayed
+    eventually(click on EnterLicenceSection.whenIsDisplayed)
     eventually(numberField(LicenceInput)).value = licenceId.toString
     submit()
   }
@@ -28,12 +28,12 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
     (assetsToSelect: String, productionId: String, licenceId: Int, requiredBy: String) =>
       logger.info(scenarioMarker,
                   s"Verify asset with production id $productionId has been requested for licence number: $licenceId")
-      click on CurrentRequestSection.whenIsDisplayed
+      eventually(click on CurrentRequestSection.whenIsDisplayed)
       waitUntilPageIsLoaded()
 
       val expectedDate: Option[String] = TestData.dateFrom(requiredBy)
 
-      click on RequestedAssetsForDate(expectedDate)
+      eventually(click on RequestedAssetsForDate(expectedDate))
 
       val result = RequestedAssetRowBy(productionId).whenIsDisplayed
 

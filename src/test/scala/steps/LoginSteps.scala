@@ -1,7 +1,6 @@
 package steps
 
-import com.typesafe.config.ConfigFactory
-import itv.fulfilmentplanning.{Config, Credentials}
+import itv.fulfilmentplanning.Credentials
 import itv.fulfilmentplanning.pageobjects._
 import org.openqa.selenium.JavascriptExecutor
 
@@ -13,8 +12,6 @@ class LoginSteps
     with MenuPageObject
     with GoogleAuthPageObject
     with OfflineAccess {
-
-  val config = Config.load(ConfigFactory.load())
 
   override implicit val patienceConfig = PatienceConfig(2.seconds, 100.milliseconds)
 
@@ -46,7 +43,7 @@ class LoginSteps
 
   def requiresToLogin(): Boolean = !isItemPresentInLocalStorage("usersession")
 
-  def isItemPresentInLocalStorage(item: String) = webDriver match {
+  private def isItemPresentInLocalStorage(item: String) = webDriver match {
     case executor: JavascriptExecutor =>
       Option(executor.executeScript(String.format("return window.localStorage.getItem('%s');", item))).nonEmpty
     case _ => false
