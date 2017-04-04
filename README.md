@@ -17,5 +17,6 @@ sbt clean test -Denv=stg
 You can verify the config running `ConfigRunner` app.
 
 ##TODO
+ - Screenshots
  - Build the report
  
