@@ -1,20 +1,33 @@
 package steps
 
 import itv.fulfilmentplanning.{AssetRequested, TestData}
-import itv.fulfilmentplanning.pageobjects.{CurrentRequestsPageObject, MenuPageObject}
+import itv.fulfilmentplanning.pageobjects.{CurrentRequestsPageObject, MenuPageObject, OverviewPageObject}
 
 import scala.concurrent.duration._
 import org.scalatest.Matchers._
 
-class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with MenuPageObject {
+class CurrentRequestsSteps
+    extends BaseSteps
+    with CurrentRequestsPageObject
+    with MenuPageObject
+    with OverviewPageObject {
 
   override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
 
-  And("""^I am on the 'New Request' page using the following licence number (\d+)$""") { (licenceId: Int) =>
-    logger.info(scenarioMarker, s"Go to licence number: $licenceId")
-    eventually(click on EnterLicenceSection.whenIsDisplayed)
-    eventually(numberField(LicenceInput)).value = licenceId.toString
-    submit()
+  And("""^I am on the '(.*)' page using the following licence number (\d+)$""") {
+    (landingPage: String, licenceId: Int) =>
+      logger.info(scenarioMarker, s"Go to licence number: $licenceId")
+      eventually(click on EnterLicenceSection.whenIsDisplayed)
+      eventually(numberField(LicenceInput)).value = licenceId.toString
+      submit()
+      logger.info(scenarioMarker, s"Nre Request Page loaded")
+
+      if (landingPage == "Overview") {
+        eventually(click on CreateNewRequestButton.whenIsDisplayed)
+        // PageLoadedOverview.whenIsEnabled //FIXME  Ask Beni to check why not workin
+        logger.info(scenarioMarker, s"Overview Page loaded")
+      }
+
   }
 
   Then("""^the '(.*)' is displayed$""") { (NoProductionsFound: String) =>

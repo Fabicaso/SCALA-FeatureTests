@@ -17,3 +17,7 @@ Feature: License Check
   Scenario: License number without any productions should give a warning message: 'No productions found for this licence ID'
     When I am on the 'New Request' page using the following licence number 44900
     Then the 'No productions found for this licence ID' is displayed
+
+  Scenario: No Assets found msg is displayed
+    When I am on the 'Overview' page using the following licence number 123555
+   Then 'No assets found' msg is displayed for the production id - '1/5634/0034#002'
