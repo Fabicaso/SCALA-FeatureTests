@@ -1,15 +1,14 @@
-package itv.fulfilmentplanning.utils
+package itv.fulfilmentplanning.browser
 
 import com.typesafe.scalalogging.StrictLogging
 import org.openqa.selenium.WebDriver
-import org.scalactic.source
 import org.scalatest.Assertions
 import org.scalatest.Matchers._
 import org.scalatest.concurrent.Eventually
 import org.scalatest.selenium.WebBrowser
 import org.slf4j.Marker
 
-trait WebBrowserUtils extends WebBrowser with Assertions with Eventually with StrictLogging { outer =>
+trait WebBrowserExt extends WebBrowser with Assertions with Eventually with StrictLogging { outer =>
   implicit def webDriver: WebDriver
 
   implicit class QueryTestingW(query: Query) {
