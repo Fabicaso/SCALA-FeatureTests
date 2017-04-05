@@ -1,7 +1,12 @@
 package steps
 
 import itv.fulfilmentplanning.{AssetRequested, TestData}
-import itv.fulfilmentplanning.pageobjects.{CurrentRequestsPageObject, MenuPageObject, OverviewPageObject}
+import itv.fulfilmentplanning.pageobjects.{
+  CurrentRequestsPageObject,
+  MenuPageObject,
+  NewRequestPageObject,
+  OverviewPageObject
+}
 
 import scala.concurrent.duration._
 import org.scalatest.Matchers._
@@ -10,35 +15,36 @@ class CurrentRequestsSteps
     extends BaseSteps
     with CurrentRequestsPageObject
     with MenuPageObject
-    with OverviewPageObject {
+    with OverviewPageObject
+    with NewRequestPageObject {
 
   override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
 
-  And("""^I am on the '(.*)' page using the following licence number (\d+)$""") {
-    (landingPage: String, licenceId: Int) =>
-      logger.info(scenarioMarker, s"Go to licence number: $licenceId")
-      eventually(click on EnterLicenceSection.whenIsDisplayed)
-      eventually(numberField(LicenceInput)).value = licenceId.toString
-      submit()
-      logger.info(scenarioMarker, s"Nre Request Page loaded")
-
-      if (landingPage == "Overview") {
-        eventually(click on CreateNewRequestButton.whenIsDisplayed)
-        // PageLoadedOverview.whenIsEnabled //FIXME  Ask Beni to check why not workin
-        logger.info(scenarioMarker, s"Overview Page loaded")
-      }
+  And("""^I am on the 'Overview' page using the following licence number (\d+)$""") { (licenceId: Int) =>
+    logger.info(scenarioMarker, s"Go to licence number: $licenceId")
+    eventually(click on EnterLicenceSection.whenIsDisplayed)
+    eventually(numberField(LicenceInput)).value = licenceId.toString
+    submit()
+    logger.info(scenarioMarker, s"Overview Page loaded")
 
   }
 
-  Then("""^the '(.*)' is displayed$""") { (NoProductionsFound: String) =>
-    logger.info(scenarioMarker, s"Warning message to be displayed is: $NoProductionsFound")
-    FindExactText(NoProductionsFound).whenIsDisplayed
+  And("""^I Enter the following Licence Number (\d+)$""") { (licenceId: Int) =>
+    logger.info(scenarioMarker, s"Go to licence number: $licenceId")
+    eventually(click on EnterLicenceSection.whenIsDisplayed)
+    eventually(numberField(LicenceInput)).value = licenceId.toString
+    submit()
+  }
+
+  Then("""^the '(.*)' is displayed$""") { (textDisplayed: String) =>
+    logger.info(scenarioMarker, s"Warning message to be displayed is: $textDisplayed")
+    ExactText(textDisplayed).whenIsDisplayed
     logger.info(scenarioMarker, "Success!")
   }
 
   Then("""^the 'Invalid Licence Error Msg' is displayed '(.*)'$""") { (licenceInvalidWarningMessage: String) =>
     logger.info(scenarioMarker, s"Warning message to be displayed is: $licenceInvalidWarningMessage")
-    FindExactText(licenceInvalidWarningMessage).whenIsDisplayed
+    ExactText(licenceInvalidWarningMessage).whenIsDisplayed
     logger.info(scenarioMarker, "Success!")
   }
 
@@ -71,16 +77,28 @@ class CurrentRequestsSteps
       licenceId should ===(actualLicenceId.toInt)
       val expectedAsset = AssetRequested.requestedAssets(productionId)
 
-      JobTypeAssetRow(productionId, actualLicenceId, assetId, expectedDate, expectedAsset.assetJobType).whenIsDisplayed
+      ExactText(expectedAsset.client).whenIsDisplayed
+      JobTypeAssetRow(productionId,
+                      actualLicenceId,
+                      assetId,
+                      expectedAsset.client,
+                      expectedDate,
+                      expectedAsset.assetJobType).whenIsDisplayed
 
       expectedAsset should ===(
         AssetRequested(
           productionId = productionId,
-          programmeTitle =
-            ProgrammeTitleAssetRow(productionId, actualLicenceId, assetId, expectedDate).whenIsDisplayed.text,
-          duration = DurationAssetRow(productionId, actualLicenceId, assetId, expectedDate).whenIsDisplayed.text,
-          source = SourceAssetRow(productionId, actualLicenceId, assetId, expectedDate).whenIsDisplayed.text,
-          assetJobType = expectedAsset.assetJobType
+          programmeTitle = ProgrammeTitleAssetRow(productionId,
+                                                  actualLicenceId,
+                                                  assetId,
+                                                  expectedAsset.client,
+                                                  expectedDate).whenIsDisplayed.text,
+          duration =
+            DurationAssetRow(productionId, actualLicenceId, assetId, expectedAsset.client, expectedDate).whenIsDisplayed.text,
+          source =
+            SourceAssetRow(productionId, actualLicenceId, assetId, expectedAsset.client, expectedDate).whenIsDisplayed.text,
+          assetJobType = expectedAsset.assetJobType,
+          client = expectedAsset.client
         ))
 
       if (assetsToSelect == "multiple asssets") {

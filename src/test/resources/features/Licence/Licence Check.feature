@@ -11,13 +11,17 @@ Feature: License Check
     Then the 'Current Requests' page is displayed
 
   Scenario: Invalid license number should give a warning message: "Could not find licence with id LicenceId"
-    When I am on the 'New Request' page using the following licence number 999999999
+    When I Enter the following Licence Number 999999999
     Then the 'Invalid Licence Error Msg' is displayed 'Could not find licence with id LicenceId(999999999)'
 
   Scenario: License number without any productions should give a warning message: 'No productions found for this licence ID'
-    When I am on the 'New Request' page using the following licence number 44900
+    When I Enter the following Licence Number 44900
     Then the 'No productions found for this licence ID' is displayed
 
-  Scenario: No Assets found msg is displayed
-    When I am on the 'Overview' page using the following licence number 123555
+  Scenario: No Assets found msg is displayed on the New Request Page
+    When I am on the 'New Request' page using the following licence number 123555
    Then 'No assets found' msg is displayed for the production id - '1/5634/0034#002'
+
+#  Scenario: License Start date is displayed
+#    When I am on the 'Overview' page using the following licence number 123555
+#    Then the 'start date' is displayed

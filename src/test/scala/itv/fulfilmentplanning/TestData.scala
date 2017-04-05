@@ -22,13 +22,19 @@ case class AssetRequested(productionId: String,
                           programmeTitle: String,
                           duration: String,
                           source: String,
-                          assetJobType: String)
+                          assetJobType: String,
+                          client: String)
 
 object AssetRequested {
 
   val requestedAssets = Map(
-    "2/1761/0001#001" -> AssetRequested("2/1761/0001#001", "Desert Seas", "60 Min", "ProRes HD", "PullAndDeliver"),
-    "2/2384/0001#002" -> AssetRequested("2/2384/0001#002", "Harry at 30", "60 Min", "ProRes HD", "Transcode")
+    "2/1761/0001#001" -> AssetRequested("2/1761/0001#001",
+                                        "Desert Seas",
+                                        "60",
+                                        "ProRes HD",
+                                        "PullAndDeliver",
+                                        "Sky-Test"),
+    "2/2384/0001#002" -> AssetRequested("2/2384/0001#002", "Harry at 30", "60", "ProRes HD", "Transcode", "BBC-Test")
   )
 
 }

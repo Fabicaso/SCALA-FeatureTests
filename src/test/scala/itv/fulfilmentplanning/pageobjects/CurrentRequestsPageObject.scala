@@ -14,26 +14,36 @@ trait CurrentRequestsPageObject extends WebBrowser {
 
   def RequestedAssetRowBy(productionId: String) = xpath(s"//span[contains(text(),'$productionId')] ")
 
-  def ProgrammeTitleAssetRow(productionId: String, licenceId: String, assetId: String, date: Option[String]) =
-    idInRequestListSectionBy(licenceId, assetId, date, "programmeTitle")
+  def ProgrammeTitleAssetRow(productionId: String,
+                             licenceId: String,
+                             assetId: String,
+                             client: String,
+                             date: Option[String]) =
+    idInRequestListSectionBy(licenceId, assetId, client, date, "programmeTitle")
 
-  def SourceAssetRow(productionId: String, licenceId: String, assetId: String, date: Option[String]) =
-    idInRequestListSectionBy(licenceId, assetId, date, "format")
+  def SourceAssetRow(productionId: String, licenceId: String, assetId: String, client: String, date: Option[String]) =
+    idInRequestListSectionBy(licenceId, assetId, client, date, "format")
 
-  def DurationAssetRow(productionId: String, licenceId: String, assetId: String, date: Option[String]) =
-    idInRequestListSectionBy(licenceId, assetId, date, "duration")
+  def DurationAssetRow(productionId: String,
+                       licenceId: String,
+                       assetId: String,
+                       client: String,
+                       date: Option[String]) =
+    idInRequestListSectionBy(licenceId, assetId, client, date, "duration")
 
   def JobTypeAssetRow(productionId: String,
                       licenceId: String,
                       assetId: String,
+                      client: String,
                       date: Option[String],
                       jobType: String) =
-    idInRequestListSectionBy(licenceId, assetId, date, s"jobType-${jobType.toLowerCase}")
+    idInRequestListSectionBy(licenceId, assetId, client, date, s"jobType-${jobType.toLowerCase}")
 
   private def idInRequestListSectionBy(licenceId: String,
                                        assetId: String,
+                                       client: String,
                                        date: Option[String],
                                        propertyName: String) =
-    id(s"request-list-section-content-entry-${date.getOrElse(noDate)}-$licenceId-$assetId-$propertyName")
+    id(s"request-list-section-content-${date.getOrElse(noDate)}-$client-entry-$licenceId-$assetId-$propertyName")
 
 }

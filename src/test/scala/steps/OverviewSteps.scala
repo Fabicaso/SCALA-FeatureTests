@@ -1,8 +1,6 @@
 package steps
 
-import itv.fulfilmentplanning.Credentials
 import itv.fulfilmentplanning.pageobjects._
-import org.openqa.selenium.JavascriptExecutor
 
 import scala.concurrent.duration._
 
@@ -19,8 +17,8 @@ class OverviewSteps
   Then("""^'(.*)' msg is displayed for the production id - '(.*)'$""") {
     (NoAssetFoundMessage: String, productionId: String) =>
       logger.info(scenarioMarker, s"Warning message to be displayed is: $NoAssetFoundMessage for $productionId")
-      FindContainsText(productionId).whenIsDisplayed
-      FindExactText(NoAssetFoundMessage).whenIsDisplayed
+      ContainsText(productionId).whenIsDisplayed
+      ExactText(NoAssetFoundMessage).whenIsDisplayed
       logger.info(scenarioMarker, "Success!")
   }
 

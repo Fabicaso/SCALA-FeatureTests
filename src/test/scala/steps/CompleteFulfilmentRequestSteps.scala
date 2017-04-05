@@ -18,10 +18,8 @@ class CompleteFulfilmentRequestSteps
   When("""^I complete the fulfilment request for '(.*)' with '(.*)' selecting '(.*)'$""") {
     (productionId: String, requiredDate: String, expectedAssetsToSelect: String) =>
       logger.info(scenarioMarker, s"Complete the fulfilment request")
-      PageLoadedOverview.whenIsEnabled
-      eventually(click on CreateNewRequestButton.whenIsDisplayed)
 
-      PageLoadedRequest.whenIsEnabled
+      //FIXME PageLoadedRequest.whenIsEnabled
       eventually(click on ProductionIdButton(productionId).whenIsEnabled)
 
       val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
@@ -52,8 +50,8 @@ class CompleteFulfilmentRequestSteps
       val date: Option[Query] = RequiredByDateQuery(requiredDate)
 
       expectedAsset.assetJobType match {
-        case "Transcode"      => fillTrancodeRequest(date)
-        case "PullAndDeliver" => fillPullAndDeliverRequest(date)
+        case "Transcode"      => fillTrancodeRequest(date, expectedAsset.client)
+        case "PullAndDeliver" => fillPullAndDeliverRequest(date, expectedAsset.client)
         case _                => fail(s"Unsupported job type in $expectedAsset")
       }
 
@@ -63,14 +61,14 @@ class CompleteFulfilmentRequestSteps
 
   }
 
-  def fillPullAndDeliverRequest(date: Option[Query]) =
-    fillCommonRequestFor(PullAndDeliverJob, date)
+  def fillPullAndDeliverRequest(date: Option[Query], client: String) =
+    fillCommonRequestFor(PullAndDeliverJob, date, client)
 
-  def fillTrancodeRequest(date: Option[Query]) =
-    fillCommonRequestFor(TranscodeJob, date)
+  def fillTrancodeRequest(date: Option[Query], client: String) =
+    fillCommonRequestFor(TranscodeJob, date, client)
 
-  private def fillCommonRequestFor(job: Query, date: Option[Query]) = {
-    textField(ClientField).value = "Client"
+  private def fillCommonRequestFor(job: Query, date: Option[Query], client: String) = {
+    textField(ClientField).value = client
     eventually(click on DeliveryMediumField.whenIsDisplayed)
     eventually(click on OnlineDeliveryMedium.whenIsDisplayed)
     eventually(click on JobField.whenIsDisplayed)
