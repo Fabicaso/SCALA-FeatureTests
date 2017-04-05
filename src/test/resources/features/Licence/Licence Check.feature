@@ -20,7 +20,7 @@ Feature: License Check
 
   Scenario: No Assets found msg is displayed on the New Request Page
     When I am on the 'New Request' page using the following licence number 123555
-   Then 'No assets found' msg is displayed for the production id - '1/5634/0034#002'
+    Then No assets found msg is displayed for the production id - '1/5634/0034#002'
 
 #  Scenario: License Start date is displayed
 #    When I am on the 'Overview' page using the following licence number 123555
