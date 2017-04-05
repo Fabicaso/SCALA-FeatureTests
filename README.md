@@ -1,7 +1,7 @@
-#Feature tests
+# Feature tests
 
-##Instructions
-Copy the chrome driver in `/usr/local/bin/chromedriver`.
+## Instructions
+Copy the chrome driver `chromedriver` to `/usr/local/bin/`.
 Make sure you update the driver with the version you want to test.
 
 ## Running the test
