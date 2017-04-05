@@ -1,12 +1,6 @@
 package steps
 
-import itv.fulfilmentplanning.pageobjects.{
-  CurrentRequestsPageObject,
-  MenuPageObject,
-  NewRequestPageObject,
-  OverviewPageObject
-}
-import itv.fulfilmentplanning.{AssetRequested, TestData}
+import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
 
@@ -14,10 +8,10 @@ class MenuSteps extends BaseSteps with MenuPageObject {
 
   override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
 
-  And("""^I enter the following Licence Number (\d+)$""") { (licenceId: Int) =>
+  And("""^I enter the following Licence Number '(.*)'$""") { (licenceId: String) =>
     logger.info(scenarioMarker, s"Go to licence number: $licenceId")
     eventually(click on EnterLicenceSection.whenIsDisplayed)
-    eventually(numberField(LicenceInput)).value = licenceId.toString
+    eventually(numberField(LicenceInput)).value = licenceId
     submit()
   }
 

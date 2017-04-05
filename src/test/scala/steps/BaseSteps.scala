@@ -5,6 +5,7 @@ import cucumber.api.scala.{EN, ScalaDsl}
 import itv.fulfilmentplanning.Config
 import itv.fulfilmentplanning.ext.{WebBrowserExt, WebDriverOps}
 import itv.fulfilmentplanning.pageobjects.CommonPageObject
+import org.scalactic.TypeCheckedTripleEquals
 import org.scalatest.concurrent.Eventually
 import org.scalatest.{Assertions, Inspectors, Matchers}
 import org.scalatest.selenium.WebBrowser
@@ -20,6 +21,7 @@ trait BaseSteps
     with Eventually
     with Assertions
     with CommonPageObject
+    with TypeCheckedTripleEquals
     with StrictLogging {
   val config = Config.config
 

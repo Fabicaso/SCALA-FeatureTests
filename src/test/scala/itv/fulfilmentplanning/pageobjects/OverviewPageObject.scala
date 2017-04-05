@@ -12,4 +12,8 @@ trait OverviewPageObject extends WebBrowser {
 
   def LicenceStartDate = id("overview-header-startDate")
 
+  def LicenceStatusNotices = id("overview-header-state-material")
+
+  def LicenceStatus = id("overview-header-state-licence")
+
 }

@@ -19,7 +19,7 @@ class NewRequestSteps
     logger.info(scenarioMarker, "Success!")
   }
 
-  And("""^I am on the 'New Request' page using the following licence number (\d+)$""") { (licenceId: Int) =>
+  And("""^I am on the 'New Request' page using the following licence number '(.*)'$""") { (licenceId: String) =>
     logger.info(scenarioMarker, s"Go to licence number: $licenceId")
     eventually(click on EnterLicenceSection.whenIsDisplayed)
     eventually(numberField(LicenceInput)).value = licenceId.toString
