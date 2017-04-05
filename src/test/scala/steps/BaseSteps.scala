@@ -3,6 +3,7 @@ package steps
 import com.typesafe.scalalogging.StrictLogging
 import cucumber.api.scala.{EN, ScalaDsl}
 import itv.fulfilmentplanning.Config
+import itv.fulfilmentplanning.pageobjects.CommonPageObject
 import itv.fulfilmentplanning.utils.{WebBrowserUtils, WebDriverOps}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.{Assertions, Inspectors, Matchers}
@@ -18,6 +19,7 @@ trait BaseSteps
     with Inspectors
     with Eventually
     with Assertions
+    with CommonPageObject
     with StrictLogging {
   val config = Config.config
 

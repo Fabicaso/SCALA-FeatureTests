@@ -8,4 +8,6 @@ trait OverviewPageObject extends WebBrowser {
 
   def CreateNewRequestButton = id("create-new-request-button")
 
+  def NewRequestAssetButton(productionId: String) = xpath(s"//span[contains(text(),'$productionId')] ")
+
 }

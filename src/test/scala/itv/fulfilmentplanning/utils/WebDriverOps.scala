@@ -4,8 +4,11 @@ import com.typesafe.scalalogging.StrictLogging
 import cucumber.api.Scenario
 import cucumber.api.scala.{EN, ScalaDsl}
 import itv.fulfilmentplanning.Config
-import org.openqa.selenium.WebDriver
+import org.openqa.selenium.{OutputType, TakesScreenshot, WebDriver}
+import org.openqa.selenium.remote.Augmenter
 import org.slf4j.MarkerFactory
+
+import scala.util.Try
 
 trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
 
@@ -30,6 +33,17 @@ trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
 
   After { scenario =>
     logger.info(scenarioMarker, s"Shutting down $scenario ...")
+    if (scenario.isFailed) {
+      logger.info(s"$scenario has failed!")
+      Try(new Augmenter().augment(webDriver) match {
+        case t: TakesScreenshot =>
+          scenario.embed(t.getScreenshotAs(OutputType.BYTES), "image/png")
+        case _ => logger.warn(s"Unable to create the screen shoot for $scenario")
+      }).recover {
+        case e: Exception =>
+          logger.error(s"Unable to create the screen shoot for $scenario because ${e.getMessage()}", e)
+      }
+    }
     WebDriverOps.done(scenario)
 
   }
