@@ -1,4 +1,4 @@
-package itv.fulfilmentplanning.browser
+package itv.fulfilmentplanning.ext
 
 import com.typesafe.scalalogging.StrictLogging
 import org.openqa.selenium.WebDriver
