@@ -20,45 +20,47 @@ class CompleteFulfilmentRequestSteps
       logger.info(scenarioMarker, s"Complete the fulfilment request")
 
       //FIXME PageLoadedRequest.whenIsEnabled
-      eventually(click on ProductionIdButton(productionId).whenIsEnabled)
+      ProductionIdButton(productionId).clickWhenIsEnabled
 
-      val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
-      if (assetsToSelect.isEmpty)
-        fail(s"Unsupported assets to select type: $expectedAssetsToSelect")
-      else {
-        if (assetsToSelect.size > 1)
-          eventually(click on SelectMultipleAssets.whenIsDisplayed)
-        eventually {
-          assetsToSelect.foreach { nextAssetToSelect =>
-            click on nextAssetToSelect.whenIsDisplayed
-          }
-
-        }
-        if (assetsToSelect.size > 1) {
-          eventually(click on CloseAssetBoxButton(productionId).whenIsDisplayed)
-          ProductionIdMultiple(productionId).whenIsDisplayed
-        } else
-          ProductionIdSelected(productionId).whenIsDisplayed
-      }
-
-      eventually(click on RequestNextButton.whenIsDisplayed)
+      selectAssets(productionId, expectedAssetsToSelect)
 
       RequestConfirmLoaded.whenIsEnabled
 
-      val expectedAsset = AssetRequested.requestedAssets(productionId)
-
-      val date: Option[Query] = RequiredByDateQuery(requiredDate)
-
-      expectedAsset.assetJobType match {
-        case "Transcode"      => fillTrancodeRequest(date, expectedAsset.client)
-        case "PullAndDeliver" => fillPullAndDeliverRequest(date, expectedAsset.client)
-        case _                => fail(s"Unsupported job type in $expectedAsset")
-      }
-
-      eventually(click on SendRequestButton.whenIsEnabled)
+      sendRequest(AssetRequested.requestedAssets(productionId), RequiredByDateQuery(requiredDate))
 
       SentRequestConfirmation.whenIsDisplayed(PatienceConfig(5.seconds, 100.milliseconds), scenarioMarker)
 
+  }
+
+  private def sendRequest(expectedAsset: AssetRequested, date: Option[Query]) = {
+    expectedAsset.assetJobType match {
+      case "Transcode"      => fillTrancodeRequest(date, expectedAsset.client)
+      case "PullAndDeliver" => fillPullAndDeliverRequest(date, expectedAsset.client)
+      case _                => fail(s"Unsupported job type in $expectedAsset")
+    }
+
+    SendRequestButton.clickWhenIsEnabled
+  }
+
+  private def selectAssets(productionId: String, expectedAssetsToSelect: String) = {
+    val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
+    if (assetsToSelect.isEmpty)
+      fail(s"Unsupported assets to select type: $expectedAssetsToSelect")
+    else {
+      if (assetsToSelect.size > 1)
+        SelectMultipleAssets.clickWhenIsDisplayed
+      eventually {
+        assetsToSelect.foreach { nextAssetToSelect =>
+          nextAssetToSelect.clickWhenIsDisplayed
+        }
+      }
+      if (assetsToSelect.size > 1) {
+        CloseAssetBoxButton(productionId).clickWhenIsDisplayed
+        ProductionIdMultiple(productionId).whenIsDisplayed
+      } else
+        ProductionIdSelected(productionId).whenIsDisplayed
+    }
+    RequestNextButton.clickWhenIsDisplayed
   }
 
   def fillPullAndDeliverRequest(date: Option[Query], client: String) =
@@ -69,10 +71,10 @@ class CompleteFulfilmentRequestSteps
 
   private def fillCommonRequestFor(job: Query, date: Option[Query], client: String) = {
     textField(ClientField).value = client
-    eventually(click on DeliveryMediumField.whenIsDisplayed)
-    eventually(click on OnlineDeliveryMedium.whenIsDisplayed)
-    eventually(click on JobField.whenIsDisplayed)
-    eventually(click on job.whenIsDisplayed)
+    DeliveryMediumField.clickWhenIsDisplayed
+    OnlineDeliveryMedium.clickWhenIsDisplayed
+    JobField.clickWhenIsDisplayed
+    job.clickWhenIsDisplayed
     textArea(DeliveryMethod).value = "Delivery Method"
     date.foreach { dateQuery =>
       logger.debug(scenarioMarker, s"Setting date $dateQuery for $job")
