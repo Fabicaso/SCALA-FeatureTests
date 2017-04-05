@@ -21,11 +21,11 @@ class NewRequestSteps
 
   And("""^I am on the 'New Request' page using the following licence number '(.*)'$""") { (licenceId: String) =>
     logger.info(scenarioMarker, s"Go to licence number: $licenceId")
-    eventually(click on EnterLicenceSection.whenIsDisplayed)
+    EnterLicenceSection.clickWhenIsDisplayed
     eventually(numberField(LicenceInput)).value = licenceId.toString
     submit()
     logger.info(scenarioMarker, s"Overview Page loaded")
-    eventually(click on CreateNewRequestButton.whenIsDisplayed)
+    CreateNewRequestButton.clickWhenIsDisplayed
     PageLoadedRequest.whenIsEnabled
     logger.info(scenarioMarker, s"New Request Page loaded")
   }

@@ -10,7 +10,7 @@ class MenuSteps extends BaseSteps with MenuPageObject {
 
   And("""^I enter the following Licence Number '(.*)'$""") { (licenceId: String) =>
     logger.info(scenarioMarker, s"Go to licence number: $licenceId")
-    eventually(click on EnterLicenceSection.whenIsDisplayed)
+    EnterLicenceSection.clickWhenIsDisplayed
     eventually(numberField(LicenceInput)).value = licenceId
     submit()
   }
