@@ -23,7 +23,7 @@ class LoginSteps
   When("""^I login with the following valid credentials$""") { () =>
     if (requiresToLogin()) {
       logger.info(scenarioMarker, "Click on sign in")
-      click on SignInButton.whenIsDisplayed
+      SignInButton.clickWhenIsDisplayed
 
       eventually(emailField(Email)).value = Credentials.testCredentials.email
       logger.info(scenarioMarker, "Set email")
@@ -34,7 +34,7 @@ class LoginSteps
       submit()
       logger.info(scenarioMarker, "finding submit_approve_access")
 
-      click on AllowOfflineAccess.whenIsEnabled
+      AllowOfflineAccess.clickWhenIsEnabled
       logger.info(scenarioMarker, "submit_approve_access is been clicked")
     } else {
       logger.info(scenarioMarker, "I am already logged in!")

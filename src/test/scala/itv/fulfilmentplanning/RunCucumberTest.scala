@@ -23,3 +23,12 @@ class FirstRunCucumberTest {}
   tags = Array("@licence", "~@Ignore")
 )
 class SecondRunCucumberTest {}
+
+@RunWith(classOf[Cucumber])
+@CucumberOptions(
+  features = Array("classpath:features"),
+  glue = Array("classpath:steps"),
+  plugin = Array("pretty", "json:target/cucumber-html-reports/third-json-report.json"),
+  tags = Array("@licenceStatus", "~@Ignore")
+)
+class ThirdRunCucumberTest {}

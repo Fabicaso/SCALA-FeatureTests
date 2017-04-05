@@ -47,7 +47,7 @@ object WebDriverPool extends StrictLogging {
         new ChromeDriver(chromeOptions)
       }
     })
-    pool.setMaxActive(2)
+    pool.setMaxActive(4)
     pool.setMaxIdle(-1)
     pool
   }

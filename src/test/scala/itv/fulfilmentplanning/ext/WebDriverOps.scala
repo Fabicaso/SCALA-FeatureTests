@@ -1,11 +1,11 @@
-package itv.fulfilmentplanning.utils
+package itv.fulfilmentplanning.ext
 
 import com.typesafe.scalalogging.StrictLogging
 import cucumber.api.Scenario
 import cucumber.api.scala.{EN, ScalaDsl}
 import itv.fulfilmentplanning.Config
-import org.openqa.selenium.{OutputType, TakesScreenshot, WebDriver}
 import org.openqa.selenium.remote.Augmenter
+import org.openqa.selenium.{OutputType, TakesScreenshot, WebDriver}
 import org.slf4j.MarkerFactory
 
 import scala.util.Try

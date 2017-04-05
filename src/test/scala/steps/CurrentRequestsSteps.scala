@@ -31,12 +31,11 @@ class CurrentRequestsSteps
     (assetsToSelect: String, productionId: String, licenceId: Int, requiredBy: String) =>
       logger.info(scenarioMarker,
                   s"Verify asset with production id $productionId has been requested for licence number: $licenceId")
-      eventually(click on CurrentRequestSection.whenIsDisplayed)
+      val expectedDate = TestData.dateFrom(requiredBy)
+      CurrentRequestSection.clickWhenIsDisplayed
       waitUntilPageIsLoaded()
 
-      val expectedDate: Option[String] = TestData.dateFrom(requiredBy)
-
-      eventually(click on RequestedAssetsForDate(expectedDate))
+      RequestedAssetsForDate(expectedDate).clickWhenIsDisplayed
 
       val result = RequestedAssetRowBy(productionId).whenIsDisplayed
 
