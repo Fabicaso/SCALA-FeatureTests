@@ -16,7 +16,15 @@ sbt clean test -Denv=stg
 
 You can verify the config running `ConfigRunner` app.
 
+## Report generation
+
+You can generate the report at the end, executing:
+
+```
+sbt run
+
+```
+
 ##TODO
- - Screenshots
- - Build the report
+ - Screenshots (Need to be verified)
  
