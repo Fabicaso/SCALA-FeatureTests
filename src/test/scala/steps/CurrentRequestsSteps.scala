@@ -20,34 +20,6 @@ class CurrentRequestsSteps
 
   override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
 
-  And("""^I am on the 'Overview' page using the following licence number (\d+)$""") { (licenceId: Int) =>
-    logger.info(scenarioMarker, s"Go to licence number: $licenceId")
-    eventually(click on EnterLicenceSection.whenIsDisplayed)
-    eventually(numberField(LicenceInput)).value = licenceId.toString
-    submit()
-    logger.info(scenarioMarker, s"Overview Page loaded")
-
-  }
-
-  And("""^I Enter the following Licence Number (\d+)$""") { (licenceId: Int) =>
-    logger.info(scenarioMarker, s"Go to licence number: $licenceId")
-    eventually(click on EnterLicenceSection.whenIsDisplayed)
-    eventually(numberField(LicenceInput)).value = licenceId.toString
-    submit()
-  }
-
-  Then("""^the '(.*)' is displayed$""") { (textDisplayed: String) =>
-    logger.info(scenarioMarker, s"Warning message to be displayed is: $textDisplayed")
-    ExactText(textDisplayed).whenIsDisplayed
-    logger.info(scenarioMarker, "Success!")
-  }
-
-  Then("""^the 'Invalid Licence Error Msg' is displayed '(.*)'$""") { (licenceInvalidWarningMessage: String) =>
-    logger.info(scenarioMarker, s"Warning message to be displayed is: $licenceInvalidWarningMessage")
-    ExactText(licenceInvalidWarningMessage).whenIsDisplayed
-    logger.info(scenarioMarker, "Success!")
-  }
-
   Then("""^the 'Current Requests' page is displayed$""") { () =>
     logger.info(scenarioMarker, "Go to current request")
     waitUntilPageIsLoaded()
