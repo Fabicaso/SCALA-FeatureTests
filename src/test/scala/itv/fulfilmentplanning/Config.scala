@@ -5,7 +5,6 @@ import com.typesafe.scalalogging.StrictLogging
 import itv.fulfilmentplanning.jdbc.InitData
 import itv.fulfilmentplanning.jdbc.InitData.DatabaseConfig
 import itv.fulfilmentplanning.webdriver.WebDriverPool
-
 import net.ceedubs.ficus.Ficus._
 import net.ceedubs.ficus.readers.ArbitraryTypeReader.arbitraryTypeValueReader
 
