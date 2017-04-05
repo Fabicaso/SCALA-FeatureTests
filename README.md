@@ -25,6 +25,6 @@ sbt run
 
 ```
 
-##TODO
+## TODO
  - Screenshots (Need to be verified)
  
