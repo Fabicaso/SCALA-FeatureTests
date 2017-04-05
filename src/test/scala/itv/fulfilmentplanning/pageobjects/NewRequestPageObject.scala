@@ -8,6 +8,7 @@ trait NewRequestPageObject extends WebBrowser {
   def RequestNextButton                                = id("request-confirm-button")
   def ProductionIdButton(productionId: String)         = id(s"prod-$productionId-selection-button")
   def ProductionIdSelected(productionId: String)       = id(s"prod-$productionId-selection-button-selected")
+  def NoAssetsFound(productionId: String)              = id(s"prod-$productionId-selection-noassets}")
   def ProductionIdMultiple(productionId: String)       = id(s"prod-$productionId-selection-multiple}")
   //FIXME Ask Craig to change id
 
