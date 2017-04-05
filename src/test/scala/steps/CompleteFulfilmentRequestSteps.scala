@@ -13,14 +13,12 @@ class CompleteFulfilmentRequestSteps
     with NewRequestPageObject
     with ConfirmRequestPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(10.seconds, 100.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(10.seconds, 200.milliseconds)
 
   When("""^I complete the fulfilment request for '(.*)' with '(.*)' selecting '(.*)'$""") {
     (productionId: String, requiredDate: String, expectedAssetsToSelect: String) =>
-      logger.info(scenarioMarker, s"Complete the fulfilment request")
-
-      //FIXME PageLoadedRequest.whenIsEnabled
-      ProductionIdButton(productionId).clickWhenIsEnabled
+      logger.info(scenarioMarker, s"Completing the fulfilment request")
+      PageLoadedRequest.whenIsEnabled
 
       selectAssets(productionId, expectedAssetsToSelect)
 
@@ -29,6 +27,7 @@ class CompleteFulfilmentRequestSteps
       sendRequest(AssetRequested.requestedAssets(productionId), RequiredByDateQuery(requiredDate))
 
       SentRequestConfirmation.whenIsDisplayed(PatienceConfig(5.seconds, 100.milliseconds), scenarioMarker)
+      logger.info(scenarioMarker, s"Request has been sent!")
 
   }
 
@@ -43,6 +42,7 @@ class CompleteFulfilmentRequestSteps
   }
 
   private def selectAssets(productionId: String, expectedAssetsToSelect: String) = {
+    ProductionIdButton(productionId).clickWhenIsEnabled
     val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
     if (assetsToSelect.isEmpty)
       fail(s"Unsupported assets to select type: $expectedAssetsToSelect")

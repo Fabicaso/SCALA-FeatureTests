@@ -10,4 +10,6 @@ trait OverviewPageObject extends WebBrowser {
 
   def NewRequestAssetButton(productionId: String) = xpath(s"//span[contains(text(),'$productionId')] ")
 
+  def LicenceStartDate = id("overview-header-startDate")
+
 }
