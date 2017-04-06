@@ -58,6 +58,7 @@ class CurrentRequestsSteps
 
       expectedAsset should ===(
         AssetRequested(
+          deliveryMedium = expectedAsset.deliveryMedium,
           productionId = productionId,
           programmeTitle = ProgrammeTitleAssetRow(productionId,
                                                   actualLicenceId,

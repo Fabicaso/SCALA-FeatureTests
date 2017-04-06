@@ -28,13 +28,13 @@ class CompleteFulfilmentRequestSteps
 
       SentRequestConfirmation.whenIsDisplayed(PatienceConfig(5.seconds, 100.milliseconds), scenarioMarker)
       logger.info(scenarioMarker, s"Request has been sent!")
-
   }
 
   private def sendRequest(expectedAsset: AssetRequested, date: Option[Query]) = {
     expectedAsset.assetJobType match {
       case "Transcode"      => fillTrancodeRequest(date, expectedAsset.client)
       case "PullAndDeliver" => fillPullAndDeliverRequest(date, expectedAsset.client)
+      case "TapeAsSource"   => fillTapeRequest(date, expectedAsset.client)
       case _                => fail(s"Unsupported job type in $expectedAsset")
     }
 
@@ -64,15 +64,18 @@ class CompleteFulfilmentRequestSteps
   }
 
   def fillPullAndDeliverRequest(date: Option[Query], client: String) =
-    fillCommonRequestFor(PullAndDeliverJob, date, client)
+    fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, date, client)
 
   def fillTrancodeRequest(date: Option[Query], client: String) =
-    fillCommonRequestFor(TranscodeJob, date, client)
+    fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, date, client)
 
-  private def fillCommonRequestFor(job: Query, date: Option[Query], client: String) = {
+  def fillTapeRequest(date: Option[Query], client: String) =
+    fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, date, client)
+
+  private def fillCommonRequestFor(deliveryMedium: Query, job: Query, date: Option[Query], client: String) = {
     textField(ClientField).value = client
     DeliveryMediumField.clickWhenIsDisplayed
-    OnlineDeliveryMedium.clickWhenIsDisplayed
+    deliveryMedium.clickWhenIsDisplayed
     JobField.clickWhenIsDisplayed
     job.clickWhenIsDisplayed
     textArea(DeliveryMethod).value = "Delivery Method"

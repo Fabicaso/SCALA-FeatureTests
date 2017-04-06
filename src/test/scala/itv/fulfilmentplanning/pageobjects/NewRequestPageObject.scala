@@ -19,6 +19,8 @@ trait NewRequestPageObject extends WebBrowser {
 
   def PickSecondAsset(productionId: String) = xpath(s"//div[@id='prod-$productionId-picker-assets']//tr[2]/td[1]")
 
+  def NewRequestAssetButton(productionId: String) = xpath(s"//span[contains(text(),'$productionId')]")
+
   def AssetsToSelect(assetToSelect: String, productionId: String): List[Query] = assetToSelect match {
     case "first asset"     => List(PickFirstAsset(productionId))
     case "multiple assets" => List(PickFirstAsset(productionId), PickSecondAsset(productionId))

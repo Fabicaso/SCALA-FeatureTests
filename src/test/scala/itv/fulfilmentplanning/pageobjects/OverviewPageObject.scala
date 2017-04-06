@@ -8,12 +8,24 @@ trait OverviewPageObject extends WebBrowser {
 
   def CreateNewRequestButton = id("create-new-request-button")
 
-  def NewRequestAssetButton(productionId: String) = xpath(s"//span[contains(text(),'$productionId')] ")
-
   def LicenceStartDate = id("overview-header-startDate")
 
   def LicenceStatusNotices = id("overview-header-state-material")
 
   def LicenceStatus = id("overview-header-state-licence")
+
+  def ProductionRow(productionId: String) = id(s"itemTitle-$productionId")
+
+  def SeriesRow(series: String) = xpath(s"//span[contains(@id,'$series')]")
+
+  def NavigationActionMenu = id("overview-navbar-actions")
+
+  def EditStatus = id("menu-dropdown-editStatus")
+
+  def AssetStatus(status: String) = id(s"menu-dropdown-editStatus-$status")
+
+  def TodaysDate = xpath("//div[contains(@class, 'react-datepicker__day--today')]")
+
+  def FulfilledSideBarDate = xpath("//div[@id='overview-sidebar-dates-fulfilled']/div[2]")
 
 }

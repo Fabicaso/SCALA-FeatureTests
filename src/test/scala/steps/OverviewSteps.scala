@@ -1,6 +1,9 @@
 package steps
 
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import itv.fulfilmentplanning.pageobjects._
+
 import scala.concurrent.duration._
 import org.scalactic.StringNormalizations._
 
@@ -31,6 +34,27 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
   Then("""^The 'Create New Request' is disabled$""") { () =>
     waitPageToBeLoaded()
     CreateNewRequestButton.whenIsDisplayed.isEnabled should ===(false)
+  }
+
+  Then("""^I can change the status from '(.*)' to '(.*)' for ProdId '(.*)' and '(.*)'$""") {
+    (fromAssetStatus: String, toAssetStatus: String, productionId: String, series: String) =>
+      logger.info(scenarioMarker, s"Change the Asset Status")
+      waitPageToBeLoaded()
+      SeriesRow(series).clickWhenIsDisplayed
+      ProductionRow(productionId).clickWhenIsDisplayed
+      NavigationActionMenu.clickWhenIsDisplayed
+      EditStatus.clickWhenIsDisplayed
+      AssetStatus(toAssetStatus).clickWhenIsDisplayed
+      TodaysDate.clickWhenIsDisplayed
+  }
+
+  Then("""^today's date is displayed for the 'Fulfilled' date$""") { () =>
+    logger.info(scenarioMarker, "Today's date is displayed on the Fulfilled section on side menu bar")
+    val inputFormat   = new SimpleDateFormat("yyyy-MM-dd")
+    val outputFormat  = new SimpleDateFormat("dd/MM/yyyy")
+    var todaysDate    = LocalDate.now().toString
+    val formattedDate = outputFormat.format(inputFormat.parse(todaysDate))
+    FulfilledSideBarDate.whenIsDisplayed.text should ===(s"$formattedDate")
   }
 
   private def waitPageToBeLoaded() =
