@@ -18,7 +18,7 @@ class CurrentRequestsSteps
     with OverviewPageObject
     with NewRequestPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
 
   Then("""^the 'Current Requests' page is displayed$""") { () =>
     logger.info(scenarioMarker, "Go to current request")
@@ -81,7 +81,7 @@ class CurrentRequestsSteps
 
   private def waitUntilPageIsLoaded() = {
     CurrentRequestsPageLoaded
-      .whenIsEnabled(patienceConfig = PatienceConfig(10.seconds, 1.second), scenarioMarker)
+      .whenIsEnabled(patienceConfig = PatienceConfig(20.seconds, 1.second), scenarioMarker)
       .isEnabled shouldBe true
   }
 

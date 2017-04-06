@@ -6,7 +6,7 @@ import org.scalactic.StringNormalizations._
 
 class OverviewSteps extends BaseSteps with OverviewPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(2.seconds, 100.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
 
   Then("""^the 'start date' is displayed on Overview page$""") { () =>
     logger.info(scenarioMarker, s"Licence Start Date should be displayed on the Overview page")

@@ -11,7 +11,7 @@ class NewRequestSteps
     with OverviewPageObject
     with NewRequestPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
 
   Then("""^No assets found msg is displayed for the production id - '(.*)'$""") { (productionId: String) =>
     logger.info(scenarioMarker, s"Warning message to be displayed is: No assets found for $productionId")

@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 
 class MenuSteps extends BaseSteps with MenuPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(4.seconds, 100.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
 
   And("""^I enter the following Licence Number '(.*)'$""") { (licenceId: String) =>
     logger.info(scenarioMarker, s"Go to licence number: $licenceId")

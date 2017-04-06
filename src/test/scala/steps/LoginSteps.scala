@@ -13,7 +13,7 @@ class LoginSteps
     with GoogleAuthPageObject
     with OfflineAccess {
 
-  override implicit val patienceConfig = PatienceConfig(2.seconds, 100.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
 
   Given("""^I am on the 'Login' page$""") { () =>
     logger.info(scenarioMarker, "Open home page")
