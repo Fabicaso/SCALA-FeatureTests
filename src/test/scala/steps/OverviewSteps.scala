@@ -54,6 +54,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
     val outputFormat  = new SimpleDateFormat("dd/MM/yyyy")
     var todaysDate    = LocalDate.now().toString
     val formattedDate = outputFormat.format(inputFormat.parse(todaysDate))
+    Thread.sleep(1000) //TODO Check this in order to remove the sleep
     FulfilledSideBarDate.whenIsDisplayed.text should ===(s"$formattedDate")
   }
 
