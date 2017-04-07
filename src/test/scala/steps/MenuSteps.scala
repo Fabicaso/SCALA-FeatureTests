@@ -18,13 +18,11 @@ class MenuSteps extends BaseSteps with MenuPageObject {
   Then("""^the '(.*)' is displayed$""") { (textDisplayed: String) =>
     logger.info(scenarioMarker, s"Warning message to be displayed is: $textDisplayed")
     ExactText(textDisplayed).whenIsDisplayed
-    logger.info(scenarioMarker, "Success!")
   }
 
   Then("""^the 'Invalid Licence Error Msg' is displayed '(.*)'$""") { (licenceInvalidWarningMessage: String) =>
     logger.info(scenarioMarker, s"Warning message to be displayed is: $licenceInvalidWarningMessage")
     ExactText(licenceInvalidWarningMessage).whenIsDisplayed
-    logger.info(scenarioMarker, "Success!")
   }
 
 }

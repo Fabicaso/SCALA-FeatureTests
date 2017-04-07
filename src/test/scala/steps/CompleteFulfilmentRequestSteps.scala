@@ -5,13 +5,7 @@ import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
 
-class CompleteFulfilmentRequestSteps
-    extends BaseSteps
-    with CurrentRequestsPageObject
-    with MenuPageObject
-    with OverviewPageObject
-    with NewRequestPageObject
-    with ConfirmRequestPageObject {
+class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject with ConfirmRequestPageObject {
 
   override implicit val patienceConfig = PatienceConfig(10.seconds, 200.milliseconds)
 
@@ -63,13 +57,13 @@ class CompleteFulfilmentRequestSteps
     RequestNextButton.clickWhenIsDisplayed
   }
 
-  def fillPullAndDeliverRequest(date: Option[Query], client: String) =
+  private def fillPullAndDeliverRequest(date: Option[Query], client: String) =
     fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, date, client)
 
-  def fillTrancodeRequest(date: Option[Query], client: String) =
+  private def fillTrancodeRequest(date: Option[Query], client: String) =
     fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, date, client)
 
-  def fillTapeRequest(date: Option[Query], client: String) =
+  private def fillTapeRequest(date: Option[Query], client: String) =
     fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, date, client)
 
   private def fillCommonRequestFor(deliveryMedium: Query, job: Query, date: Option[Query], client: String) = {

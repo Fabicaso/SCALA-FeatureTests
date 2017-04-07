@@ -1,7 +1,8 @@
 package steps
 
-import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
@@ -50,12 +51,10 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
   Then("""^today's date is displayed for the 'Fulfilled' date$""") { () =>
     logger.info(scenarioMarker, "Today's date is displayed on the Fulfilled section on side menu bar")
-    val inputFormat   = new SimpleDateFormat("yyyy-MM-dd")
-    val outputFormat  = new SimpleDateFormat("dd/MM/yyyy")
-    var todaysDate    = LocalDate.now().toString
-    val formattedDate = outputFormat.format(inputFormat.parse(todaysDate))
-    Thread.sleep(1000) //TODO Check this in order to remove the sleep
-    FulfilledSideBarDate.whenIsDisplayed.text should ===(s"$formattedDate")
+    val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
+    eventually {
+      FulfilledSideBarDate.whenIsDisplayed.text should ===(expectedDate)
+    }
   }
 
   private def waitPageToBeLoaded() =

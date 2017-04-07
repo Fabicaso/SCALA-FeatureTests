@@ -28,24 +28,29 @@ trait WebDriverOps extends StrictLogging { self: ScalaDsl with EN =>
   Before { (scenario: Scenario) =>
     currentScenario = Some(scenario)
     setDriveIfNeededFor(scenario)
-    logger.info(scenarioMarker, s"Init scenario $scenario")
+    logger.info(scenarioMarker, s"Init scenario ${scenario.getName} ...")
   }
 
   After { scenario =>
-    logger.info(scenarioMarker, s"Shutting down $scenario ...")
     if (scenario.isFailed) {
-      logger.info(s"$scenario has failed!")
-      Try(new Augmenter().augment(webDriver) match {
-        case t: TakesScreenshot =>
-          scenario.embed(t.getScreenshotAs(OutputType.BYTES), "image/png")
-        case _ => logger.warn(s"Unable to create the screen shoot for $scenario")
-      }).recover {
-        case e: Exception =>
-          logger.error(s"Unable to create the screen shoot for $scenario because ${e.getMessage()}", e)
-      }
+      logger.info(s"${scenario.getName} scenario failed!")
+      takeScreenshot(scenario)
+    } else {
+      logger.info(scenarioMarker, s"${scenario.getName} scenario scenario success!")
     }
     WebDriverOps.done(scenario)
 
+  }
+
+  private def takeScreenshot(scenario: Scenario) = {
+    Try(new Augmenter().augment(webDriver) match {
+      case t: TakesScreenshot =>
+        scenario.embed(t.getScreenshotAs(OutputType.BYTES), "image/png")
+      case _ => logger.warn(s"Unable to create the screen shoot for $scenario")
+    }).recover {
+      case e: Exception =>
+        logger.error(s"Unable to create the screen shoot for $scenario because ${e.getMessage()}", e)
+    }
   }
 }
 

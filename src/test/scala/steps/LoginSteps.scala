@@ -6,12 +6,7 @@ import org.openqa.selenium.JavascriptExecutor
 
 import scala.concurrent.duration._
 
-class LoginSteps
-    extends BaseSteps
-    with SignInPageObject
-    with MenuPageObject
-    with GoogleAuthPageObject
-    with OfflineAccess {
+class LoginSteps extends BaseSteps with SignInPageObject with GoogleAuthPageObject with OfflineAccess {
 
   override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
 

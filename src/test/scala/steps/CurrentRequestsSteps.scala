@@ -1,29 +1,17 @@
 package steps
 
 import itv.fulfilmentplanning.{AssetRequested, TestData}
-import itv.fulfilmentplanning.pageobjects.{
-  CurrentRequestsPageObject,
-  MenuPageObject,
-  NewRequestPageObject,
-  OverviewPageObject
-}
+import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
-import org.scalatest.Matchers._
 
-class CurrentRequestsSteps
-    extends BaseSteps
-    with CurrentRequestsPageObject
-    with MenuPageObject
-    with OverviewPageObject
-    with NewRequestPageObject {
+class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with MenuPageObject {
 
   override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
 
   Then("""^the 'Current Requests' page is displayed$""") { () =>
     logger.info(scenarioMarker, "Go to current request")
     waitUntilPageIsLoaded()
-    logger.info(scenarioMarker, "Success!")
   }
 
   Then(
@@ -76,8 +64,6 @@ class CurrentRequestsSteps
       if (assetsToSelect == "multiple asssets") {
         RequestedAssetRowBy(productionId).elements shouldBe >(1)
       }
-
-      logger.info(scenarioMarker, "Success!")
   }
 
   private def waitUntilPageIsLoaded() = {
