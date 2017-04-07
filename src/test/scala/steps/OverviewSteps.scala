@@ -65,7 +65,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
   }
 
   Then(
-    """^the label status on the Overview page has changed to (.*) for ProdId '(.*)' and '(.*)' and licence number '(.*)'""") {
+    """^the label status on the Overview page has changed to '(.*)' for ProdId '(.*)' and '(.*)' and licence number '(.*)'""") {
     (toAssetStatus: String, productionId: String, series: String, licenceId: String) =>
       logger.info(scenarioMarker, s"the status on the Overview page has changed to Fulfilled")
       reloadPage()
