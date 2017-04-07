@@ -26,6 +26,9 @@ trait OverviewPageObject extends WebBrowser {
 
   def TodaysDate = xpath("//div[contains(@class, 'react-datepicker__day--today')]")
 
-  def FulfilledSideBarDate = xpath("//div[@id='overview-sidebar-dates-fulfilled']/div[2]")
+  def FulfilledSideBarDate = id("overview-sidebar-dates-fulfilled-value")
+
+  def AssetStatusOnProductionRow(licenceId: String) =
+    xpath(s"//span[contains(@id, '-labels-state-node-status') and contains(@id,'$licenceId')]")
 
 }

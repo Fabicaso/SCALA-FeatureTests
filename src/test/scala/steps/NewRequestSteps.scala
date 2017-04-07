@@ -24,4 +24,10 @@ class NewRequestSteps extends BaseSteps with MenuPageObject with OverviewPageObj
     logger.info(scenarioMarker, s"New Request Page loaded")
   }
 
+  And("""^Production ID '(.*)' is checked as previously Requested on the New request page$""") {
+    (productionId: String) =>
+      logger.info(scenarioMarker, s"isRequestedOrFulfilledCheck displayed")
+      isRequestedOrFulfilledCheck(productionId).whenIsDisplayed
+  }
+
 }

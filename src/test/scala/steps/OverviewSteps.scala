@@ -37,16 +37,23 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
     CreateNewRequestButton.whenIsDisplayed.isEnabled should ===(false)
   }
 
-  Then("""^I can change the status from '(.*)' to '(.*)' for ProdId '(.*)' and '(.*)'$""") {
-    (fromAssetStatus: String, toAssetStatus: String, productionId: String, series: String) =>
+  Then("""^I can change the status from '(.*)' to '(.*)' for ProdId '(.*)' and '(.*)' and licence number '(.*)'$""") {
+    (fromAssetStatus: String, toAssetStatus: String, productionId: String, series: String, licenceId: String) =>
       logger.info(scenarioMarker, s"Change the Asset Status")
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
+      AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text.equalsIgnoreCase(fromAssetStatus)
       NavigationActionMenu.clickWhenIsDisplayed
       EditStatus.clickWhenIsDisplayed
       AssetStatus(toAssetStatus).clickWhenIsDisplayed
       TodaysDate.clickWhenIsDisplayed
+  }
+
+  And(
+    """^the Asset Status is '(.*)' for Production ID 1/5634/0030/31#001 and licence number '(.*)' on the Overwiev page""") {
+    (fromAssetStatus: String, licenceId: String) =>
+      AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text.equalsIgnoreCase(fromAssetStatus)
   }
 
   Then("""^today's date is displayed for the 'Fulfilled' date$""") { () =>
@@ -55,6 +62,18 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
     eventually {
       FulfilledSideBarDate.whenIsDisplayed.text should ===(expectedDate)
     }
+  }
+
+  Then(
+    """^the label status on the Overview page has changed to (.*) for ProdId '(.*)' and '(.*)' and licence number '(.*)'""") {
+    (toAssetStatus: String, productionId: String, series: String, licenceId: String) =>
+      logger.info(scenarioMarker, s"the status on the Overview page has changed to Fulfilled")
+      reloadPage()
+      SeriesRow(series).clickWhenIsDisplayed
+      ProductionRow(productionId).clickWhenIsDisplayed
+      eventually {
+        AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text.equalsIgnoreCase(toAssetStatus)
+      }
   }
 
   private def waitPageToBeLoaded() =
