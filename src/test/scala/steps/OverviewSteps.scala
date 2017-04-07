@@ -43,7 +43,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
-      AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text.equalsIgnoreCase(fromAssetStatus)
+      (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(fromAssetStatus))(after being lowerCased)
       NavigationActionMenu.clickWhenIsDisplayed
       EditStatus.clickWhenIsDisplayed
       AssetStatus(toAssetStatus).clickWhenIsDisplayed
@@ -53,7 +53,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
   And(
     """^the Asset Status is '(.*)' for Production ID 1/5634/0030/31#001 and licence number '(.*)' on the Overwiev page""") {
     (fromAssetStatus: String, licenceId: String) =>
-      AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text.equalsIgnoreCase(fromAssetStatus)
+      (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(fromAssetStatus))(after being lowerCased)
   }
 
   Then("""^today's date is displayed for the 'Fulfilled' date$""") { () =>
@@ -72,7 +72,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
       eventually {
-        AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text.equalsIgnoreCase(toAssetStatus)
+        (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(toAssetStatus))(after being lowerCased)
       }
   }
 
