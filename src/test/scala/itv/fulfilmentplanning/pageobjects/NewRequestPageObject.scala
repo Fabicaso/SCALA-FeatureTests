@@ -11,9 +11,9 @@ trait NewRequestPageObject extends WebBrowser {
   def ProductionIdSelected(productionId: String)        = id(s"prod-$productionId-selection-button-selected")
   def NoAssetsFound(productionId: String)               = id(s"prod-$productionId-selection-noassets}")
   def ProductionIdMultiple(productionId: String)        = id(s"prod-$productionId-selection-multiple}")
-  //FIXME Ask Craig to change id
 
   def PageLoadedRequest                         = id("page-loaded-request")
+  def PageLoadedAssetRequestDates               = id("page-loaded-request-dates")
   def CloseAssetBoxButton(productionId: String) = id(s"prod-$productionId-picker-button-close")
 
   def PickFirstAsset(productionId: String) = xpath(s"//div[@id='prod-$productionId-picker-assets']//tr[1]/td[1]")

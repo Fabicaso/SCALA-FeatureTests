@@ -33,7 +33,6 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
       val assetId         = list.last
       val actualLicenceId = list.init.last
 
-      licenceId should ===(actualLicenceId.toInt)
       val expectedAsset = AssetRequested.requestedAssets(productionId)
 
       ExactText(expectedAsset.client).whenIsDisplayed
@@ -46,8 +45,9 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
 
       expectedAsset should ===(
         AssetRequested(
-          deliveryMedium = expectedAsset.deliveryMedium,
+          licenceId = actualLicenceId,
           productionId = productionId,
+          deliveryMedium = expectedAsset.deliveryMedium,
           programmeTitle = ProgrammeTitleAssetRow(productionId,
                                                   actualLicenceId,
                                                   assetId,

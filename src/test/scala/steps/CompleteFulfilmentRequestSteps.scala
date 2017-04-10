@@ -13,26 +13,29 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
     (productionId: String, requiredDate: String, expectedAssetsToSelect: String) =>
       logger.info(scenarioMarker, s"Completing the fulfilment request")
       PageLoadedRequest.whenIsEnabled
-
       selectAssets(productionId, expectedAssetsToSelect)
+      RequestNextButton.clickWhenIsDisplayed
 
       RequestConfirmLoaded.whenIsEnabled
+      fillRequestDetails(AssetRequested.requestedAssets(productionId))
+      setRequiredByToAsset(AssetRequested.requestedAssets(productionId).licenceId,
+                           productionId,
+                           RequiredByDateQuery(requiredDate))
 
-      sendRequest(AssetRequested.requestedAssets(productionId), RequiredByDateQuery(requiredDate))
+      SendRequestButton.clickWhenIsDisplayed
 
       SentRequestConfirmation.whenIsDisplayed(PatienceConfig(5.seconds, 100.milliseconds), scenarioMarker)
       logger.info(scenarioMarker, s"Request has been sent!")
   }
 
-  private def sendRequest(expectedAsset: AssetRequested, date: Option[Query]) = {
+  private def fillRequestDetails(expectedAsset: AssetRequested) = {
     expectedAsset.assetJobType match {
-      case "Transcode"      => fillTrancodeRequest(date, expectedAsset.client)
-      case "PullAndDeliver" => fillPullAndDeliverRequest(date, expectedAsset.client)
-      case "TapeAsSource"   => fillTapeRequest(date, expectedAsset.client)
+      case "Transcode"      => fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, expectedAsset.client)
+      case "PullAndDeliver" => fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, expectedAsset.client)
+      case "TapeAsSource"   => fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, expectedAsset.client)
       case _                => fail(s"Unsupported job type in $expectedAsset")
     }
-
-    SendRequestButton.clickWhenIsEnabled
+    NextButtonOnSendRequestPage.clickWhenIsDisplayed
   }
 
   private def selectAssets(productionId: String, expectedAssetsToSelect: String) = {
@@ -54,29 +57,27 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       } else
         ProductionIdSelected(productionId).whenIsDisplayed
     }
-    RequestNextButton.clickWhenIsDisplayed
   }
 
-  private def fillPullAndDeliverRequest(date: Option[Query], client: String) =
-    fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, date, client)
-
-  private def fillTrancodeRequest(date: Option[Query], client: String) =
-    fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, date, client)
-
-  private def fillTapeRequest(date: Option[Query], client: String) =
-    fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, date, client)
-
-  private def fillCommonRequestFor(deliveryMedium: Query, job: Query, date: Option[Query], client: String) = {
+  private def fillCommonRequestFor(deliveryMedium: Query, job: Query, client: String) = {
     textField(ClientField).value = client
     DeliveryMediumField.clickWhenIsDisplayed
     deliveryMedium.clickWhenIsDisplayed
     JobField.clickWhenIsDisplayed
     job.clickWhenIsDisplayed
     textArea(DeliveryMethod).value = "Delivery Method"
+  }
+
+  private def setRequiredByToAsset(licenceId: String, productionId: String, date: Option[Query]) = {
+    logger.debug(scenarioMarker, s"Selecting the assets in order to add the Required By date")
+    PageLoadedAssetRequestDates.whenIsEnabled
+    selectAssetsOnRequiredByPage(licenceId, productionId).clickWhenIsDisplayed
     date.foreach { dateQuery =>
-      logger.debug(scenarioMarker, s"Setting date $dateQuery for $job")
-      eventually(click on RequiredByDateField.whenIsDisplayed)
+      logger.debug(scenarioMarker, s"Setting date $dateQuery")
+      RequiredByDateField.clickWhenIsDisplayed
+      EditRequiredByDateDropdown.clickWhenIsDisplayed
       eventually(click on dateQuery.whenIsDisplayed)
     }
   }
+
 }
