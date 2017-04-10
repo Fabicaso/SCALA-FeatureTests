@@ -10,16 +10,19 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
   override implicit val patienceConfig = PatienceConfig(10.seconds, 200.milliseconds)
 
   When("""^I complete the fulfilment request for '(.*)' with '(.*)' selecting '(.*)'$""") {
-    (productionId: String, requiredDate: String, expectedAssetsToSelect: String) =>
+    (productionIds: String, requiredDate: String, expectedAssetsToSelect: String) =>
       logger.info(scenarioMarker, s"Completing the fulfilment request")
       PageLoadedRequest.whenIsEnabled
-      selectAssets(productionId, expectedAssetsToSelect)
+      val productionIdsToSelect = productionIds.split(",")
+      productionIdsToSelect.foreach { productionId =>
+        selectAssets(productionId, expectedAssetsToSelect)
+      }
       RequestNextButton.clickWhenIsDisplayed
-
       RequestConfirmLoaded.whenIsEnabled
-      fillRequestDetails(AssetRequested.requestedAssets(productionId))
-      setRequiredByToAsset(AssetRequested.requestedAssets(productionId).licenceId,
-                           productionId,
+
+      fillRequestDetails(AssetRequested.requestedAssets(productionIds.take(15)))
+      setRequiredByToAsset(AssetRequested.requestedAssets(productionIds.take(15)).licenceId,
+                           productionIds,
                            RequiredByDateQuery(requiredDate))
 
       SendRequestButton.clickWhenIsDisplayed
@@ -68,15 +71,19 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
     textArea(DeliveryMethod).value = "Delivery Method"
   }
 
-  private def setRequiredByToAsset(licenceId: String, productionId: String, date: Option[Query]) = {
+  private def setRequiredByToAsset(licenceId: String, productionIds: String, date: Option[Query]) = {
     logger.debug(scenarioMarker, s"Selecting the assets in order to add the Required By date")
     PageLoadedAssetRequestDates.whenIsEnabled
-    selectAssetsOnRequiredByPage(licenceId, productionId).clickWhenIsDisplayed
-    date.foreach { dateQuery =>
-      logger.debug(scenarioMarker, s"Setting date $dateQuery")
-      RequiredByDateField.clickWhenIsDisplayed
-      EditRequiredByDateDropdown.clickWhenIsDisplayed
-      eventually(click on dateQuery.whenIsDisplayed)
+
+    val productionIdsToSelect = productionIds.split(",")
+    productionIdsToSelect.foreach { productionId =>
+      selectAssetsOnRequiredByPage(licenceId, productionId).clickWhenIsDisplayed
+      date.foreach { dateQuery =>
+        logger.debug(scenarioMarker, s"Setting date $dateQuery")
+        RequiredByDateField.clickWhenIsDisplayed
+        EditRequiredByDateDropdown.clickWhenIsDisplayed
+        eventually(click on dateQuery.whenIsDisplayed)
+      }
     }
   }
 

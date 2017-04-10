@@ -53,7 +53,23 @@ object AssetRequested {
                                            "120",
                                            "ProRes HD",
                                            "TapeAsSource",
-                                           "SKY-ITALIA-Test")
+                                           "SKY-ITALIA-Test"),
+    "1/6195/0044#001" -> AssetRequested("123667",
+                                        "1/6195/0044#001",
+                                        "HardDrive",
+                                        "Murdoch Mysteries",
+                                        "60",
+                                        "ProRes HD",
+                                        "PullAndDeliver",
+                                        "TMZ-Test"),
+    "1/6195/0045#001" -> AssetRequested("123667",
+                                        "1/6195/0045#001",
+                                        "HardDrive",
+                                        "Murdoch Mysteries",
+                                        "60",
+                                        "ProRes HD",
+                                        "PullAndDeliver",
+                                        "TMZ-Test")
   )
 
 }
