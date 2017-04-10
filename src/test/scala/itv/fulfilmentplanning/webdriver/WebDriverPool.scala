@@ -3,7 +3,7 @@ package itv.fulfilmentplanning.webdriver
 import com.typesafe.scalalogging.StrictLogging
 import org.apache.commons.pool.PoolableObjectFactory
 import org.apache.commons.pool.impl.GenericObjectPool
-import org.openqa.selenium.WebDriver
+import org.openqa.selenium.{Dimension, WebDriver}
 import org.openqa.selenium.chrome.{ChromeDriver, ChromeOptions}
 
 import scala.util.Try
@@ -44,7 +44,9 @@ object WebDriverPool extends StrictLogging {
 
       override def makeObject(): WebDriver = {
         logger.info("Creating web driver ...")
-        new ChromeDriver(chromeOptions)
+        val driver = new ChromeDriver(chromeOptions)
+        driver.manage.window().setSize(new Dimension(1920, 1200))
+        driver
       }
     })
     pool.setMaxActive(4)
