@@ -19,6 +19,7 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
     (assetsToSelect: String, productionIds: String, licenceId: Int, requiredBy: String) =>
       logger.info(scenarioMarker,
                   s"Verify asset with production id $productionIds has been requested for licence number: $licenceId")
+
       val expectedDate = TestData.dateFrom(requiredBy)
       CurrentRequestSection.clickWhenIsDisplayed
       waitUntilPageIsLoaded()
@@ -27,13 +28,11 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
 
       val productionIdsToSelect = productionIds.split(",")
       productionIdsToSelect.foreach { productionId =>
-        val result = RequestedAssetRowBy(productionId).whenIsDisplayed
-
+        val result             = RequestedAssetRowBy(productionId).whenIsDisplayed
         val domIdForProduction = result.attribute("id").getOrElse(fail)
-
-        val list            = domIdForProduction.split("-").init
-        val assetId         = list.last
-        val actualLicenceId = list.init.last
+        val list               = domIdForProduction.split("-").init
+        val assetId            = list.last
+        val actualLicenceId    = list.init.last
 
         val expectedAsset = AssetRequested.requestedAssets(productionId)
 
@@ -64,7 +63,11 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
           ))
 
         if (assetsToSelect == "multiple assets") {
-          RequestedAssetRowBy(productionId).elements shouldBe >(1)
+          val ProdNumberOnCurrentRequest = RequestedAssetRowBy(productionId).findAllElements.size
+          ProdNumberOnCurrentRequest shouldBe >(1)
+          logger.info(
+            scenarioMarker,
+            s"Current Request Page is showing all the: $ProdNumberOnCurrentRequest Assets selected for the required Productions ")
         }
       }
 

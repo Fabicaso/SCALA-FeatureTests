@@ -20,8 +20,8 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       RequestNextButton.clickWhenIsDisplayed
       RequestConfirmLoaded.whenIsEnabled
 
-      fillRequestDetails(AssetRequested.requestedAssets(productionIds.take(15)))
-      setRequiredByToAsset(AssetRequested.requestedAssets(productionIds.take(15)).licenceId,
+      fillRequestDetails(AssetRequested.requestedAssets(productionIdsToSelect.last))
+      setRequiredByToAsset(AssetRequested.requestedAssets(productionIdsToSelect.last).licenceId,
                            productionIds,
                            RequiredByDateQuery(requiredDate))
 
