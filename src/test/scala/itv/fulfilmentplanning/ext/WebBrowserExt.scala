@@ -18,6 +18,7 @@ trait WebBrowserExt extends WebBrowser with Assertions with Eventually with Stri
     def elements: Iterator[Element] =
       query.findAllElements
 
+
     def clickWhenIsDisplayed(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker): Unit = {
       eventually(timeout(patienceConfig.timeout), interval(patienceConfig.interval)) {
         logger.info(s"Trying to click on $query")

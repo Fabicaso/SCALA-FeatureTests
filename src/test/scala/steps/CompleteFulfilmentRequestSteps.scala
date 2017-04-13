@@ -1,18 +1,20 @@
 package steps
 
+import com.gargoylesoftware.htmlunit.javascript.configuration.WebBrowser
 import itv.fulfilmentplanning.AssetRequested
 import itv.fulfilmentplanning.pageobjects._
-
 import scala.concurrent.duration._
 
 class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject with ConfirmRequestPageObject {
 
   override implicit val patienceConfig = PatienceConfig(10.seconds, 200.milliseconds)
 
-  When("""^I complete the fulfilment request for '(.*)' with '(.*)' selecting '(.*)'$""") {
-    (productionIds: String, requiredDate: String, expectedAssetsToSelect: String) =>
+  When("""^I complete the fulfilment request for '(.*)' and ProdID '(.*)' with '(.*)' selecting '(.*)'$""") {
+    (series: String ,productionIds: String, requiredDate: String, expectedAssetsToSelect: String) =>
       logger.info(scenarioMarker, s"Completing the fulfilment request")
+      reloadPage()
       PageLoadedRequest.whenIsEnabled
+      newRequestSeriesRow(series).clickWhenIsDisplayed
       val productionIdsToSelect = productionIds.split(",")
       productionIdsToSelect.foreach { productionId =>
         selectAssets(productionId, expectedAssetsToSelect)

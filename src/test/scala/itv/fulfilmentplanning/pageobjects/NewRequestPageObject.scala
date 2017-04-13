@@ -3,6 +3,8 @@ package itv.fulfilmentplanning.pageobjects
 import org.scalatest.selenium.WebBrowser
 
 trait NewRequestPageObject extends WebBrowser {
+
+  def newRequestSeriesRow(series: String) = id (s"request-series-$series-selection-name")
   def isRequestedOrFulfilledCheck(productionId: String) = id(s"prod-$productionId-selection-isRequestedOrFulfilled")
   def VerifyAssetHasBeenSelected(productionId: String)  = id(s"prod-$productionId-selection-button-selected")
   def SelectMultipleAssets                              = id("request-multiselect-checkbox")
