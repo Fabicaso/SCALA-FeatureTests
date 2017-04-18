@@ -2,11 +2,9 @@ package steps
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
-import itv.fulfilmentplanning.pageobjects._
-
-import scala.concurrent.duration._
 import org.scalactic.StringNormalizations._
+import itv.fulfilmentplanning.pageobjects._
+import scala.concurrent.duration._
 
 class OverviewSteps extends BaseSteps with OverviewPageObject {
 
@@ -22,13 +20,13 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
   Then("""^the '(.*)' is displayed correctly on the Overview Page$""") { (statusNotices: String) =>
     waitPageToBeLoaded()
-    (LicenceStatusNotices.whenIsDisplayed.text should ===(statusNotices))(after being lowerCased)
+    (LicenceStatusNotices.whenIsDisplayed.text should ===(statusNotices)) (after being lowerCased)
     logger.info(scenarioMarker, "Licence Status Notices is correctly displayed!")
   }
 
   Then("""^the '(.*)' is displayed on the Overview Page$""") { (licenceStatus: String) =>
     waitPageToBeLoaded()
-    (LicenceStatus.whenIsDisplayed.text should ===(licenceStatus))(after being lowerCased)
+    (LicenceStatus.whenIsDisplayed.text should ===(licenceStatus)) (after being lowerCased)
     logger.info(scenarioMarker, "Licence Status is correctly displayed!")
   }
 
@@ -43,7 +41,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
-      (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(fromAssetStatus))(after being lowerCased)
+      (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(fromAssetStatus)) (after being lowerCased)
       NavigationActionMenu.clickWhenIsDisplayed
       EditStatus.clickWhenIsDisplayed
       AssetStatus(toAssetStatus).clickWhenIsDisplayed
@@ -53,15 +51,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
   And(
     """^the Asset Status is '(.*)' for Production ID 1/5634/0030/31#001 and licence number '(.*)' on the Overwiev page""") {
     (fromAssetStatus: String, licenceId: String) =>
-      (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(fromAssetStatus))(after being lowerCased)
-  }
-
-  Then("""^today's date is displayed for the 'Fulfilled' date$""") { () =>
-    logger.info(scenarioMarker, "Today's date is displayed on the Fulfilled section on side menu bar")
-    val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
-    eventually {
-      FulfilledSideBarDate.whenIsDisplayed.text should ===(expectedDate)
-    }
+      (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(fromAssetStatus)) (after being lowerCased)
   }
 
   Then(
@@ -73,22 +63,38 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
       eventually {
-        (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(toAssetStatus))(after being lowerCased)
+        (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(toAssetStatus)) (after being lowerCased)
       }
   }
 
-
   Then(
-    """^'Required By date on the left Selection Details menu for Production ID '(.*)' of '(.*)' is '-'""") {
-    (productionId: String, series: String) =>
-      logger.info(scenarioMarker, s"'Required By'on the left Selection Details menu date is '-' ")
+    """^'(.*)' date on the left Selection Details menu for Production ID '(.*)' of '(.*)' is '(.*)'""") {
+    (statusDatesOnSideBarMenu: String, productionId: String, series: String, date: String) =>
+      val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
       reloadPage()
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
-      eventually {
-        RequiredBySideBarDate.whenIsDisplayed.text should ===("-")
+
+      if (date == "today's date") {
+        var date = expectedDate
+        statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
+        logger.info(scenarioMarker, s"'The left Selection Details menu date shoule be TODAY's DATE and it's displaying : $date ")
       }
+      else {
+        logger.info(scenarioMarker, s"'The left Selection Details menu date shoule be '-' and it's displaying : $date ")
+        statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
+      }
+  }
+
+
+  private def statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu: String, date: String) = {
+    statusDatesOnSideBarMenu match {
+      case "Fulfilled" => FulfilledSideBarDate.whenIsDisplayed.text should ===(s"$date")
+      case "Requested" => RequestedSideBarDate.whenIsDisplayed.text should ===(s"$date")
+      case "Required By" => RequiredBySideBarDate.whenIsDisplayed.text should ===(s"$date")
+      case _ => fail(s"Unsupported dates On Side Bar Menu: $statusDatesOnSideBarMenu")
+    }
   }
 
   private def waitPageToBeLoaded() =

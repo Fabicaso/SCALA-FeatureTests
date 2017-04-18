@@ -17,7 +17,7 @@ Feature: Asset Status
     And I enter the following Licence Number '123555'
     And I can change the status from 'requested' to 'fulfilled' for ProdId '1/5634/0030/31#001' and 'Lewis - Series 8' and licence number '123555'
     Then the label status on the Overview page has changed to 'fulfilled' for ProdId '1/5634/0030/31#001' and 'Lewis - Series 8' and licence number '123555'
-    And today's date is displayed for the 'Fulfilled' date
+    And 'Fulfilled' date on the left Selection Details menu for Production ID '1/5634/0030/31#001' of 'Lewis - Series 8' is 'today's date'
 
 
   Scenario: Asset status can be changed from 'Fulfilled' to 'Requested' by creating a new request
@@ -31,4 +31,12 @@ Feature: Asset Status
     Given I am on the 'New Request' page using the following licence number '127093'
     And I complete the fulfilment request for 'Tutankhamun' and ProdID '2/3150/0001#002' with 'not required by date' selecting 'first asset'
     When I enter the following Licence Number '127093'
-   Then 'Required By date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is '-'
+    Then 'Required By' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is '-'
+
+  Scenario: Required by date is displayed for a requested asset
+    Given I am on the 'New Request' page using the following licence number '127093'
+    And I complete the fulfilment request for 'Tutankhamun' and ProdID '2/3150/0001#002' with 'a required by date' selecting 'first asset'
+    When I enter the following Licence Number '127093'
+    Then 'Required By' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is 'today's date'
+    And  'Requested' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is 'today's date'
+    And  'Fulfilled' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is '-'

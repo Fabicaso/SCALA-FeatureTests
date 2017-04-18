@@ -2,10 +2,9 @@ package steps
 
 import itv.fulfilmentplanning.{AssetRequested, TestData}
 import itv.fulfilmentplanning.pageobjects._
-
 import scala.concurrent.duration._
 
-class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with MenuPageObject {
+class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with MenuPageObject  {
 
   override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
 

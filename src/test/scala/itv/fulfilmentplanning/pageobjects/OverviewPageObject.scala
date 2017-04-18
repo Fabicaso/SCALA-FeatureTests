@@ -30,6 +30,8 @@ trait OverviewPageObject extends WebBrowser {
 
   def RequiredBySideBarDate = id("overview-sidebar-dates-requiredby-value")
 
+  def RequestedSideBarDate = id("overview-sidebar-dates-requested-value")
+
   def AssetStatusOnProductionRow(licenceId: String) =
     xpath(s"//span[contains(@id, '-labels-state-node-status') and contains(@id,'$licenceId')]")
 
