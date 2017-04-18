@@ -26,3 +26,9 @@ Feature: Asset Status
     When I complete the fulfilment request for 'Lewis - Series 8' and ProdID '1/5634/0030/31#001' with 'not required by date' selecting 'first asset'
     And I enter the following Licence Number '123555'
     Then the label status on the Overview page has changed to 'requested' for ProdId '1/5634/0030/31#001' and 'Lewis - Series 8' and licence number '123555'
+
+  Scenario: '-' is displayed for a requested asset if no required by date is available
+    Given I am on the 'New Request' page using the following licence number '127093'
+    And I complete the fulfilment request for 'Tutankhamun' and ProdID '2/3150/0001#002' with 'not required by date' selecting 'first asset'
+    When I enter the following Licence Number '127093'
+   Then 'Required By date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is '-'

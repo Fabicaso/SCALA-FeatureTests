@@ -69,7 +69,15 @@ object AssetRequested {
                                         "60",
                                         "ProRes HD",
                                         "PullAndDeliver",
-                                        "TMZ-Test")
+                                        "TMZ-Test"),
+    "2/3150/0001#002" -> AssetRequested("127093",
+                                        "2/3150/0001#002",
+                                        "Tape",
+                                        "Tutankhamun",
+                                        "60",
+                                        "ProRes HD",
+                                        "TapeAsSource",
+                                        "RAI-Test")
   )
 
 }

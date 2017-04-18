@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 
 class NewRequestSteps extends BaseSteps with MenuPageObject with OverviewPageObject with NewRequestPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(10.seconds, 200.milliseconds)
 
   Then("""^No assets found msg is displayed for '(.*)' and production id - '(.*)'$""") { (series: String, productionId: String) =>
     logger.info(scenarioMarker, s"Warning message to be displayed is: No assets found for $productionId")

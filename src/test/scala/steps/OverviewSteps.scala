@@ -69,10 +69,25 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
     (toAssetStatus: String, productionId: String, series: String, licenceId: String) =>
       logger.info(scenarioMarker, s"the status on the Overview page has changed to Fulfilled")
       reloadPage()
+      waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
       eventually {
         (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(toAssetStatus))(after being lowerCased)
+      }
+  }
+
+
+  Then(
+    """^'Required By date on the left Selection Details menu for Production ID '(.*)' of '(.*)' is '-'""") {
+    (productionId: String, series: String) =>
+      logger.info(scenarioMarker, s"'Required By'on the left Selection Details menu date is '-' ")
+      reloadPage()
+      waitPageToBeLoaded()
+      SeriesRow(series).clickWhenIsDisplayed
+      ProductionRow(productionId).clickWhenIsDisplayed
+      eventually {
+        RequiredBySideBarDate.whenIsDisplayed.text should ===("-")
       }
   }
 
