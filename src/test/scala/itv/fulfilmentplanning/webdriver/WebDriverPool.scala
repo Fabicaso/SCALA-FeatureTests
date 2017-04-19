@@ -44,8 +44,7 @@ object WebDriverPool extends StrictLogging {
 
       override def makeObject(): WebDriver = {
         logger.info("Creating web driver ...")
-        val driver = new ChromeDriver(chromeOptions)
-        driver
+        new ChromeDriver(chromeOptions)
       }
     })
     pool.setMaxActive(4)
