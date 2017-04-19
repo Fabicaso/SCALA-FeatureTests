@@ -45,7 +45,6 @@ object WebDriverPool extends StrictLogging {
       override def makeObject(): WebDriver = {
         logger.info("Creating web driver ...")
         val driver = new ChromeDriver(chromeOptions)
-        driver.manage.window().setSize(new Dimension(1920, 1200))
         driver
       }
     })

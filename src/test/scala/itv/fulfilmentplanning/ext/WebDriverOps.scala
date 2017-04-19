@@ -5,7 +5,7 @@ import cucumber.api.Scenario
 import cucumber.api.scala.{EN, ScalaDsl}
 import itv.fulfilmentplanning.Config
 import org.openqa.selenium.remote.Augmenter
-import org.openqa.selenium.{OutputType, TakesScreenshot, WebDriver}
+import org.openqa.selenium.{Dimension, OutputType, TakesScreenshot, WebDriver}
 import org.slf4j.MarkerFactory
 
 import scala.util.Try
@@ -70,6 +70,13 @@ object WebDriverOps extends StrictLogging {
     if (!webDriverPerScenario.contains(scenario)) {
       logger.info(scenarioMarker, s"Set web driver for ${scenario.getId}")
       webDriverPerScenario.put(scenario, Config.webDriverPool.borrowObject())
+      val webDriver = webDriverPerScenario(scenario)
+      val dimension = new Dimension(1920, 1200)
+      logger.info(s"Config web driver dimension $dimension")
+      Try(webDriver.manage.window().setSize(dimension)).recover {
+        case exception =>
+          logger.error(s"Unable to set dimension because ${exception.getMessage}", exception)
+      }
     }
   }
 }
