@@ -26,13 +26,23 @@ trait OverviewPageObject extends WebBrowser {
 
   def TodaysDate = xpath("//div[contains(@class, 'react-datepicker__day--today')]")
 
+  def YesterdaysDate = xpath("//div[contains(@class, 'react-datepicker__day--today')]/preceding-sibling::div[1]")
+
   def FulfilledSideBarDate = id("overview-sidebar-dates-fulfilled-value")
 
   def RequiredBySideBarDate = id("overview-sidebar-dates-requiredby-value")
 
   def RequestedSideBarDate = id("overview-sidebar-dates-requested-value")
 
-  def AssetStatusOnProductionRow(licenceId: String) =
-    xpath(s"//span[contains(@id, '-labels-state-node-status') and contains(@id,'$licenceId')]")
+  def ActionsMenu = id("overview-navbar-actions-dropdown-button")
+
+  def EditDates = id("menu-dropdown-editDate")
+
+  def EditDatesStatus(productionStatus: String) =id(s"menu-dropdown-editDate-$productionStatus")
+
+  def AssetStatusOnProductionRow(licenceId: String, productionId: String) =
+    xpath(s"//span[contains(@id, '$productionId-$licenceId') and contains(@id, '-labels-state-node-status')]")
+
+
 
 }

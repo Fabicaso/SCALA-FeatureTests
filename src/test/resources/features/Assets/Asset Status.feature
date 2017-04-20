@@ -40,3 +40,16 @@ Feature: Asset Status
     Then 'Required By' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is 'today's date'
     And  'Requested' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is 'today's date'
     And  'Fulfilled' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is '-'
+
+  Scenario: Requested date can be edited and set to the past
+    Given I am on the 'New Request' page using the following licence number '127093'
+    And I complete the fulfilment request for 'Tutankhamun' and ProdID '2/3150/0002#002' with 'not required by date' selecting 'first asset'
+    When I enter the following Licence Number '127093'
+    Then I can edit and set the 'Requested' date to the past for 'Tutankhamun' and production ID '2/3150/0002#002'
+
+  Scenario: Fulfilled date can be edited and set to the past
+    Given I am on the 'New Request' page using the following licence number '127093'
+    And I complete the fulfilment request for 'Tutankhamun' and ProdID '2/3150/0002#002' with 'not required by date' selecting 'first asset'
+    When I enter the following Licence Number '127093'
+    And I can change the status from 'Requested' to 'Fulfilled' for ProdId '2/3150/0002#002' and 'Tutankhamun' and licence number '127093'
+    Then I can edit and set the 'Fulfilled' date to the past for 'Tutankhamun' and production ID '2/3150/0002#002'

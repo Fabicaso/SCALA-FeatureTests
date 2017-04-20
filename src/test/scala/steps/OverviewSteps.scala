@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter
 import org.scalactic.StringNormalizations._
 import itv.fulfilmentplanning.pageobjects._
 import scala.concurrent.duration._
+import java.util.Calendar
 
 class OverviewSteps extends BaseSteps with OverviewPageObject {
 
@@ -41,17 +42,17 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
-      (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(fromAssetStatus)) (after being lowerCased)
+      (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus)) (after being lowerCased)
       NavigationActionMenu.clickWhenIsDisplayed
       EditStatus.clickWhenIsDisplayed
-      AssetStatus(toAssetStatus).clickWhenIsDisplayed
+      AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
       TodaysDate.clickWhenIsDisplayed
   }
 
   And(
-    """^the Asset Status is '(.*)' for Production ID 1/5634/0030/31#001 and licence number '(.*)' on the Overwiev page""") {
-    (fromAssetStatus: String, licenceId: String) =>
-      (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(fromAssetStatus)) (after being lowerCased)
+    """^the Asset Status is '(.*)' for Production ID (.*) and licence number '(.*)' on the Overwiev page""") {
+    (fromAssetStatus: String, productionId: String, licenceId: String) =>
+      (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus)) (after being lowerCased)
   }
 
   Then(
@@ -63,7 +64,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
       eventually {
-        (AssetStatusOnProductionRow(licenceId).whenIsDisplayed.text should ===(toAssetStatus)) (after being lowerCased)
+        (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(toAssetStatus)) (after being lowerCased)
       }
   }
 
@@ -85,6 +86,24 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
         logger.info(scenarioMarker, s"'The left Selection Details menu date shoule be '-' and it's displaying : $date ")
         statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
       }
+  }
+
+  Then ( """^I can edit and set the '(.*)' date to the past for '(.*)' and production ID '(.*)'""") {
+    (productionStatus: String, series: String, productionId: String) =>
+      logger.info(scenarioMarker, s"Edit Dates for $productionStatus status of $series")
+      val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now().minusDays(1L))
+      reloadPage
+      waitPageToBeLoaded
+      SeriesRow(series).clickWhenIsDisplayed
+      ProductionRow(productionId).clickWhenIsDisplayed
+      ActionsMenu.clickWhenIsDisplayed
+      EditDates.clickWhenIsDisplayed
+      EditDatesStatus((productionStatus: String).toLowerCase).clickWhenIsDisplayed
+      YesterdaysDate.clickWhenIsDisplayed
+      eventually {
+      statusDatesCheckOnSideBarMenu(productionStatus, expectedDate)
+  }
+
   }
 
 
