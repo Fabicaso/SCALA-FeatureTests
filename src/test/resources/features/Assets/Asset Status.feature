@@ -19,7 +19,6 @@ Feature: Asset Status
     Then the label status on the Overview page has changed to 'fulfilled' for ProdId '1/5634/0030/31#001' and 'Lewis - Series 8' and licence number '123555'
     And 'Fulfilled' date on the left Selection Details menu for Production ID '1/5634/0030/31#001' of 'Lewis - Series 8' is 'today's date'
 
-
   Scenario: Asset status can be changed from 'Fulfilled' to 'Requested' by creating a new request
     Given I am on the 'New Request' page using the following licence number '123555'
     And Production ID '1/5634/0030/31#001' is checked as previously Requested for 'Lewis - Series 8' on the New request page
@@ -53,3 +52,15 @@ Feature: Asset Status
     When I enter the following Licence Number '127093'
     And I can change the status from 'Requested' to 'Fulfilled' for ProdId '2/3150/0002#002' and 'Tutankhamun' and licence number '127093'
     Then I can edit and set the 'Fulfilled' date to the past for 'Tutankhamun' and production ID '2/3150/0002#002'
+
+  Scenario: Multiple assets can be set to 'Fulfilled' at once
+    Given I am on the 'New Request' page using the following licence number '123333'
+    And I complete the fulfilment request for 'Vera - Series 2' and ProdID '1/7314/0007#002,1/7314/0009#002,1/7314/0010#002,1/7314/0008#002' with 'not required by date' selecting 'first asset'
+    When I enter the following Licence Number '123333'
+    Then I can set the status to 'Fulfilled' for multiple assets '1/7314/0007#002,1/7314/0008#002' of 'Vera - Series 2'
+    And 'Fulfilled' date on the left Selection Details menu for Production ID '1/7314/0007#002' of 'Vera - Series 2' is 'today's date'
+
+  Scenario: Multiple assets can be set to 'External Requested' at once
+    Given I enter the following Licence Number '123333'
+    When I can set the status to 'Requested' for multiple assets '1/7314/0007#002,1/7314/0008#002' of 'Vera - Series 2'
+    Then 'Requested' date on the left Selection Details menu for Production ID '1/7314/0007#002' of 'Vera - Series 2' is 'today's date'

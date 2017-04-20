@@ -78,14 +78,23 @@ object AssetRequested {
                                         "ProRes HD",
                                         "TapeAsSource",
                                         "RAI-Test"),
-  "2/3150/0002#002" -> AssetRequested("127093",
+    "2/3150/0002#002" -> AssetRequested("127093",
                                         "2/3150/0002#002",
                                         "Tape",
                                         "Tutankhamun",
                                         "60",
                                         "ProRes HD",
                                         "TapeAsSource",
-                                        "RAI2-Test")
+                                        "RAI2-Test"),
+    "1/7314/0008#002" -> AssetRequested("123333",
+                                        "1/7314/0008#002",
+                                        "Tape",
+                                        "Vera - Series 2",
+                                        "60",
+                                        "ProRes HD",
+                                        "TapeAsSource",
+                                        "ITV-Test")
+
   )
 
 

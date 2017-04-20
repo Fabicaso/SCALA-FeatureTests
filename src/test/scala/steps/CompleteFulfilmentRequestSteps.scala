@@ -21,14 +21,12 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       }
       RequestNextButton.clickWhenIsDisplayed
       RequestConfirmLoaded.whenIsEnabled
-
       fillRequestDetails(AssetRequested.requestedAssets(productionIdsToSelect.last))
       setRequiredByToAsset(AssetRequested.requestedAssets(productionIdsToSelect.last).licenceId,
                            productionIds,
                            RequiredByDateQuery(requiredDate))
 
       SendRequestButton.clickWhenIsDisplayed
-
       SentRequestConfirmation.whenIsDisplayed(PatienceConfig(5.seconds, 100.milliseconds), scenarioMarker)
       logger.info(scenarioMarker, s"Request has been sent!")
   }
