@@ -80,12 +80,12 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
       if (date == "today's date") {
         var date = expectedDate
-        statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
+       eventually {statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)}
         logger.info(scenarioMarker, s"'The left Selection Details menu date should be TODAY's DATE and it's displaying : $date ")
       }
       else {
         logger.info(scenarioMarker, s"'The left Selection Details menu date should be '-' and it's displaying : $date ")
-        statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
+        eventually {statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)}
       }
   }
 
@@ -108,23 +108,25 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
   Then ( """^I can set the status to '(.*)' for multiple assets '(.*)' of '(.*)'"""){
     (toAssetStatus: String, productionIds: String, series: String) => {
-      logger.info(scenarioMarker,s"the status to $toAssetStatus for multiple assets")
+      logger.info(scenarioMarker, s"the status to $toAssetStatus for multiple assets")
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
 
       val productionIdsToSelect: Array[String] = productionIds.split(",")
       productionIdsToSelect match {
         case Array(productionId1, productionId2) => {
-      val firstProdId: WebElement = webDriver.findElement (By.xpath (s"//span[contains(text(), '$productionId1')]") )
-      val lastProdId: WebElement = webDriver.findElement (By.xpath (s"//span[contains(text(), '$productionId2')]") )
-      dragAndSelect (firstProdId, lastProdId)
-      }
-      }
-       ActionsMenu.clickWhenIsDisplayed
-       EditStatus.clickWhenIsDisplayed
-       AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
-       TodaysDate.clickWhenIsDisplayed
+          val firstProdId: WebElement = webDriver.findElement(By.xpath(s"//span[contains(text(), '$productionId1')]"))
+          val lastProdId: WebElement = webDriver.findElement(By.xpath(s"//span[contains(text(), '$productionId2')]"))
+          dragAndSelect(firstProdId, lastProdId)
         }
+      }
+
+        ActionsMenu.clickWhenIsDisplayed
+        EditStatus.clickWhenIsDisplayed
+        AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
+        TodaysDate.clickWhenIsDisplayed
+      Thread.sleep(250) //TODO Ask Beni to remove the thread
+         }
   }
 
   protected def dragAndSelect(firstProductionId: WebElement, lastProductionId: WebElement): Unit = {
