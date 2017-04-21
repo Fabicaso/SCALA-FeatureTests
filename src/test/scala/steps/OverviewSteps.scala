@@ -120,12 +120,11 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
           dragAndSelect(firstProdId, lastProdId)
         }
       }
-
         ActionsMenu.clickWhenIsDisplayed
         EditStatus.clickWhenIsDisplayed
         AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
         TodaysDate.clickWhenIsDisplayed
-    waitPageToBeLoaded()
+    Thread.sleep(250)
     }
 
 

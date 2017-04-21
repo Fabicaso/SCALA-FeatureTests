@@ -13,18 +13,18 @@ Feature: Asset Status
 
   Scenario: Asset status can be changed from 'requested' to 'fulfilled' and fulfilled date is displayed
     Given I am on the 'New Request' page using the following licence number '123555'
-    And I complete the fulfilment request for 'Lewis - Series 8' and ProdID '1/5634/0030/31#001' with 'not required by date' selecting 'first asset'
+    And I complete the fulfilment request for 'Lewis - Series 8' and ProdID '1/5634/0030#002' with 'not required by date' selecting 'first asset'
     And I enter the following Licence Number '123555'
-    And I can change the status from 'Requested' to 'Fulfilled' for ProdId '1/5634/0030/31#001' and 'Lewis - Series 8' and licence number '123555'
-    Then the label status on the Overview page has changed to 'Fulfilled' for ProdId '1/5634/0030/31#001' and 'Lewis - Series 8' and licence number '123555'
-    And 'Fulfilled' date on the left Selection Details menu for Production ID '1/5634/0030/31#001' of 'Lewis - Series 8' is 'today's date'
+    And I can change the status from 'Requested' to 'Fulfilled' for ProdId '1/5634/0030#002' and 'Lewis - Series 8' and licence number '123555'
+    Then the label status on the Overview page has changed to 'Fulfilled' for ProdId '1/5634/0030#002' and 'Lewis - Series 8' and licence number '123555'
+    And 'Fulfilled' date on the left Selection Details menu for Production ID '1/5634/0030#002' of 'Lewis - Series 8' is 'today's date'
 
   Scenario: Asset status can be changed from 'Fulfilled' to 'Requested' by creating a new request
     Given I am on the 'New Request' page using the following licence number '123555'
-    And Production ID '1/5634/0030/31#001' is checked as previously Requested for 'Lewis - Series 8' on the New request page
-    When I complete the fulfilment request for 'Lewis - Series 8' and ProdID '1/5634/0030/31#001' with 'not required by date' selecting 'first asset'
+    And Production ID '1/5634/0030#002' is checked as previously Requested for 'Lewis - Series 8' on the New request page
+    When I complete the fulfilment request for 'Lewis - Series 8' and ProdID '1/5634/0030#002' with 'not required by date' selecting 'first asset'
     And I enter the following Licence Number '123555'
-    Then the label status on the Overview page has changed to 'requested' for ProdId '1/5634/0030/31#001' and 'Lewis - Series 8' and licence number '123555'
+    Then the label status on the Overview page has changed to 'requested' for ProdId '1/5634/0030#002' and 'Lewis - Series 8' and licence number '123555'
 
   Scenario: '-' is displayed for a requested asset if no required by date is available
     Given I am on the 'New Request' page using the following licence number '127093'
