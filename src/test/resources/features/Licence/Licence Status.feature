@@ -22,7 +22,7 @@ Feature: License Status
       | 105738         | Issued         | Payment Not Required    |
       | 111677         | Syndicate      | Payment Not Required    |
       | 120737         | Signed         | Full Payment Required   |
-      | 127093         | Draft          | Payment received        |
+      | 127093         | Issued         | Payment received        |
       | 122147         | Draft          | Full payment required   |
       | 111757         | Draft          | Fulfilment Not Required |
       | 105738         | Issued         | Payment Not Required    |
@@ -32,6 +32,6 @@ Feature: License Status
       | 123247         | Syndicate      | Fulfilment Not Required |
       | 119664         | Signed         | Pre-Sig Completed       |
       | 115759         | Signed         | Payment Received        |
-      | 101842         | Signed         | Part Payment Required   |
+      | 101842         | Signed         | Full Payment Required   |
       | 120737         | Signed         | Full Payment Required   |
-      | 128274         | Issued         | Fulfilment Not Required |
+      | 128274         | Signed         | Fulfilment Not Required |
