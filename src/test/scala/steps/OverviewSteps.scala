@@ -125,8 +125,10 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
         EditStatus.clickWhenIsDisplayed
         AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
         TodaysDate.clickWhenIsDisplayed
-      Thread.sleep(250) //TODO Ask Beni to remove the thread
-         }
+    waitPageToBeLoaded()
+    }
+
+
   }
 
   protected def dragAndSelect(firstProductionId: WebElement, lastProductionId: WebElement): Unit = {
