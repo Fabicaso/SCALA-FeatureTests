@@ -28,11 +28,11 @@ trait OverviewPageObject extends WebBrowser {
 
   def YesterdaysDate = xpath("//div[contains(@class, 'react-datepicker__day--today')]/preceding-sibling::div[1]")
 
-  def FulfilledSideBarDate = id("overview-sidebar-dates-fulfilled-value")
+  def FulfilledSideBarDate = id("sidebar-dates-fulfilled-value")
 
-  def RequiredBySideBarDate = id("overview-sidebar-dates-requiredby-value")
+  def RequiredBySideBarDate = id("sidebar-dates-requiredby-value")
 
-  def RequestedSideBarDate = id("overview-sidebar-dates-requested-value")
+  def RequestedSideBarDate = id("sidebar-dates-requested-value")
 
   def ActionsMenu = id("overview-navbar-actions-dropdown-button")
 

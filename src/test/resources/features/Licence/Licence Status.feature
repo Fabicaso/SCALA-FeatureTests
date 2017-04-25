@@ -23,7 +23,6 @@ Feature: License Status
       | 111677         | Syndicate      | Payment Not Required    |
       | 120737         | Signed         | Full Payment Required   |
       | 122147         | Draft          | Full payment required   |
-      | 111757         | Draft          | Fulfilment Not Required |
       | 105738         | Issued         | Payment Not Required    |
       | 120794         | Issued         | Payment Received        |
       | 118952         | Issued         | Part payment required   |
