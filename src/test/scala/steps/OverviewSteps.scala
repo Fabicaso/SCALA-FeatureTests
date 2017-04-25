@@ -25,13 +25,13 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
   Then("""^the '(.*)' is displayed correctly on the Overview Page$""") { (statusNotices: String) =>
     waitPageToBeLoaded()
-    (LicenceStatusNotices.whenIsDisplayed.text should ===(statusNotices)) (after being lowerCased)
+    (LicenceStatusNotices.whenIsDisplayed.text should ===(statusNotices))(after being lowerCased)
     logger.info(scenarioMarker, "Licence Status Notices is correctly displayed!")
   }
 
   Then("""^the '(.*)' is displayed on the Overview Page$""") { (licenceStatus: String) =>
     waitPageToBeLoaded()
-    (LicenceStatus.whenIsDisplayed.text should ===(licenceStatus)) (after being lowerCased)
+    (LicenceStatus.whenIsDisplayed.text should ===(licenceStatus))(after being lowerCased)
     logger.info(scenarioMarker, "Licence Status is correctly displayed!")
   }
 
@@ -46,17 +46,18 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
-      (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus)) (after being lowerCased)
+      (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
+        after being lowerCased)
       NavigationActionMenu.clickWhenIsDisplayed
       EditStatus.clickWhenIsDisplayed
       AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
       TodaysDate.clickWhenIsDisplayed
   }
 
-  And(
-    """^the Asset Status is '(.*)' for Production ID (.*) and licence number '(.*)' on the Overwiev page""") {
+  And("""^the Asset Status is '(.*)' for Production ID (.*) and licence number '(.*)' on the Overwiev page""") {
     (fromAssetStatus: String, productionId: String, licenceId: String) =>
-      (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus)) (after being lowerCased)
+      (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
+        after being lowerCased)
   }
 
   Then(
@@ -68,12 +69,12 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
       eventually {
-        (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(toAssetStatus)) (after being lowerCased)
+        (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(toAssetStatus))(
+          after being lowerCased)
       }
   }
 
-  Then(
-    """^'(.*)' date on the left Selection Details menu for Production ID '(.*)' of '(.*)' is '(.*)'""") {
+  Then("""^'(.*)' date on the left Selection Details menu for Production ID '(.*)' of '(.*)' is '(.*)'""") {
     (statusDatesOnSideBarMenu: String, productionId: String, series: String, date: String) =>
       val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
       reloadPage()
@@ -83,16 +84,17 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
       if (date == "today's date") {
         var date = expectedDate
-       eventually {statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)}
-        logger.info(scenarioMarker, s"'The left Selection Details menu date should be TODAY's DATE and it's displaying : $date ")
-      }
-      else {
-        logger.info(scenarioMarker, s"'The left Selection Details menu date should be '-' and it's displaying : $date ")
-        eventually {statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)}
+        eventually { statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date) }
+        logger.info(scenarioMarker,
+                    s"'The left Selection Details menu date should be TODAY's DATE and it's displaying : $date ")
+      } else {
+        logger.info(scenarioMarker,
+                    s"'The left Selection Details menu date should be '-' and it's displaying : $date ")
+        eventually { statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date) }
       }
   }
 
-  Then ( """^I can edit and set the '(.*)' date to the past for '(.*)' and production ID '(.*)'""") {
+  Then("""^I can edit and set the '(.*)' date to the past for '(.*)' and production ID '(.*)'""") {
     (productionStatus: String, series: String, productionId: String) =>
       logger.info(scenarioMarker, s"Edit Dates for $productionStatus status of $series")
       val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now().minusDays(1L))
@@ -105,47 +107,62 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       EditDatesStatus((productionStatus: String).toLowerCase).clickWhenIsDisplayed
       YesterdaysDate.clickWhenIsDisplayed
       eventually {
-      statusDatesCheckOnSideBarMenu(productionStatus, expectedDate)
+        statusDatesCheckOnSideBarMenu(productionStatus, expectedDate)
       }
   }
 
-  Then ( """^I can set the status to '(.*)' for multiple assets '(.*)' of '(.*)'"""){
-    (toAssetStatus: String, productionIds: String, series: String) => {
-      logger.info(scenarioMarker, s"the status to $toAssetStatus for multiple assets")
-      waitPageToBeLoaded()
-      SeriesRow(series).clickWhenIsDisplayed
+  Then("""^I can set the status to '(.*)' for multiple assets '(.*)' of '(.*)'""") {
+    (toAssetStatus: String, productionIds: String, series: String) =>
+      {
+        logger.info(scenarioMarker, s"the status to $toAssetStatus for multiple assets")
+        waitPageToBeLoaded()
+        SeriesRow(series).clickWhenIsDisplayed
 
-      val productionIdsToSelect: Array[String] = productionIds.split(",")
-      productionIdsToSelect match {
-        case Array(productionId1, productionId2) => {
-          val firstProdId: WebElement = webDriver.findElement(By.xpath(s"//span[contains(text(), '$productionId1')]"))
-          val lastProdId: WebElement = webDriver.findElement(By.xpath(s"//span[contains(text(), '$productionId2')]"))
-          dragAndSelect(firstProdId, lastProdId)
+        val productionIdsToSelect: Array[String] = productionIds.split(",")
+        productionIdsToSelect match {
+          case Array(productionId1, productionId2) => {
+            val firstProdId: WebElement =
+              webDriver.findElement(By.xpath(s"//span[contains(text(), '$productionId1')]"))
+            val lastProdId: WebElement = webDriver.findElement(By.xpath(s"//span[contains(text(), '$productionId2')]"))
+            dragAndSelect(firstProdId, lastProdId)
+          }
         }
-      }
         ActionsMenu.clickWhenIsDisplayed
         EditStatus.clickWhenIsDisplayed
         AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
         TodaysDate.clickWhenIsDisplayed
-    Thread.sleep(250)
-    }
-
-
+        eventually {
+          productionIdsToSelect match {
+            case Array(productionId1, productionId2) => {
+              ProductionStatus(AssetRequested.requestedAssets(productionId1).licenceId, productionId1).whenIsDisplayed.text should ===(
+                toAssetStatus)
+              ProductionStatus(AssetRequested.requestedAssets(productionId2).licenceId, productionId2).whenIsDisplayed.text should ===(
+                toAssetStatus)
+            }
+          }
+        }
+      }
   }
 
   protected def dragAndSelect(firstProductionId: WebElement, lastProductionId: WebElement): Unit = {
     val builder = new Actions(webDriver)
-    eventually{
-    builder.clickAndHold(firstProductionId).moveToElement(lastProductionId).release(lastProductionId).keyDown(Keys.SHIFT).perform()
-    builder.keyUp(Keys.SHIFT).perform()}
-      }
+
+    builder
+      .clickAndHold(firstProductionId)
+      .moveToElement(lastProductionId)
+      .release(lastProductionId)
+      .keyDown(Keys.SHIFT)
+      .perform()
+    builder.keyUp(Keys.SHIFT).perform()
+
+  }
 
   private def statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu: String, date: String) = {
     statusDatesOnSideBarMenu match {
-      case "Fulfilled" => FulfilledSideBarDate.whenIsDisplayed.text should ===(s"$date")
-      case "Requested" => RequestedSideBarDate.whenIsDisplayed.text should ===(s"$date")
+      case "Fulfilled"   => FulfilledSideBarDate.whenIsDisplayed.text should ===(s"$date")
+      case "Requested"   => RequestedSideBarDate.whenIsDisplayed.text should ===(s"$date")
       case "Required By" => RequiredBySideBarDate.whenIsDisplayed.text should ===(s"$date")
-      case _ => fail(s"Unsupported dates On Side Bar Menu: $statusDatesOnSideBarMenu")
+      case _             => fail(s"Unsupported dates On Side Bar Menu: $statusDatesOnSideBarMenu")
     }
   }
 

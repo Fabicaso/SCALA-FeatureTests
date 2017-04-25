@@ -43,6 +43,9 @@ trait OverviewPageObject extends WebBrowser {
   def AssetStatusOnProductionRow(licenceId: String, productionId: String) =
     xpath(s"//span[contains(@id, '$productionId-$licenceId') and contains(@id, '-labels-state-node-status')]")
 
+  def ProductionStatus(licenceId: String, productionId: String) =
+    id(s"$licenceId-$productionId-labels-state-node-status")
+
 
 
 }
