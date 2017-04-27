@@ -84,13 +84,17 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
       if (date == "today's date") {
         var date = expectedDate
-        eventually { statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date) }
+        eventually {
+          statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
+        }
         logger.info(scenarioMarker,
                     s"'The left Selection Details menu date should be TODAY's DATE and it's displaying : $date ")
       } else {
         logger.info(scenarioMarker,
                     s"'The left Selection Details menu date should be '-' and it's displaying : $date ")
-        eventually { statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date) }
+        eventually {
+          statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
+        }
       }
   }
 
@@ -99,7 +103,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       logger.info(scenarioMarker, s"Edit Dates for $productionStatus status of $series")
       val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now().minusDays(1L))
       reloadPage
-      waitPageToBeLoaded
+      waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed
       ActionsMenu.clickWhenIsDisplayed
@@ -111,35 +115,33 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       }
   }
 
-  Then("""^I can set the status to '(.*)' for multiple assets '(.*)' of '(.*)'""") {
-    (toAssetStatus: String, productionIds: String, series: String) =>
+  Then("""^I can set the status to '(.*)' for multiple assets '(.*)' of '(.*)' and licence number '(.*)'""") {
+    (toAssetStatus: String, productionIds: String, series: String, licenceId: String) =>
       {
         logger.info(scenarioMarker, s"the status to $toAssetStatus for multiple assets")
         waitPageToBeLoaded()
         SeriesRow(series).clickWhenIsDisplayed
 
         val productionIdsToSelect: Array[String] = productionIds.split(",")
-        productionIdsToSelect match {
+
+        val (production1, production2) = productionIdsToSelect match {
           case Array(productionId1, productionId2) => {
-            val firstProdId: WebElement =
-              webDriver.findElement(By.xpath(s"//span[contains(text(), '$productionId1')]"))
-            val lastProdId: WebElement = webDriver.findElement(By.xpath(s"//span[contains(text(), '$productionId2')]"))
-            dragAndSelect(firstProdId, lastProdId)
+            (productionId1, productionId2)
           }
         }
+
+        val firstAssetStatus  = ProductionStatus(licenceId, production1).whenIsDisplayed
+        val secondAssetStatus = ProductionStatus(licenceId, production2).whenIsDisplayed
+
+        dragAndSelect(firstAssetStatus.underlying, secondAssetStatus.underlying)
+
         ActionsMenu.clickWhenIsDisplayed
         EditStatus.clickWhenIsDisplayed
         AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
         TodaysDate.clickWhenIsDisplayed
         eventually {
-          productionIdsToSelect match {
-            case Array(productionId1, productionId2) => {
-              ProductionStatus(AssetRequested.requestedAssets(productionId1).licenceId, productionId1).whenIsDisplayed.text should ===(
-                toAssetStatus)
-              ProductionStatus(AssetRequested.requestedAssets(productionId2).licenceId, productionId2).whenIsDisplayed.text should ===(
-                toAssetStatus)
-            }
-          }
+          firstAssetStatus.text should ===(toAssetStatus)
+          secondAssetStatus.text should ===(toAssetStatus)
         }
       }
   }

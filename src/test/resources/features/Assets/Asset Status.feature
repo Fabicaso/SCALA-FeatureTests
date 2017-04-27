@@ -31,10 +31,10 @@ Feature: Asset Status
 #    Given I am on the 'New Request' page using the following licence number '123333'
 #    And I complete the fulfilment request for 'Vera - Series 2' and ProdID '1/7314/0007#002,1/7314/0009#002,1/7314/0010#002,1/7314/0008#002' with 'not required by date' selecting 'first asset'
 #    When I enter the following Licence Number '123333'
-#    Then I can set the status to 'Fulfilled' for multiple assets '1/7314/0007#002,1/7314/0008#002' of 'Vera - Series 2'
+#    Then I can set the status to 'Fulfilled' for multiple assets '1/7314/0007#002,1/7314/0008#002' of 'Vera - Series 2' and licence number '123333'
 #    And 'Fulfilled' date on the left Selection Details menu for Production ID '1/7314/0008#002' of 'Vera - Series 2' is 'today's date'
-#
-#  Scenario: Multiple assets can be set to 'External Requested' at once
-#    Given I enter the following Licence Number '123665'
-#    When I can set the status to 'Requested' for multiple assets '1/9946/0001#001,1/9946/0004#001' of 'Hebrides: Islands on the Edge'
-#    Then 'Requested' date on the left Selection Details menu for Production ID '1/9946/0001#001' of 'Hebrides: Islands on the Edge' is 'today's date'
+
+  Scenario: Multiple assets can be set to 'External Requested' at once
+    Given I enter the following Licence Number '123665'
+    When I can set the status to 'Requested' for multiple assets '1/9946/0001#001,1/9946/0004#001' of 'Hebrides: Islands on the Edge' and licence number '123665'
+    Then 'Requested' date on the left Selection Details menu for Production ID '1/9946/0001#001' of 'Hebrides: Islands on the Edge' is 'today's date'

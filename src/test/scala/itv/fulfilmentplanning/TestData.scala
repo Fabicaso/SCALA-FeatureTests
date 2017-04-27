@@ -47,13 +47,13 @@ object AssetRequested {
                                         "Transcode",
                                         "BBC-Test"),
     "1/5634/0030#002" -> AssetRequested("123555",
-                                           "1/5634/0030#002",
-                                           "Tape",
-                                           "Entry Wounds",
-                                           "120",
-                                           "ProRes HD",
-                                           "TapeAsSource",
-                                           "SKY-ITALIA-Test"),
+                                        "1/5634/0030#002",
+                                        "Tape",
+                                        "Entry Wounds",
+                                        "120",
+                                        "ProRes HD",
+                                        "TapeAsSource",
+                                        "SKY-ITALIA-Test"),
     "1/6195/0044#001" -> AssetRequested("123667",
                                         "1/6195/0044#001",
                                         "HardDrive",
@@ -94,10 +94,6 @@ object AssetRequested {
                                         "ProRes HD",
                                         "TapeAsSource",
                                         "ITV-Test")
-
-
-
   )
-
 
 }

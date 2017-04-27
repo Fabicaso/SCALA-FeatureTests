@@ -1,7 +1,7 @@
 package itv.fulfilmentplanning.ext
 
 import com.typesafe.scalalogging.StrictLogging
-import org.openqa.selenium.WebDriver
+import org.openqa.selenium.{WebDriver, WebElement}
 import org.scalatest.Assertions
 import org.scalatest.Matchers._
 import org.scalatest.concurrent.Eventually
@@ -17,7 +17,6 @@ trait WebBrowserExt extends WebBrowser with Assertions with Eventually with Stri
 
     def elements: Iterator[Element] =
       query.findAllElements
-
 
     def clickWhenIsDisplayed(implicit patienceConfig: PatienceConfig, scenarioMarker: Marker): Unit = {
       eventually(timeout(patienceConfig.timeout), interval(patienceConfig.interval)) {
