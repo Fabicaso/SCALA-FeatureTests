@@ -7,8 +7,13 @@ trait SignInPageObject extends WebBrowser {
 }
 
 trait GoogleAuthPageObject extends WebBrowser {
-  def Email: IdQuery    = id("Email")
-  def Password: IdQuery = id("Passwd")
+  def Email          = id("identifierId")
+  def Password       = name("password")
+  def IdentifierNext = id("identifierNext")
+  def PasswordNext   = id("passwordNext")
+  def OldEmail       = id("Email")
+  def OldPassword    = id("Passwd")
+
 }
 
 trait OfflineAccess extends WebBrowser {
