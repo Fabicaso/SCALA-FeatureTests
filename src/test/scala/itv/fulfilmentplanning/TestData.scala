@@ -30,6 +30,14 @@ case class AssetRequested(licenceId: String,
 object AssetRequested {
 
   val requestedAssets = Map(
+    "1/9946/0001#001" -> AssetRequested("123665",
+                                        "1/9946/0001#001",
+                                        "HardDrive",
+                                        "Hebrides: Islands on the Edge",
+                                        "60",
+                                        "ProRes HD",
+                                        "PullAndDeliver",
+                                        "Sky-Test"),
     "2/1761/0001#001" -> AssetRequested("123665",
                                         "2/1761/0001#001",
                                         "HardDrive",

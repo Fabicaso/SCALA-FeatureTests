@@ -3,13 +3,12 @@ package steps
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import itv.fulfilmentplanning.AssetRequested
 import org.scalactic.StringNormalizations._
 import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
-import org.openqa.selenium.{By, Keys, WebElement}
-import org.openqa.selenium.interactions.{Action, Actions}
+import org.openqa.selenium.{Keys, WebElement}
+import org.openqa.selenium.interactions.Actions
 
 class OverviewSteps extends BaseSteps with OverviewPageObject {
 

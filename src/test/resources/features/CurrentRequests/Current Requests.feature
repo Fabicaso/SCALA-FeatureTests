@@ -15,6 +15,12 @@ Feature: Current Requests
     When I complete the fulfilment request for 'Desert Seas' and ProdID '2/1761/0001#001' with 'not required by date' selecting 'first asset'
     Then 'first asset' with production id '2/1761/0001#001' and licence number 123665 is displayed on the 'Current Requests' page under 'No Required By Date' section
 
+
+  Scenario: Requested asset without a required by date details is displayed in the right side on the 'Current Requests' page
+    Given I am on the 'New Request' page using the following licence number '123665'
+    When I complete the fulfilment request for 'Hebrides: Islands on the Edge' and ProdID '1/9946/0001#001' with 'not required by date' selecting 'first asset'
+    Then asset details with production id '1/9946/0001#001' and licence number '123665' are displayed on the 'Current Requests' page under 'No Required By Date' section
+
 #  Scenario: Requested asset with required by date is displayed on the 'Current Requests' page
 #    Given I am on the 'New Request' page using the following licence number '123665'
 #    When I complete the fulfilment request for 'Harry at 30' and ProdID '2/2384/0001#002' with 'a required by date' selecting 'multiple assets'

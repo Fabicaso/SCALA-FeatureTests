@@ -1,10 +1,15 @@
 package steps
 
-import itv.fulfilmentplanning.{AssetRequested, TestData}
+import itv.fulfilmentplanning.{AssetRequested, Credentials, TestData}
 import itv.fulfilmentplanning.pageobjects._
+import org.scalactic.StringNormalizations._
 import scala.concurrent.duration._
 
-class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with MenuPageObject  {
+class CurrentRequestsSteps
+    extends BaseSteps
+    with CurrentRequestsPageObject
+    with CurrentRequestSideBar
+    with MenuPageObject {
 
   override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
 
@@ -14,14 +19,40 @@ class CurrentRequestsSteps extends BaseSteps with CurrentRequestsPageObject with
   }
 
   Then(
+    """^asset details with production id '(.*)' and licence number '(\d+)' (?:is|are) displayed on the 'Current Requests' page under '(.*)' section$""") {
+    (productionId: String, licenceId: Int, requiredBy: String) =>
+      logger.info(scenarioMarker,
+                  s"Verify asset with production id $productionId has been requested for licence number: $licenceId")
+
+      CurrentRequestSection.clickWhenIsDisplayed
+      waitUntilPageIsLoaded()
+
+      RequestedAssetsForDate(TestData.dateFrom(requiredBy)).clickWhenIsDisplayed
+
+      RequestedAssetRowBy(productionId).clickWhenIsDisplayed
+      val expectedAsset = AssetRequested.requestedAssets(productionId)
+
+      (SideBarRequestedBy.whenIsDisplayed.text should ===(Credentials.testCredentials.email.split("@").head))(
+        after being lowerCased)
+      SideBarRequestId.whenIsDisplayed.text should include(licenceId.toString)
+      (SideBarJob.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.assetJobType))(
+        after being lowerCased)
+      SideBarOrderId.whenIsDisplayed.text should ===(expectedAsset.licenceId)
+
+      (SideBarDeliveryMedium.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.deliveryMedium))(
+        after being lowerCased)
+//      expectedAsset.programmeTitle should ===(SideBarTitle.whenIsDisplayed.text)
+  }
+
+  Then(
     """^'(.*)' with production id '(.*)' and licence number (\d+) (?:is|are) displayed on the 'Current Requests' page under '(.*)' section$""") {
     (assetsToSelect: String, productionIds: String, licenceId: Int, requiredBy: String) =>
       logger.info(scenarioMarker,
                   s"Verify asset with production id $productionIds has been requested for licence number: $licenceId")
 
-      val expectedDate = TestData.dateFrom(requiredBy)
       CurrentRequestSection.clickWhenIsDisplayed
       waitUntilPageIsLoaded()
+      val expectedDate = TestData.dateFrom(requiredBy)
 
       RequestedAssetsForDate(expectedDate).clickWhenIsDisplayed
 

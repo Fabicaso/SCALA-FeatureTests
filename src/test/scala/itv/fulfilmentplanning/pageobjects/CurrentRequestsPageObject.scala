@@ -47,3 +47,16 @@ trait CurrentRequestsPageObject extends WebBrowser {
     id(s"request-list-section-content-${date.getOrElse(noDate)}-$client-entry-$licenceId-$assetId-$propertyName")
 
 }
+
+trait CurrentRequestSideBar extends WebBrowser {
+  val SideBarTitle          = id("sidebar-production-title")
+  val SideBarRequestedBy    = id("sidebar-requestedBy-value")
+  val SideBarRequestId      = id("sidebar-requestId-value")
+  val SideBarOrderId        = id("sidebar-orderId-value")
+  val SideBarAssetId        = id("sidebar-assetId-value")
+  val SideBarFormat         = id("sidebar-asset-node-format")
+  val SideBarClient         = id("sidebar-client-value")
+  val SideBarDeliveryMedium = id("sidebar-deliveryMedium-value")
+  val SideBarJob            = id("sidebar-job-value")
+  val SideBarDeliveryMethod = id("sidebar-deliveryMethod-value")
+}
