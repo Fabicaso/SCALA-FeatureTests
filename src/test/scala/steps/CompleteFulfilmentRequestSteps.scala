@@ -10,14 +10,14 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
   override implicit val patienceConfig = PatienceConfig(10.seconds, 200.milliseconds)
 
   When("""^I complete the fulfilment request for '(.*)' and ProdID '(.*)' with '(.*)' selecting '(.*)'$""") {
-    (series: String ,productionIds: String, requiredDate: String, expectedAssetsToSelect: String) =>
+    (series: String, productionIds: String, requiredDate: String, expectedAssetsToSelect: String) =>
       logger.info(scenarioMarker, s"Completing the fulfilment request")
       reloadPage()
-      PageLoadedRequest.whenIsEnabled
-      newRequestSeriesRow(series).clickWhenIsDisplayed
+      waitUntilPageIsLoaded()
+
       val productionIdsToSelect = productionIds.split(",")
       productionIdsToSelect.foreach { productionId =>
-        selectAssets(productionId, expectedAssetsToSelect)
+        selectAssets(series, productionId, expectedAssetsToSelect)
       }
       RequestNextButton.clickWhenIsDisplayed
       RequestConfirmLoaded.whenIsEnabled
@@ -41,7 +41,17 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
     NextButtonOnSendRequestPage.clickWhenIsDisplayed
   }
 
-  private def selectAssets(productionId: String, expectedAssetsToSelect: String) = {
+  private def waitUntilPageIsLoaded() = {
+    PageLoadedRequest
+      .whenIsEnabled(patienceConfig = PatienceConfig(20.seconds, 1.second), scenarioMarker)
+      .isEnabled shouldBe true
+  }
+
+  private def selectAssets(series: String, productionId: String, expectedAssetsToSelect: String) = {
+    eventually {
+      click on newRequestSeriesRow(series).whenIsDisplayed
+      ProductionIdButton(productionId).whenIsDisplayed.isDisplayed should ===(true)
+    }
     ProductionIdButton(productionId).clickWhenIsEnabled
     val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
     if (assetsToSelect.isEmpty)
