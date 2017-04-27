@@ -16,9 +16,7 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       waitUntilPageIsLoaded()
 
       val productionIdsToSelect = productionIds.split(",")
-      productionIdsToSelect.foreach { productionId =>
-        selectAssets(series, productionId, expectedAssetsToSelect)
-      }
+      selectAssets(series, expectedAssetsToSelect, productionIdsToSelect)
       RequestNextButton.clickWhenIsDisplayed
       RequestConfirmLoaded.whenIsEnabled
       fillRequestDetails(AssetRequested.requestedAssets(productionIdsToSelect.last))
@@ -29,6 +27,33 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       SendRequestButton.clickWhenIsDisplayed
       SentRequestConfirmation.whenIsDisplayed(PatienceConfig(5.seconds, 100.milliseconds), scenarioMarker)
       logger.info(scenarioMarker, s"Request has been sent!")
+  }
+
+  private def selectAssets(series: String, expectedAssetsToSelect: String, productionIdsToSelect: Array[String]) = {
+    eventually {
+      click on newRequestSeriesRow(series).whenIsDisplayed
+      ProductionIdButton(productionIdsToSelect.head).whenIsDisplayed.isDisplayed should ===(true)
+    }
+    productionIdsToSelect.foreach { productionId =>
+      ProductionIdButton(productionId).clickWhenIsEnabled
+      val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
+      if (assetsToSelect.isEmpty)
+        fail(s"Unsupported assets to select type: $expectedAssetsToSelect")
+      else {
+        if (assetsToSelect.size > 1)
+          SelectMultipleAssets.clickWhenIsDisplayed
+        eventually {
+          assetsToSelect.foreach { nextAssetToSelect =>
+            nextAssetToSelect.clickWhenIsDisplayed
+          }
+        }
+        if (assetsToSelect.size > 1) {
+          CloseAssetBoxButton(productionId).clickWhenIsDisplayed
+          ProductionIdMultiple(productionId).whenIsDisplayed
+        } else
+          ProductionIdSelected(productionId).whenIsDisplayed
+      }
+    }
   }
 
   private def fillRequestDetails(expectedAsset: AssetRequested) = {
@@ -45,31 +70,6 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
     PageLoadedRequest
       .whenIsEnabled(patienceConfig = PatienceConfig(20.seconds, 1.second), scenarioMarker)
       .isEnabled shouldBe true
-  }
-
-  private def selectAssets(series: String, productionId: String, expectedAssetsToSelect: String) = {
-    eventually {
-      click on newRequestSeriesRow(series).whenIsDisplayed
-      ProductionIdButton(productionId).whenIsDisplayed.isDisplayed should ===(true)
-    }
-    ProductionIdButton(productionId).clickWhenIsEnabled
-    val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
-    if (assetsToSelect.isEmpty)
-      fail(s"Unsupported assets to select type: $expectedAssetsToSelect")
-    else {
-      if (assetsToSelect.size > 1)
-        SelectMultipleAssets.clickWhenIsDisplayed
-      eventually {
-        assetsToSelect.foreach { nextAssetToSelect =>
-          nextAssetToSelect.clickWhenIsDisplayed
-        }
-      }
-      if (assetsToSelect.size > 1) {
-        CloseAssetBoxButton(productionId).clickWhenIsDisplayed
-        ProductionIdMultiple(productionId).whenIsDisplayed
-      } else
-        ProductionIdSelected(productionId).whenIsDisplayed
-    }
   }
 
   private def fillCommonRequestFor(deliveryMedium: Query, job: Query, client: String) = {
