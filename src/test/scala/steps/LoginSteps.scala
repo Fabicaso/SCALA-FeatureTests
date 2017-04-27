@@ -20,29 +20,16 @@ class LoginSteps extends BaseSteps with SignInPageObject with GoogleAuthPageObje
       logger.info(scenarioMarker, "Click on sign in")
       SignInButton.clickWhenIsDisplayed
 
-      Thread.sleep(200)
-      val newWay = Email.findElement
-      val (email, password) =
-        newWay.fold[(Query, Query)](OldEmail -> OldPassword) { _ =>
-          Email -> Password
-        }
+      val (email, password) = (Email, Password)
 
       eventually(emailField(email)).value = Credentials.testCredentials.email
       logger.info(scenarioMarker, "Set email")
-      newWay.fold(submit()) { _ =>
-        IdentifierNext.clickWhenIsDisplayed
-      }
+      IdentifierNext.clickWhenIsDisplayed
 
       password.whenIsDisplayed.isDisplayed shouldBe true
       eventually(pwdField(password)).value = Credentials.testCredentials.password
       logger.info(scenarioMarker, "Set password")
-      newWay.fold(submit()) { _ =>
-        PasswordNext.clickWhenIsDisplayed
-      }
-
-      newWay.fold(AllowOfflineAccess.clickWhenIsEnabled) { _ =>
-        logger.info(s"Nothing to do")
-      }
+      PasswordNext.clickWhenIsDisplayed
     } else {
       logger.info(scenarioMarker, "I am already logged in!")
     }
