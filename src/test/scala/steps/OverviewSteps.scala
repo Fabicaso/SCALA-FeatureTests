@@ -133,9 +133,11 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
           case jse: JavascriptExecutor => jse.executeScript("window.scrollBy(0,500)", "")
           case _                       => logger.info(s"Unable to scrolldown")
         }
+
         def firstAssetStatus =
           ProductionStatus(licenceId, production1).whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds),
                                                                    scenarioMarker)
+
         def secondAssetStatus = eventually(ProductionStatus(licenceId, production2).elementOrFail)
 
         dragAndSelect(firstAssetStatus.underlying, secondAssetStatus.underlying)
@@ -144,10 +146,12 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
         EditStatus.clickWhenIsDisplayed
         AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
         TodaysDate.clickWhenIsDisplayed
+
         eventually {
           firstAssetStatus.text should ===(toAssetStatus)
           secondAssetStatus.text should ===(toAssetStatus)
         }
+
       }
   }
 
