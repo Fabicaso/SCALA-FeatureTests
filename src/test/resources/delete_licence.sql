@@ -16,8 +16,9 @@ insert into licences_for_deletion (licence_id) values (128003);
 insert into licences_for_deletion (licence_id) values (123665);
 insert into licences_for_deletion (licence_id) values (128001);
 insert into licences_for_deletion (licence_id) values (123667);
+insert into licences_for_deletion (licence_id) values (123669);
 
-insert into licences_for_deletion (licence_id, request_id) select licence_id, fulfilment_request_id from fulfilment_request_licences where licence_id in (123156, 123333, 123444, 123555, 123625, 123888, 124366, 126077, 126631, 127093, 128003, 123665, 128001, 123667);
+insert into licences_for_deletion (licence_id, request_id) select licence_id, fulfilment_request_id from fulfilment_request_licences where licence_id in (123156, 123333, 123444, 123555, 123625, 123888, 124366, 126077, 126631, 127093, 128003, 123665, 128001, 123667, 123668);
 
 delete from event_log where licence_id in (select distinct licence_id from licences_for_deletion);
 
