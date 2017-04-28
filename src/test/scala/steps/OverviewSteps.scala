@@ -45,7 +45,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       logger.info(scenarioMarker, s"Change the Asset Status")
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
-      ProductionRow(productionId).clickWhenIsDisplayed
+      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
       (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
         after being lowerCased)
       NavigationActionMenu.clickWhenIsDisplayed
@@ -67,7 +67,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       reloadPage()
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
-      ProductionRow(productionId).clickWhenIsDisplayed
+      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
       eventually {
         (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(toAssetStatus))(
           after being lowerCased)
@@ -80,7 +80,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       reloadPage()
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
-      ProductionRow(productionId).clickWhenIsDisplayed
+      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
 
       if (date == "today's date") {
         var date = expectedDate
