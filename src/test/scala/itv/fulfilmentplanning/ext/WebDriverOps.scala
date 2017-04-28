@@ -71,7 +71,7 @@ object WebDriverOps extends StrictLogging {
       logger.info(scenarioMarker, s"Set web driver for ${scenario.getId}")
       webDriverPerScenario.put(scenario, Config.webDriverPool.borrowObject())
       val webDriver = webDriverPerScenario(scenario)
-      val dimension = new Dimension(1920, 1200)
+      val dimension = new Dimension(1440, 900)
       logger.info(s"Config web driver dimension $dimension")
       Try(webDriver.manage.window().setSize(dimension)).recover {
         case exception =>

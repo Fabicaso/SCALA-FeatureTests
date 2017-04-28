@@ -7,7 +7,7 @@ import org.scalactic.StringNormalizations._
 import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
-import org.openqa.selenium.{Keys, WebElement}
+import org.openqa.selenium.{JavascriptExecutor, Keys, WebElement}
 import org.openqa.selenium.interactions.Actions
 
 class OverviewSteps extends BaseSteps with OverviewPageObject {
@@ -129,8 +129,14 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
           }
         }
 
-        val firstAssetStatus  = ProductionStatus(licenceId, production1).whenIsDisplayed
-        val secondAssetStatus = ProductionStatus(licenceId, production2).whenIsDisplayed
+        webDriver match {
+          case jse: JavascriptExecutor => jse.executeScript("window.scrollBy(0,500)", "")
+          case _                       => logger.info(s"Unable to scrolldown")
+        }
+        def firstAssetStatus =
+          ProductionStatus(licenceId, production1).whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds),
+                                                                   scenarioMarker)
+        def secondAssetStatus = eventually(ProductionStatus(licenceId, production2).elementOrFail)
 
         dragAndSelect(firstAssetStatus.underlying, secondAssetStatus.underlying)
 

@@ -31,9 +31,12 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
 
   private def selectAssets(series: String, expectedAssetsToSelect: String, productionIdsToSelect: Array[String]) = {
     eventually {
-      click on newRequestSeriesRow(series).whenIsDisplayed
-      ProductionIdButton(productionIdsToSelect.head).whenIsDisplayed.isDisplayed should ===(true)
+      if (!ProductionIdButton(productionIdsToSelect.head).findElement.exists(_.isDisplayed)) {
+        click on newRequestSeriesRow(series).whenIsDisplayed
+      }
+      ProductionIdButton(productionIdsToSelect.head).findElement.map(_.isDisplayed) should ===(Some(true))
     }
+
     productionIdsToSelect.foreach { productionId =>
       ProductionIdButton(productionId).clickWhenIsEnabled
       val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
