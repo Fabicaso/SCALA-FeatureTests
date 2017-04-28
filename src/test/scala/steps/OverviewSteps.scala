@@ -9,6 +9,7 @@ import itv.fulfilmentplanning.pageobjects._
 import scala.concurrent.duration._
 import org.openqa.selenium.{JavascriptExecutor, Keys, WebElement}
 import org.openqa.selenium.interactions.Actions
+import org.scalatest.time.{Millis, Second, Seconds, Span}
 
 class OverviewSteps extends BaseSteps with OverviewPageObject {
 
@@ -118,26 +119,12 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
     (toAssetStatus: String, productionIds: String, series: String, licenceId: String) =>
       {
         logger.info(scenarioMarker, s"the status to $toAssetStatus for multiple assets")
-        waitPageToBeLoaded()
-        SeriesRow(series).clickWhenIsDisplayed
+        val (production1, production2) = firstAndLastProduction(productionIds)
 
-        val productionIdsToSelect: Array[String] = productionIds.split(",")
-
-        val (production1, production2) = productionIdsToSelect match {
-          case Array(productionId1, productionId2) => {
-            (productionId1, productionId2)
-          }
-        }
-
-        webDriver match {
-          case jse: JavascriptExecutor => jse.executeScript("window.scrollBy(0,500)", "")
-          case _                       => logger.info(s"Unable to scrolldown")
-        }
+        val firstProduction = openSeries(series, production1)
 
         dragAndSelect(
-          ExactText(production1)
-            .whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
-            .underlying,
+          firstProduction.underlying,
           ExactText(production2).whenIsDisplayed.underlying
         )
 
@@ -146,14 +133,33 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
         AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
         TodaysDate.clickWhenIsDisplayed
 
-        eventually {
-          ProductionStatus(licenceId, production1)
-            .whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
-            .text should ===(toAssetStatus)
-          eventually(ProductionStatus(licenceId, production2).elementOrFail).text should ===(toAssetStatus)
+        eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+          ProductionStatus(licenceId, production1).elementOrFail.text should ===(toAssetStatus)
+          ProductionStatus(licenceId, production2).elementOrFail.text should ===(toAssetStatus)
         }
-
       }
+  }
+
+  private def firstAndLastProduction(productionIds: String) = {
+    val (production1, production2) = productionIds.split(",") match {
+      case Array(productionId1, productionId2) => {
+        (productionId1, productionId2)
+      }
+    }
+    (production1, production2)
+  }
+
+  private def openSeries(series: String, production1: String) = {
+    waitPageToBeLoaded()
+    webDriver match {
+      case jse: JavascriptExecutor => jse.executeScript("window.scrollBy(0,500)", "")
+      case _                       => logger.info(s"Unable to scrolldown")
+    }
+    SeriesRow(series).clickWhenIsDisplayed
+
+    val firstProduction = ExactText(production1)
+      .whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+    firstProduction
   }
 
   protected def dragAndSelect(firstProductionId: WebElement, lastProductionId: WebElement): Unit = {
