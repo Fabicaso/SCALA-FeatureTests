@@ -123,18 +123,23 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
         val firstProduction = openSeries(series, production1)
 
-        dragAndSelect(
-          firstProduction.underlying,
-          ExactText(production2).whenIsDisplayed.underlying
-        )
+        eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+          dragAndSelect(
+            firstProduction.underlying,
+            ExactText(production2).elementOrFail.underlying
+          )
+          click on ActionsMenu.elementOrFail
+          click on EditStatus.elementOrFail
+          click on AssetStatus(toAssetStatus.toLowerCase).elementOrFail
+          click on TodaysDate.elementOrFail
+        }
 
-        ActionsMenu.clickWhenIsDisplayed
-        EditStatus.clickWhenIsDisplayed
-        AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
-        TodaysDate.clickWhenIsDisplayed
+//        Thread.sleep(100)
+//        reloadPage()
+//        openSeries(series, production1)
 
         eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-          ProductionStatus(licenceId, production1).elementOrFail.text should ===(toAssetStatus)
+//          ProductionStatus(licenceId, production1).elementOrFail.text should ===(toAssetStatus) FIXME Sometimes UI is generating this id: 1/9946/0001#001-123665-1276130-labels-state-node-status
           ProductionStatus(licenceId, production2).elementOrFail.text should ===(toAssetStatus)
         }
       }

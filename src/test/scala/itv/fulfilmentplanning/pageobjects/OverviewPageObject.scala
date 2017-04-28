@@ -24,7 +24,7 @@ trait OverviewPageObject extends WebBrowser {
 
   def AssetStatus(status: String) = id(s"menu-dropdown-editStatus-$status")
 
-  def TodaysDate = xpath("//div[contains(@class, 'react-datepicker__day--today')]")
+  def TodaysDate = className("react-datepicker__day--today")
 
   def YesterdaysDate = xpath("//div[contains(@class, 'react-datepicker__day--today')]/preceding-sibling::div[1]")
 
