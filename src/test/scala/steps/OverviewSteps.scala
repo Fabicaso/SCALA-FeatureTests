@@ -84,7 +84,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
       if (date == "today's date") {
         var date = expectedDate
-        eventually {
+        eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
           statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
         }
         logger.info(scenarioMarker,
@@ -92,7 +92,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       } else {
         logger.info(scenarioMarker,
                     s"'The left Selection Details menu date should be '-' and it's displaying : $date ")
-        eventually {
+        eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
           statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
         }
       }
