@@ -134,13 +134,12 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
           case _                       => logger.info(s"Unable to scrolldown")
         }
 
-        def firstAssetStatus =
-          ProductionStatus(licenceId, production1).whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds),
-                                                                   scenarioMarker)
-
-        def secondAssetStatus = eventually(ProductionStatus(licenceId, production2).elementOrFail)
-
-        dragAndSelect(firstAssetStatus.underlying, secondAssetStatus.underlying)
+        dragAndSelect(
+          ExactText(production1)
+            .whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+            .underlying,
+          ExactText(production2).whenIsDisplayed.underlying
+        )
 
         ActionsMenu.clickWhenIsDisplayed
         EditStatus.clickWhenIsDisplayed
@@ -148,8 +147,10 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
         TodaysDate.clickWhenIsDisplayed
 
         eventually {
-          firstAssetStatus.text should ===(toAssetStatus)
-          secondAssetStatus.text should ===(toAssetStatus)
+          ProductionStatus(licenceId, production1)
+            .whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+            .text should ===(toAssetStatus)
+          eventually(ProductionStatus(licenceId, production2).elementOrFail).text should ===(toAssetStatus)
         }
 
       }
