@@ -5,6 +5,7 @@ import itv.fulfilmentplanning.pageobjects._
 import org.openqa.selenium.JavascriptExecutor
 
 import scala.concurrent.duration._
+import scala.util.Try
 
 class LoginSteps extends BaseSteps with SignInPageObject with GoogleAuthPageObject with OfflineAccess {
 
@@ -20,16 +21,25 @@ class LoginSteps extends BaseSteps with SignInPageObject with GoogleAuthPageObje
       logger.info(scenarioMarker, "Click on sign in")
       SignInButton.clickWhenIsDisplayed
 
-      val (email, password) = (Email, Password)
+      val newWay            = Try(Email.whenIsDisplayed).isSuccess
+      val (email, password) = if (newWay) Email -> Password else OldEmail -> OldPassword
 
       eventually(emailField(email)).value = Credentials.testCredentials.email
       logger.info(scenarioMarker, "Set email")
-      IdentifierNext.clickWhenIsDisplayed
+      if (newWay)
+        IdentifierNext.clickWhenIsDisplayed
+      else
+        submit()
 
       password.whenIsDisplayed.isDisplayed shouldBe true
       eventually(pwdField(password)).value = Credentials.testCredentials.password
       logger.info(scenarioMarker, "Set password")
-      PasswordNext.clickWhenIsDisplayed
+      if (newWay)
+        PasswordNext.clickWhenIsDisplayed
+      else {
+        submit()
+        AllowOfflineAccess.clickWhenIsEnabled
+      }
     } else {
       logger.info(scenarioMarker, "I am already logged in!")
     }
