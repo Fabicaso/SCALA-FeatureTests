@@ -21,7 +21,7 @@ class LoginSteps extends BaseSteps with SignInPageObject with GoogleAuthPageObje
       logger.info(scenarioMarker, "Click on sign in")
       SignInButton.clickWhenIsDisplayed
 
-      val newWay            = Try(Email.whenIsDisplayed).isSuccess
+      val newWay            = Try(OldEmail.whenIsDisplayed).isFailure
       val (email, password) = if (newWay) Email -> Password else OldEmail -> OldPassword
 
       eventually(emailField(email)).value = Credentials.testCredentials.email
