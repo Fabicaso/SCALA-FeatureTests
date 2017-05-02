@@ -102,7 +102,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
     (productionStatus: String, series: String, productionId: String) =>
       logger.info(scenarioMarker, s"Edit Dates for $productionStatus status of $series")
       val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now().minusDays(1L))
-      reloadPage
+      reloadPage()
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
