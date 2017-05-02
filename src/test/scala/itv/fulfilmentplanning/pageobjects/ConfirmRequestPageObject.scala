@@ -7,7 +7,7 @@ trait ConfirmRequestPageObject extends WebBrowser {
   def RequestConfirmLoaded                                                  = id("page-loaded-request-confirm")
   def NextButtonOnSendRequestPage                                           = id("request-sidebar-form-button-submit")
   def SendRequestButton                                                     = id("request-requiredby-sidebar-button-submit")
-  def SentRequestConfirmation                                               = xpath("//*[@id='request-requiredby-sidebar']/p")
+  def SentRequestConfirmation                                               = xpath("//p[contains(text(),'Request Sent')] ")
   def ClientField                                                           = id("request-sidebar-form-client")
   def DeliveryMediumField                                                   = id("request-sidebar-form-deliveryMedium-dropdown")
   def OnlineDeliveryMedium                                                  = className("dropdown-ONLINE")
