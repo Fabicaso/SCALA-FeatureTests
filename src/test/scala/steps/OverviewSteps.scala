@@ -105,11 +105,13 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       reloadPage
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
-      ProductionRow(productionId).clickWhenIsDisplayed
-      ActionsMenu.clickWhenIsDisplayed
-      EditDates.clickWhenIsDisplayed
-      EditDatesStatus((productionStatus: String).toLowerCase).clickWhenIsDisplayed
-      YesterdaysDate.clickWhenIsDisplayed
+      eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+        click on ProductionRow(productionId).elementOrFail
+        click on ActionsMenu.elementOrFail
+        click on EditDates.elementOrFail
+        click on EditDatesStatus((productionStatus: String).toLowerCase).elementOrFail
+        click on YesterdaysDate.elementOrFail
+      }
       eventually {
         statusDatesCheckOnSideBarMenu(productionStatus, expectedDate)
       }
