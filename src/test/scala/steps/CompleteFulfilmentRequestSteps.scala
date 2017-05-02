@@ -1,7 +1,7 @@
 package steps
 
-import com.gargoylesoftware.htmlunit.javascript.configuration.WebBrowser
-import itv.fulfilmentplanning.{ExpectedAsset, ExpectedAsset$}
+import itv.fulfilmentplanning.ExpectedData._
+import itv.fulfilmentplanning.ExpectedAsset
 import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
@@ -20,8 +20,8 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       selectAssets(series, expectedAssetsToSelect, productionIdsToSelect)
       RequestNextButton.clickWhenIsDisplayed
       RequestConfirmLoaded.whenIsEnabled
-      fillRequestDetails(ExpectedAsset(productionIdsToSelect.last))
-      setRequiredByToAsset(ExpectedAsset(productionIdsToSelect.last).licenceId,
+      fillRequestDetails(assetFor(productionIdsToSelect.last))
+      setRequiredByToAsset(assetFor(productionIdsToSelect.last).licenceId,
                            productionIds,
                            RequiredByDateQuery(requiredDate))
 
@@ -61,12 +61,12 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
   }
 
   private def fillRequestDetails(expectedAsset: ExpectedAsset) = {
-    expectedAsset.assetJobType match {
+    expectedAsset.job.jobType match {
       case "Transcode" => fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, expectedAsset.job.client)
       case "PullAndDeliver" =>
         fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, expectedAsset.job.client)
       case "TapeAsSource" => fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, expectedAsset.job.client)
-      case _              => fail(s"Unsupported job type in $expectedAsset")
+      case unsupportedJob => fail(s"Unsupported job type $unsupportedJob in $expectedAsset")
     }
     NextButtonOnSendRequestPage.clickWhenIsDisplayed
   }

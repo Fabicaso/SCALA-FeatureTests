@@ -1,6 +1,6 @@
 package steps
 
-import itv.fulfilmentplanning.{Credentials, ExpectedAsset, ExpectedAsset$, TestData}
+import itv.fulfilmentplanning.{Credentials, ExpectedAsset, ExpectedData, TestData}
 import itv.fulfilmentplanning.pageobjects._
 import org.scalactic.StringNormalizations._
 
@@ -31,12 +31,12 @@ class CurrentRequestsSteps
       RequestedAssetsForDate(TestData.dateFrom(requiredBy)).clickWhenIsDisplayed
 
       RequestedAssetRowBy(productionId).clickWhenIsDisplayed
-      val expectedAsset = ExpectedAsset(productionId)
+      val expectedAsset = ExpectedData.assetFor(productionId)
 
       (SideBarRequestedBy.whenIsDisplayed.text should ===(Credentials.testCredentials.email.split("@").head))(
         after being lowerCased)
       SideBarRequestId.whenIsDisplayed.text should include(licenceId.toString)
-      (SideBarJob.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.assetJobType))(
+      (SideBarJob.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.job.jobType))(
         after being lowerCased)
       SideBarOrderId.whenIsDisplayed.text should ===(expectedAsset.licenceId)
 
@@ -65,7 +65,7 @@ class CurrentRequestsSteps
         val assetId            = list.last
         val actualLicenceId    = list.init.last
 
-        val expectedAsset = ExpectedAsset(productionId)
+        val expectedAsset = ExpectedData.assetFor(productionId)
 
         ExactText(expectedAsset.job.client).whenIsDisplayed
         JobTypeAssetRow(productionId,
@@ -73,12 +73,12 @@ class CurrentRequestsSteps
                         assetId,
                         expectedAsset.job.client,
                         expectedDate,
-                        expectedAsset.assetJobType).whenIsDisplayed
+                        expectedAsset.job.jobType).whenIsDisplayed
 
         expectedAsset should ===(
           ExpectedAsset(
-            licenceId = actualLicenceId,
             productionId = productionId,
+            licenceId = actualLicenceId,
             programmeTitle = ProgrammeTitleAssetRow(productionId,
                                                     actualLicenceId,
                                                     assetId,
@@ -88,7 +88,6 @@ class CurrentRequestsSteps
               DurationAssetRow(productionId, actualLicenceId, assetId, expectedAsset.job.client, expectedDate).whenIsDisplayed.text,
             source =
               SourceAssetRow(productionId, actualLicenceId, assetId, expectedAsset.job.client, expectedDate).whenIsDisplayed.text,
-            assetJobType = expectedAsset.assetJobType,
             job = expectedAsset.job
           ))
 
