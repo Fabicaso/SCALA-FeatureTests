@@ -31,18 +31,26 @@ class CurrentRequestsSteps
       RequestedAssetsForDate(TestData.dateFrom(requiredBy)).clickWhenIsDisplayed
 
       RequestedAssetRowBy(productionId).clickWhenIsDisplayed
+
       val expectedAsset = ExpectedData.assetFor(productionId)
+
+      SideBarAssetId.whenIsDisplayed.text should not be 'empty
+      SideBarFormat.whenIsDisplayed.text should not be 'empty
+      SideBarTitle.whenIsDisplayed.text should not be 'empty
 
       (SideBarRequestedBy.whenIsDisplayed.text should ===(Credentials.testCredentials.email.split("@").head))(
         after being lowerCased)
       SideBarRequestId.whenIsDisplayed.text should include(licenceId.toString)
-      (SideBarJob.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.job.jobType))(
-        after being lowerCased)
+
       SideBarOrderId.whenIsDisplayed.text should ===(expectedAsset.licenceId)
 
+      (SideBarJob.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.job.jobType))(
+        after being lowerCased)
+      SideBarClient.whenIsDisplayed.text should ===(expectedAsset.job.client)
+      SideBarDeliveryMethod.whenIsDisplayed.text should ===(expectedAsset.job.deliveryMethod)
       (SideBarDeliveryMedium.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.job.deliveryMedium))(
         after being lowerCased)
-//      expectedAsset.programmeTitle should ===(SideBarTitle.whenIsDisplayed.text)
+
   }
 
   Then(

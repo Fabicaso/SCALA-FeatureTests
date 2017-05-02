@@ -19,7 +19,7 @@ object TestData {
   }
 }
 
-case class Job(client: String, jobType: String, deliveryMedium: String)
+case class Job(client: String, jobType: String, deliveryMedium: String, deliveryMethod: String)
 
 case class ExpectedAsset(productionId: String,
                          licenceId: String,
@@ -37,12 +37,12 @@ object ExpectedData {
       .find(_.productionId == productionId)
       .getOrElse(fail(s"Unable to find expected asset for $productionId"))
 
-  private val skyJob       = Job("Sky-Test", "PullAndDeliver", "HardDrive")
-  private val bbcJob       = Job("BBC-Test", "Transcode", "Online")
-  private val skyItaliaJob = Job("SKY-ITALIA-Test", "TapeAsSource", "Tape")
-  private val tmzJob       = Job("TMZ-Test", "PullAndDeliver", "HardDrive")
-  private val raiJob       = Job("RAI-Test", "TapeAsSource", "Tape")
-  private val itvJob       = Job("ITV-Test", "TapeAsSource", "Tape")
+  private val skyJob       = Job("Sky-Test", "PullAndDeliver", "HardDrive", "Delivery Method for sky")
+  private val bbcJob       = Job("BBC-Test", "Transcode", "Online", "Delivery Method for bbc")
+  private val skyItaliaJob = Job("SKY-ITALIA-Test", "TapeAsSource", "Tape", "Delivery Method for sky italia")
+  private val tmzJob       = Job("TMZ-Test", "PullAndDeliver", "HardDrive", "Delivery Method for tmz")
+  private val raiJob       = Job("RAI-Test", "TapeAsSource", "Tape", "Delivery Method for rai")
+  private val itvJob       = Job("ITV-Test", "TapeAsSource", "Tape", "Delivery Method for itv")
 
   private val expectedAssets: List[ExpectedAsset] = List(
     ExpectedAsset("1/5576/0012#002", "123669", "Miss Marple - Series 5", "60", "ProRes HD", skyJob),

@@ -1,7 +1,7 @@
 package steps
 
 import itv.fulfilmentplanning.ExpectedData._
-import itv.fulfilmentplanning.ExpectedAsset
+import itv.fulfilmentplanning.{ExpectedAsset, Job}
 import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
@@ -62,10 +62,10 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
 
   private def fillRequestDetails(expectedAsset: ExpectedAsset) = {
     expectedAsset.job.jobType match {
-      case "Transcode" => fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, expectedAsset.job.client)
+      case "Transcode" => fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, expectedAsset.job)
       case "PullAndDeliver" =>
-        fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, expectedAsset.job.client)
-      case "TapeAsSource" => fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, expectedAsset.job.client)
+        fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, expectedAsset.job)
+      case "TapeAsSource" => fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, expectedAsset.job)
       case unsupportedJob => fail(s"Unsupported job type $unsupportedJob in $expectedAsset")
     }
     NextButtonOnSendRequestPage.clickWhenIsDisplayed
@@ -77,13 +77,13 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       .isEnabled shouldBe true
   }
 
-  private def fillCommonRequestFor(deliveryMedium: Query, job: Query, client: String) = {
-    textField(ClientField).value = client
+  private def fillCommonRequestFor(deliveryMedium: Query, jobToSelect: Query, job: Job) = {
+    textField(ClientField).value = job.client
     DeliveryMediumField.clickWhenIsDisplayed
     deliveryMedium.clickWhenIsDisplayed
     JobField.clickWhenIsDisplayed
-    job.clickWhenIsDisplayed
-    textArea(DeliveryMethod).value = "Delivery Method"
+    jobToSelect.clickWhenIsDisplayed
+    textArea(DeliveryMethod).value = job.deliveryMethod
   }
 
   private def setRequiredByToAsset(licenceId: String, productionIds: String, date: Option[Query]) = {
