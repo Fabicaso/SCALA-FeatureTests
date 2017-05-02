@@ -26,7 +26,7 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
                            RequiredByDateQuery(requiredDate))
 
       SendRequestButton.clickWhenIsDisplayed
-      SentRequestConfirmation.whenIsDisplayed(PatienceConfig(5.seconds, 100.milliseconds), scenarioMarker)
+      SentRequestConfirmation.whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
       logger.info(scenarioMarker, s"Request has been sent!")
   }
 
