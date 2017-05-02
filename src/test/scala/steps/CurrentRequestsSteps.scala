@@ -35,12 +35,13 @@ class CurrentRequestsSteps
       val expectedAsset = ExpectedData.assetFor(productionId)
 
       SideBarAssetId.whenIsDisplayed.text should not be 'empty
-      SideBarFormat.whenIsDisplayed.text should not be 'empty
+
       SideBarTitle.whenIsDisplayed.text should not be 'empty
 
       (SideBarRequestedBy.whenIsDisplayed.text should ===(Credentials.testCredentials.email.split("@").head))(
         after being lowerCased)
       SideBarRequestId.whenIsDisplayed.text should include(licenceId.toString)
+      SideBarFormat.whenIsDisplayed.text should ===(expectedAsset.format)
 
       SideBarOrderId.whenIsDisplayed.text should ===(expectedAsset.licenceId)
 
@@ -94,8 +95,8 @@ class CurrentRequestsSteps
                                                     expectedDate).whenIsDisplayed.text,
             duration =
               DurationAssetRow(productionId, actualLicenceId, assetId, expectedAsset.job.client, expectedDate).whenIsDisplayed.text,
-            source =
-              SourceAssetRow(productionId, actualLicenceId, assetId, expectedAsset.job.client, expectedDate).whenIsDisplayed.text,
+            format =
+              FormatAssetRow(productionId, actualLicenceId, assetId, expectedAsset.job.client, expectedDate).whenIsDisplayed.text,
             job = expectedAsset.job
           ))
 

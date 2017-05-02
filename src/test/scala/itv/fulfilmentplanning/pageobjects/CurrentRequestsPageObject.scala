@@ -21,7 +21,7 @@ trait CurrentRequestsPageObject extends WebBrowser {
                              date: Option[String]) =
     idInRequestListSectionBy(licenceId, assetId, client, date, "programmeTitle")
 
-  def SourceAssetRow(productionId: String, licenceId: String, assetId: String, client: String, date: Option[String]) =
+  def FormatAssetRow(productionId: String, licenceId: String, assetId: String, client: String, date: Option[String]) =
     idInRequestListSectionBy(licenceId, assetId, client, date, "format")
 
   def DurationAssetRow(productionId: String,

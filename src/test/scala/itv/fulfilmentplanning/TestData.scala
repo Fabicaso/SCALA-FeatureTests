@@ -25,7 +25,7 @@ case class ExpectedAsset(productionId: String,
                          licenceId: String,
                          programmeTitle: String,
                          duration: String,
-                         source: String,
+                         format: String,
                          job: Job)
 
 object ExpectedData {
