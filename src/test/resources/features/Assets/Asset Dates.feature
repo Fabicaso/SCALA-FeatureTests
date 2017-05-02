@@ -13,9 +13,9 @@ Feature: Asset Dates
 
   Scenario: '-' is displayed for a requested asset if no required by date is available
     Given I am on the 'New Request' page using the following licence number '127093'
-    And I complete the fulfilment request for 'Tutankhamun' and ProdID '2/3150/0001#002' with 'not required by date' selecting 'first asset'
+    And I complete the fulfilment request for 'Angelby' and ProdID '2/2990/0001#001' with 'not required by date' selecting 'first asset'
     When I enter the following Licence Number '127093'
-    Then 'Required By' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is '-'
+    Then 'Required By' date on the left Selection Details menu for Production ID '2/2990/0001#001' of 'Angelby' is '-'
 
   Scenario: Required by date is displayed for a requested asset
     Given I am on the 'New Request' page using the following licence number '127093'
@@ -33,10 +33,10 @@ Feature: Asset Dates
 
   Scenario: Fulfilled date can be edited and set to the past
     Given I am on the 'New Request' page using the following licence number '127093'
-    And I complete the fulfilment request for 'Tutankhamun' and ProdID '2/3150/0002#002' with 'not required by date' selecting 'first asset'
+    And I complete the fulfilment request for 'Endeavour' and ProdID '2/1229/0001#002' with 'not required by date' selecting 'first asset'
     When I enter the following Licence Number '127093'
-    And I can change the status from 'Requested' to 'Fulfilled' for ProdId '2/3150/0002#002' and 'Tutankhamun' and licence number '127093'
-    Then I can edit and set the 'Fulfilled' date to the past for 'Tutankhamun' and production ID '2/3150/0002#002'
+    And I can change the status from 'Requested' to 'Fulfilled' for ProdId '2/1229/0001#002' and 'Endeavour' and licence number '127093'
+    Then I can edit and set the 'Fulfilled' date to the past for 'Endeavour' and production ID '2/1229/0001#002'
 
 #  Scenario: Multiple assets can be set to 'Fulfilled' at once
 #    Given I am on the 'New Request' page using the following licence number '123333'
