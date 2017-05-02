@@ -18,12 +18,12 @@ Feature: Asset Dates
     Then 'Required By' date on the left Selection Details menu for Production ID '2/2990/0001#001' of 'Angelby' is '-'
 
   Scenario: Required by date is displayed for a requested asset
-    Given I am on the 'New Request' page using the following licence number '127093'
-    And I complete the fulfilment request for 'Tutankhamun' and ProdID '2/3150/0001#002' with 'a required by date' selecting 'first asset'
-    When I enter the following Licence Number '127093'
-    Then 'Required By' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is 'today's date'
-    And  'Requested' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is 'today's date'
-    And  'Fulfilled' date on the left Selection Details menu for Production ID '2/3150/0001#002' of 'Tutankhamun' is '-'
+    Given I am on the 'New Request' page using the following licence number '127099'
+    And I complete the fulfilment request for 'An Audience with Victoria Wood' and ProdID '9L/91828' with 'a required by date' selecting 'first asset'
+    When I enter the following Licence Number '127099'
+    Then 'Required By' date on the left Selection Details menu for Production ID '9L/91828' of 'An Audience with Victoria Wood' is 'today's date'
+    And  'Requested' date on the left Selection Details menu for Production ID '9L/91828' of 'An Audience with Victoria Wood' is 'today's date'
+    And  'Fulfilled' date on the left Selection Details menu for Production ID '9L/91828' of 'An Audience with Victoria Wood' is '-'
 
   Scenario: Requested date can be edited and set to the past
     Given I am on the 'New Request' page using the following licence number '127093'

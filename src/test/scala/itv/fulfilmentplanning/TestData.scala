@@ -3,6 +3,7 @@ package itv.fulfilmentplanning
 import java.time.LocalDate
 
 case class Credentials(email: String, password: String)
+
 object Credentials {
 
   val testCredentials = Credentials("automationtestcraft@gmail.com", "@utomationtestcraft")
@@ -94,14 +95,14 @@ object AssetRequested {
                                         "ProRes HD",
                                         "PullAndDeliver",
                                         "TMZ-Test"),
-    "2/3150/0001#002" -> AssetRequested("127093",
-                                        "2/3150/0001#002",
-                                        "Tape",
-                                        "Tutankhamun",
-                                        "60",
-                                        "ProRes HD",
-                                        "TapeAsSource",
-                                        "RAI-Test"),
+    "9L/91828" -> AssetRequested("127099",
+                                 "9L/91828",
+                                 "Tape",
+                                 "An Audience with Victoria Wood",
+                                 "60",
+                                 "ProRes HD",
+                                 "TapeAsSource",
+                                 "RAI-Test"),
     "2/2990/0001#001" -> AssetRequested("127093",
                                         "2/2990/0001#001",
                                         "Tape",
