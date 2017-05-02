@@ -192,6 +192,6 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
   }
 
   private def waitPageToBeLoaded() =
-    PageLoadedOverview.whenIsEnabled(PatienceConfig(10.seconds, 200.milliseconds), scenarioMarker)
+    PageLoadedOverview.whenIsEnabled(PatienceConfig(20.seconds, 200.milliseconds), scenarioMarker)
 
 }
