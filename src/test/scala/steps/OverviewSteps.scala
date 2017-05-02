@@ -7,9 +7,7 @@ import org.scalactic.StringNormalizations._
 import itv.fulfilmentplanning.pageobjects._
 
 import scala.concurrent.duration._
-import org.openqa.selenium.{JavascriptExecutor, Keys, WebElement}
-import org.openqa.selenium.interactions.Actions
-import org.scalatest.time.{Millis, Second, Seconds, Span}
+import org.scalatest.time.{Second, Seconds, Span}
 
 class OverviewSteps extends BaseSteps with OverviewPageObject {
 
@@ -127,18 +125,14 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
         eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
           dragAndSelect(
-            firstProduction.underlying,
-            ExactText(production2).elementOrFail.underlying
+            firstProduction,
+            ExactText(production2).elementOrFail
           )
           click on ActionsMenu.elementOrFail
           click on EditStatus.elementOrFail
           click on AssetStatus(toAssetStatus.toLowerCase).elementOrFail
           click on TodaysDate.elementOrFail
         }
-
-//        Thread.sleep(100)
-//        reloadPage()
-//        openSeries(series, production1)
 
         eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
 //          ProductionStatus(licenceId, production1).elementOrFail.text should ===(toAssetStatus) FIXME Sometimes UI is generating this id: 1/9946/0001#001-123665-1276130-labels-state-node-status
@@ -158,28 +152,12 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
 
   private def openSeries(series: String, production1: String) = {
     waitPageToBeLoaded()
-    webDriver match {
-      case jse: JavascriptExecutor => jse.executeScript("window.scrollBy(0,500)", "")
-      case _                       => logger.info(s"Unable to scrolldown")
-    }
+    scrollDown()
     SeriesRow(series).clickWhenIsDisplayed
 
     val firstProduction = ExactText(production1)
       .whenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
     firstProduction
-  }
-
-  protected def dragAndSelect(firstProductionId: WebElement, lastProductionId: WebElement): Unit = {
-    val builder = new Actions(webDriver)
-
-    builder
-      .clickAndHold(firstProductionId)
-      .moveToElement(lastProductionId)
-      .release(lastProductionId)
-      .keyDown(Keys.SHIFT)
-      .perform()
-    builder.keyUp(Keys.SHIFT).perform()
-
   }
 
   private def statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu: String, date: String) = {

@@ -1,7 +1,8 @@
 package itv.fulfilmentplanning.ext
 
 import com.typesafe.scalalogging.StrictLogging
-import org.openqa.selenium.{WebDriver, WebElement}
+import org.openqa.selenium.interactions.Actions
+import org.openqa.selenium.{JavascriptExecutor, Keys, WebDriver, WebElement}
 import org.scalatest.Assertions
 import org.scalatest.Matchers._
 import org.scalatest.concurrent.Eventually
@@ -10,6 +11,31 @@ import org.slf4j.Marker
 
 trait WebBrowserExt extends WebBrowser with Assertions with Eventually with StrictLogging { outer =>
   implicit def webDriver: WebDriver
+
+  def dragAndSelect(firstProductionId: Element, lastProductionId: Element): Unit = {
+    val builder = new Actions(webDriver)
+
+    builder
+      .clickAndHold(firstProductionId.underlying)
+      .moveToElement(lastProductionId.underlying)
+      .release(lastProductionId.underlying)
+      .keyDown(Keys.SHIFT)
+      .perform()
+    builder.keyUp(Keys.SHIFT).perform()
+  }
+
+  def isItemPresentInLocalStorage(item: String) = webDriver match {
+    case executor: JavascriptExecutor =>
+      Option(executor.executeScript(String.format("return window.localStorage.getItem('%s');", item))).nonEmpty
+    case _ => false
+  }
+
+  def scrollDown() = {
+    webDriver match {
+      case jse: JavascriptExecutor => jse.executeScript("window.scrollBy(0,500)", "")
+      case _                       => logger.info(s"Unable to scrolldown")
+    }
+  }
 
   implicit class QueryTestingW(query: Query) {
     def elementOrFail: Element =

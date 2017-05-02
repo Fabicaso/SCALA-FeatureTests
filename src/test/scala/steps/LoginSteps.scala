@@ -2,7 +2,6 @@ package steps
 
 import itv.fulfilmentplanning.Credentials
 import itv.fulfilmentplanning.pageobjects._
-import org.openqa.selenium.JavascriptExecutor
 
 import scala.concurrent.duration._
 import scala.util.Try
@@ -46,11 +45,5 @@ class LoginSteps extends BaseSteps with SignInPageObject with GoogleAuthPageObje
   }
 
   def requiresToLogin(): Boolean = !isItemPresentInLocalStorage("usersession")
-
-  private def isItemPresentInLocalStorage(item: String) = webDriver match {
-    case executor: JavascriptExecutor =>
-      Option(executor.executeScript(String.format("return window.localStorage.getItem('%s');", item))).nonEmpty
-    case _ => false
-  }
 
 }
