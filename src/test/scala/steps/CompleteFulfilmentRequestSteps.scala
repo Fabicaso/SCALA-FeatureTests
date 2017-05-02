@@ -1,8 +1,9 @@
 package steps
 
 import com.gargoylesoftware.htmlunit.javascript.configuration.WebBrowser
-import itv.fulfilmentplanning.AssetRequested
+import itv.fulfilmentplanning.{ExpectedAsset, ExpectedAsset$}
 import itv.fulfilmentplanning.pageobjects._
+
 import scala.concurrent.duration._
 
 class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject with ConfirmRequestPageObject {
@@ -19,8 +20,8 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       selectAssets(series, expectedAssetsToSelect, productionIdsToSelect)
       RequestNextButton.clickWhenIsDisplayed
       RequestConfirmLoaded.whenIsEnabled
-      fillRequestDetails(AssetRequested.requestedAssets(productionIdsToSelect.last))
-      setRequiredByToAsset(AssetRequested.requestedAssets(productionIdsToSelect.last).licenceId,
+      fillRequestDetails(ExpectedAsset(productionIdsToSelect.last))
+      setRequiredByToAsset(ExpectedAsset(productionIdsToSelect.last).licenceId,
                            productionIds,
                            RequiredByDateQuery(requiredDate))
 
@@ -59,12 +60,13 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
     }
   }
 
-  private def fillRequestDetails(expectedAsset: AssetRequested) = {
+  private def fillRequestDetails(expectedAsset: ExpectedAsset) = {
     expectedAsset.assetJobType match {
-      case "Transcode"      => fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, expectedAsset.client)
-      case "PullAndDeliver" => fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, expectedAsset.client)
-      case "TapeAsSource"   => fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, expectedAsset.client)
-      case _                => fail(s"Unsupported job type in $expectedAsset")
+      case "Transcode" => fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, expectedAsset.job.client)
+      case "PullAndDeliver" =>
+        fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, expectedAsset.job.client)
+      case "TapeAsSource" => fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, expectedAsset.job.client)
+      case _              => fail(s"Unsupported job type in $expectedAsset")
     }
     NextButtonOnSendRequestPage.clickWhenIsDisplayed
   }

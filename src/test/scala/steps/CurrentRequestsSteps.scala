@@ -1,8 +1,9 @@
 package steps
 
-import itv.fulfilmentplanning.{AssetRequested, Credentials, TestData}
+import itv.fulfilmentplanning.{Credentials, ExpectedAsset, ExpectedAsset$, TestData}
 import itv.fulfilmentplanning.pageobjects._
 import org.scalactic.StringNormalizations._
+
 import scala.concurrent.duration._
 
 class CurrentRequestsSteps
@@ -30,7 +31,7 @@ class CurrentRequestsSteps
       RequestedAssetsForDate(TestData.dateFrom(requiredBy)).clickWhenIsDisplayed
 
       RequestedAssetRowBy(productionId).clickWhenIsDisplayed
-      val expectedAsset = AssetRequested.requestedAssets(productionId)
+      val expectedAsset = ExpectedAsset(productionId)
 
       (SideBarRequestedBy.whenIsDisplayed.text should ===(Credentials.testCredentials.email.split("@").head))(
         after being lowerCased)
@@ -39,7 +40,7 @@ class CurrentRequestsSteps
         after being lowerCased)
       SideBarOrderId.whenIsDisplayed.text should ===(expectedAsset.licenceId)
 
-      (SideBarDeliveryMedium.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.deliveryMedium))(
+      (SideBarDeliveryMedium.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.job.deliveryMedium))(
         after being lowerCased)
 //      expectedAsset.programmeTitle should ===(SideBarTitle.whenIsDisplayed.text)
   }
@@ -64,32 +65,31 @@ class CurrentRequestsSteps
         val assetId            = list.last
         val actualLicenceId    = list.init.last
 
-        val expectedAsset = AssetRequested.requestedAssets(productionId)
+        val expectedAsset = ExpectedAsset(productionId)
 
-        ExactText(expectedAsset.client).whenIsDisplayed
+        ExactText(expectedAsset.job.client).whenIsDisplayed
         JobTypeAssetRow(productionId,
                         actualLicenceId,
                         assetId,
-                        expectedAsset.client,
+                        expectedAsset.job.client,
                         expectedDate,
                         expectedAsset.assetJobType).whenIsDisplayed
 
         expectedAsset should ===(
-          AssetRequested(
+          ExpectedAsset(
             licenceId = actualLicenceId,
             productionId = productionId,
-            deliveryMedium = expectedAsset.deliveryMedium,
             programmeTitle = ProgrammeTitleAssetRow(productionId,
                                                     actualLicenceId,
                                                     assetId,
-                                                    expectedAsset.client,
+                                                    expectedAsset.job.client,
                                                     expectedDate).whenIsDisplayed.text,
             duration =
-              DurationAssetRow(productionId, actualLicenceId, assetId, expectedAsset.client, expectedDate).whenIsDisplayed.text,
+              DurationAssetRow(productionId, actualLicenceId, assetId, expectedAsset.job.client, expectedDate).whenIsDisplayed.text,
             source =
-              SourceAssetRow(productionId, actualLicenceId, assetId, expectedAsset.client, expectedDate).whenIsDisplayed.text,
+              SourceAssetRow(productionId, actualLicenceId, assetId, expectedAsset.job.client, expectedDate).whenIsDisplayed.text,
             assetJobType = expectedAsset.assetJobType,
-            client = expectedAsset.client
+            job = expectedAsset.job
           ))
 
         if (assetsToSelect == "multiple assets") {
