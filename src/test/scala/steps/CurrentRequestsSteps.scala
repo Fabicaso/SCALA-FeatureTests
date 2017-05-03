@@ -45,12 +45,16 @@ class CurrentRequestsSteps
 
       SideBarOrderId.whenIsDisplayed.text should ===(expectedAsset.licenceId)
 
-      (SideBarJob.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.job.jobType))(
-        after being lowerCased)
+      (SideBarJob.whenIsDisplayed.text should ===(expectedAsset.job.jobType))(after being lowerCased)
       SideBarClient.whenIsDisplayed.text should ===(expectedAsset.job.client)
       SideBarDeliveryMethod.whenIsDisplayed.text should ===(expectedAsset.job.deliveryMethod)
       (SideBarDeliveryMedium.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.job.deliveryMedium))(
         after being lowerCased)
+      (SideBarPreferredOutputFrameRate.whenIsDisplayed.text should ===(
+        expectedAsset.job.preferredOutputFrameRate.getOrElse("")))(after being lowerCased)
+      (SideBarResolutionOutput.whenIsDisplayed.text should ===(expectedAsset.job.resolutionOutput.getOrElse("")))(
+        after being lowerCased)
+      SideBarSpec.whenIsDisplayed
 
   }
 

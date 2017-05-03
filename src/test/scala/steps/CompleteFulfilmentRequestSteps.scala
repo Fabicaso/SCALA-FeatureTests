@@ -61,13 +61,7 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
   }
 
   private def fillRequestDetails(expectedAsset: ExpectedAsset) = {
-    expectedAsset.job.jobType match {
-      case "Transcode" => fillCommonRequestFor(OnlineDeliveryMedium, TranscodeJob, expectedAsset.job)
-      case "PullAndDeliver" =>
-        fillCommonRequestFor(HardDriveDeliveryMedium, PullAndDeliverJob, expectedAsset.job)
-      case "TapeAsSource" => fillCommonRequestFor(TapeDeliveryMedium, TapeAsSourceJob, expectedAsset.job)
-      case unsupportedJob => fail(s"Unsupported job type $unsupportedJob in $expectedAsset")
-    }
+    fillRequestFor(expectedAsset.job)
     NextButtonOnSendRequestPage.clickWhenIsDisplayed
   }
 
@@ -77,13 +71,20 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       .isEnabled shouldBe true
   }
 
-  private def fillCommonRequestFor(deliveryMedium: Query, jobToSelect: Query, job: Job) = {
+  private def fillRequestFor(job: Job) = {
     textField(ClientField).value = job.client
     DeliveryMediumField.clickWhenIsDisplayed
-    deliveryMedium.clickWhenIsDisplayed
+    DeliveryMediumValue(job.deliveryMedium).clickWhenIsDisplayed
     JobField.clickWhenIsDisplayed
-    jobToSelect.clickWhenIsDisplayed
+    JobValue(job.jobType).clickWhenIsDisplayed
     textArea(DeliveryMethod).value = job.deliveryMethod
+    job.preferredOutputFrameRate.foreach { value =>
+      FrameRate.clickWhenIsDisplayed
+      FrameRateValue(value).clickWhenIsDisplayed
+    }
+    job.spec.foreach { value =>
+      textField(SpecField).value = value
+    }
   }
 
   private def setRequiredByToAsset(licenceId: String, productionIds: String, date: Option[Query]) = {

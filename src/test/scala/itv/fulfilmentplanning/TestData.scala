@@ -19,7 +19,13 @@ object TestData {
   }
 }
 
-case class Job(client: String, jobType: String, deliveryMedium: String, deliveryMethod: String)
+case class Job(client: String,
+               jobType: String,
+               deliveryMedium: String,
+               deliveryMethod: String,
+               preferredOutputFrameRate: Option[String] = None,
+               resolutionOutput: Option[String] = None,
+               spec: Option[String] = None)
 
 case class ExpectedAsset(productionId: String,
                          licenceId: String,
@@ -37,15 +43,30 @@ object ExpectedData {
       .find(_.productionId == productionId)
       .getOrElse(fail(s"Unable to find expected asset for $productionId"))
 
-  private val skyJob       = Job("Sky-Test", "PullAndDeliver", "HardDrive", "Delivery Method for sky")
-  private val bbcJob       = Job("BBC-Test", "Transcode", "Online", "Delivery Method for bbc")
-  private val skyItaliaJob = Job("SKY-ITALIA-Test", "TapeAsSource", "Tape", "Delivery Method for sky italia")
-  private val tmzJob       = Job("TMZ-Test", "PullAndDeliver", "HardDrive", "Delivery Method for tmz")
-  private val raiJob       = Job("RAI-Test", "TapeAsSource", "Tape", "Delivery Method for rai")
-  private val itvJob       = Job("ITV-Test", "TapeAsSource", "Tape", "Delivery Method for itv")
+  private val transcodeIfNeed = "Transcode If Needed"
+  private val pullAndDeliver  = "Pull And Deliver"
+  private val tapeAsSource    = "Tape As Source"
+  private val transcode       = "Transcode"
+
+  private val btJob =
+    Job(
+      "Bt",
+      transcodeIfNeed,
+      "Online",
+      "Delivery Method for bt",
+      Some("24"),
+      Some("As Per Source"),
+      Some("http://www.telestream.net/vantage/tech-specs.htm")
+    )
+  private val skyJob       = Job("Sky-Test", pullAndDeliver, "HardDrive", "Delivery Method for sky")
+  private val bbcJob       = Job("BBC-Test", transcode, "Online", "Delivery Method for bbc")
+  private val skyItaliaJob = Job("SKY-ITALIA-Test", tapeAsSource, "Tape", "Delivery Method for sky italia")
+  private val tmzJob       = Job("TMZ-Test", pullAndDeliver, "HardDrive", "Delivery Method for tmz")
+  private val raiJob       = Job("RAI-Test", tapeAsSource, "Tape", "Delivery Method for rai")
+  private val itvJob       = Job("ITV-Test", tapeAsSource, "Tape", "Delivery Method for itv")
 
   private val expectedAssets: List[ExpectedAsset] = List(
-    ExpectedAsset("1/5576/0012#002", "123669", "Miss Marple - Series 5", "60", "ProRes HD", skyJob),
+    ExpectedAsset("1/5576/0012#002", "123669", "Miss Marple - Series 5", "60", "ProRes HD", btJob),
     ExpectedAsset("1/9946/0001#001", "123665", "Hebrides: Islands on the Edge", "60", "ProRes HD", skyJob),
     ExpectedAsset("2/1761/0001#001", "123665", "Desert Seas", "60", "ProRes HD", skyJob),
     ExpectedAsset("2/2384/0001#002", "123665", "Harry at 30", "60", "ProRes HD", bbcJob),
