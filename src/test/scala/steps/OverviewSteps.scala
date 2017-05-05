@@ -79,7 +79,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
       eventually {
-        (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(toAssetStatus))(
+        (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
           after being lowerCased)
       }
   }

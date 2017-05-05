@@ -49,7 +49,8 @@ trait OverviewPageObject extends WebBrowser {
   def AvailableCountStats = id("overview-header-stats-label-available-count")
 
   def AssetStatusOnProductionRow(licenceId: String, productionId: String) =
-    xpath(s"//span[contains(@id, '$licenceId-$productionId') and contains(@id, '-labels-state-node-status')]")
+    xpath(
+      s"//span[contains(@id, '$licenceId') and contains(@id, '$productionId') and contains(@id, '-labels-state-node-status')]")
 
   def ProductionStatus(licenceId: String, productionId: String) =
     id(s"$licenceId-$productionId-labels-state-node-status")
