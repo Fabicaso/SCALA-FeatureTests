@@ -58,6 +58,18 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
         after being lowerCased)
   }
 
+  Then("""^the pie chart is updated for external fulfilment$""") { () =>
+    {
+      logger.info(scenarioMarker, s"the pie chart is updated for external fulfilment")
+      eventually {
+        FulfilledCountStats.whenIsDisplayed.text should ===("1")
+        RequestedCountStats.whenIsDisplayed.text should ===("0")
+        AvailableCountStats.whenIsDisplayed.text should ===("9")
+      }
+
+    }
+  }
+
   Then(
     """^the label status on the Overview page has changed to '(.*)' for ProdId '(.*)' and '(.*)' and licence number '(.*)'""") {
     (toAssetStatus: String, productionId: String, series: String, licenceId: String) =>
@@ -115,6 +127,16 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       }
   }
 
+  Then("""^the Asset source is set to '(.*)' for ProdId '(.*)' and licence number '(.*)'$""") {
+    (sourceAsset: String, productionId: String, licenceId: String) =>
+      {
+        logger.info(scenarioMarker, s"the status Asset source is set to External for ProdId: $productionId")
+        (SourceAsset(licenceId, productionId).whenIsDisplayed.text should ===(sourceAsset))(after being lowerCased)
+        reloadPage()
+      }
+
+  }
+
   Then("""^I can set the status to '(.*)' for multiple assets '(.*)' of '(.*)' and licence number '(.*)'""") {
     (toAssetStatus: String, productionIds: String, series: String, licenceId: String) =>
       {
@@ -170,6 +192,6 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
   }
 
   private def waitPageToBeLoaded() =
-    PageLoadedOverview.whenIsEnabled(PatienceConfig(20.seconds, 200.milliseconds), scenarioMarker)
+    PageLoadedOverview.whenIsEnabled(PatienceConfig(10.seconds, 200.milliseconds), scenarioMarker)
 
 }

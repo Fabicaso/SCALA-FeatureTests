@@ -10,7 +10,6 @@ Feature: Asset Status
     When I login with the following valid credentials
     Then the 'Current Requests' page is displayed
 
-
   Scenario: Asset status can be changed from 'requested' to 'fulfilled' and fulfilled date is displayed
     Given I am on the 'New Request' page using the following licence number '123555'
     And I complete the fulfilment request for 'Lewis - Series 8' and ProdID '1/5634/0030#002' with 'not required by date' selecting 'first asset'
@@ -26,6 +25,13 @@ Feature: Asset Status
     And I enter the following Licence Number '123555'
     Then the label status on the Overview page has changed to 'requested' for ProdId '1/5634/0030#002' and 'Lewis - Series 8' and licence number '123555'
 
+  Scenario: Production status can be changed from 'Requested' to 'Fulfilled' on the 'Overview' page  for External fulfilment
+    Given I enter the following Licence Number '123888'
+    And I can change the status from 'Outstanding' to 'Requested' for ProdId '1/5634/0036#002' and 'Lewis - Series 9' and licence number '123888'
+    When I enter the following Licence Number '123888'
+    And the Asset source is set to 'External' for ProdId '1/5634/0036#002' and licence number '123888'
+    Then I can change the status from 'Requested' to 'Fulfilled' for ProdId '1/5634/0036#002' and 'Lewis - Series 9' and licence number '123888'
+    And the pie chart is updated for external fulfilment
 
 #  Scenario: Multiple assets can be set to 'Fulfilled' at once
 #    Given I am on the 'New Request' page using the following licence number '123333'
