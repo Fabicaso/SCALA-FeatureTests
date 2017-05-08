@@ -49,8 +49,20 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
         after being lowerCased)
       NavigationActionMenu.clickWhenIsDisplayed
       EditStatus.clickWhenIsDisplayed
-      AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
-      TodaysDate.clickWhenIsDisplayed
+
+      if (toAssetStatus == "Not Required") {
+        eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+          val newtoAssetStatus: String = "notRequired"
+          AssetStatus(newtoAssetStatus).clickWhenIsDisplayed
+        }
+      }
+
+      if (toAssetStatus != "Not Required") {
+        eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+          AssetStatus(toAssetStatus.toLowerCase()).clickWhenIsDisplayed
+          TodaysDate.clickWhenIsDisplayed
+        }
+      }
 
       eventually {
         (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
@@ -71,7 +83,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       eventually {
         FulfilledCountStats.whenIsDisplayed.text should ===("1")
         RequestedCountStats.whenIsDisplayed.text should ===("0")
-        AvailableCountStats.whenIsDisplayed.text should ===("9")
+        AvailableCountStats.whenIsDisplayed.text should ===("6")
       }
 
     }

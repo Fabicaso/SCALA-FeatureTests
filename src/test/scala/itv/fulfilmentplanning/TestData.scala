@@ -76,7 +76,7 @@ object ExpectedData {
     ExpectedAsset("1/6195/0045#001", "123667", "Murdoch Mysteries", "60", "ProRes HD", tmzJob),
     ExpectedAsset("9L/91828", "127099", "An Audience with Victoria Wood", "60", "ProRes HD", raiJob),
     ExpectedAsset("2/2990/0001#001", "127093", "Angelby", "60", "ProRes HD", raiJob),
-    ExpectedAsset("2/1229/0001#002", "127093", "Endeavour", "60", "ProRes HD", raiJob),
+    ExpectedAsset("2/1229/0010#002", "127093", "Endeavour - Series 3", "60", "ProRes HD", raiJob),
     ExpectedAsset("2/4463/0001#001", "127093", "Old Money", "60", "ProRes HD", raiJob),
     ExpectedAsset("1/7314/0008#002", "123333", "Vera - Series 2", "60", "ProRes HD", itvJob)
   )

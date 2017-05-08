@@ -27,13 +27,13 @@ Feature: Asset Status
 
   Scenario: Production status can be changed from 'Requested' to 'Fulfilled' on the 'Overview' page  for External fulfilment
     Given I enter the following Licence Number '123888'
-    And I can change the status from 'Outstanding' to 'Requested' for ProdId '1/5634/0036#002' and 'Lewis - Series 9' and licence number '123888'
+    And I can change the status from 'Outstanding' to 'Requested' for ProdId '1/5634/0036/37#001' and 'Lewis - Series 9' and licence number '123888'
     When I enter the following Licence Number '123888'
-    And the Asset source is set to 'External' for ProdId '1/5634/0036#002' and licence number '123888'
-    Then I can change the status from 'Requested' to 'Fulfilled' for ProdId '1/5634/0036#002' and 'Lewis - Series 9' and licence number '123888'
+    And the Asset source is set to 'External' for ProdId '1/5634/0036/37#001' and licence number '123888'
+    Then I can change the status from 'Requested' to 'Fulfilled' for ProdId '1/5634/0036/37#001' and 'Lewis - Series 9' and licence number '123888'
     And the pie chart is correctly updated for external fulfilment
 
-  Scenario: Production status can be changed from 'Fulfilled' to 'Requested' on the 'Overview' page
+  Scenario: Production status can be changed from 'Fulfilled' to 'Requested' on the 'Overview' page for External fulfilment
     Given I enter the following Licence Number '123888'
     And I am able to change the status from 'Outstanding' to 'Requested' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '123888'
     When I enter the following Licence Number '123888'
@@ -42,6 +42,16 @@ Feature: Asset Status
     And the Asset source is set to 'External' for ProdId '2/1229/0010#002' and licence number '123888'
     Then I can change the status from 'Fulfilled' to 'Requested' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '123888'
     And 'Fulfilled' date on the right Selection Details menu for Production ID '2/1229/0010#002' of 'Endeavour - Series 3' is '-'
+
+  Scenario: Production status can be changed from 'Requested' to 'Not Required' on the 'Overview' page
+    Given I enter the following Licence Number '124366'
+    And I am able to change the status from 'Outstanding' to 'Not Required' for ProdId '2/2113/0001#002' and 'Breathless' and licence number '124366'
+    And the label status on the Overview page has changed to 'Not Required' for ProdId '2/2113/0001#002' and 'Breathless' and licence number '124366'
+
+  Scenario: Production status can be changed from 'Not Required' to 'Requested' on the 'Overview' page
+    Given I enter the following Licence Number '124366'
+    When I can change the status from 'Not Required' to 'Requested' for ProdId '2/2113/0001#002' and 'Breathless' and licence number '124366'
+    Then the label status on the Overview page has changed to 'Requested' for ProdId '2/2113/0001#002' and 'Breathless' and licence number '124366'
 
 
 #  Scenario: Multiple assets can be set to 'Fulfilled' at once
