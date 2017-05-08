@@ -16,7 +16,7 @@ Feature: Asset Status
     And I enter the following Licence Number '123555'
     And I can change the status from 'Requested' to 'Fulfilled' for ProdId '1/5634/0030#002' and 'Lewis - Series 8' and licence number '123555'
     Then the label status on the Overview page has changed to 'Fulfilled' for ProdId '1/5634/0030#002' and 'Lewis - Series 8' and licence number '123555'
-    And 'Fulfilled' date on the left Selection Details menu for Production ID '1/5634/0030#002' of 'Lewis - Series 8' is 'today's date'
+    And 'Fulfilled' date on the right Selection Details menu for Production ID '1/5634/0030#002' of 'Lewis - Series 8' is 'today's date'
 
   Scenario: Asset status can be changed from 'Fulfilled' to 'Requested' by creating a new request
     Given I am on the 'New Request' page using the following licence number '123555'
@@ -31,7 +31,18 @@ Feature: Asset Status
     When I enter the following Licence Number '123888'
     And the Asset source is set to 'External' for ProdId '1/5634/0036#002' and licence number '123888'
     Then I can change the status from 'Requested' to 'Fulfilled' for ProdId '1/5634/0036#002' and 'Lewis - Series 9' and licence number '123888'
-    And the pie chart is updated for external fulfilment
+    And the pie chart is correctly updated for external fulfilment
+
+  Scenario: Production status can be changed from 'Fulfilled' to 'Requested' on the 'Overview' page
+    Given I enter the following Licence Number '123888'
+    And I am able to change the status from 'Outstanding' to 'Requested' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '123888'
+    When I enter the following Licence Number '123888'
+    And the Asset source is set to 'External' for ProdId '2/1229/0010#002' and licence number '123888'
+    And I am able to change the status from 'Requested' to 'Fulfilled' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '123888'
+    And the Asset source is set to 'External' for ProdId '2/1229/0010#002' and licence number '123888'
+    Then I can change the status from 'Fulfilled' to 'Requested' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '123888'
+    And 'Fulfilled' date on the right Selection Details menu for Production ID '2/1229/0010#002' of 'Endeavour - Series 3' is '-'
+
 
 #  Scenario: Multiple assets can be set to 'Fulfilled' at once
 #    Given I am on the 'New Request' page using the following licence number '123333'

@@ -38,7 +38,8 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
     CreateNewRequestButton.whenIsDisplayed.isEnabled should ===(false)
   }
 
-  Then("""^I can change the status from '(.*)' to '(.*)' for ProdId '(.*)' and '(.*)' and licence number '(.*)'$""") {
+  Then(
+    """^I (?:can|am able to) change the status from '(.*)' to '(.*)' for ProdId '(.*)' and '(.*)' and licence number '(.*)'$""") {
     (fromAssetStatus: String, toAssetStatus: String, productionId: String, series: String, licenceId: String) =>
       logger.info(scenarioMarker, s"Change the Asset Status")
       waitPageToBeLoaded()
@@ -50,6 +51,12 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       EditStatus.clickWhenIsDisplayed
       AssetStatus(toAssetStatus.toLowerCase).clickWhenIsDisplayed
       TodaysDate.clickWhenIsDisplayed
+
+      eventually {
+        (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
+          after being lowerCased)
+      }
+
   }
 
   And("""^the Asset Status is '(.*)' for Production ID (.*) and licence number '(.*)' on the Overwiev page""") {
@@ -58,7 +65,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
         after being lowerCased)
   }
 
-  Then("""^the pie chart is updated for external fulfilment$""") { () =>
+  Then("""^the pie chart is correctly updated for external fulfilment$""") { () =>
     {
       logger.info(scenarioMarker, s"the pie chart is updated for external fulfilment")
       eventually {
@@ -84,7 +91,7 @@ class OverviewSteps extends BaseSteps with OverviewPageObject {
       }
   }
 
-  Then("""^'(.*)' date on the left Selection Details menu for Production ID '(.*)' of '(.*)' is '(.*)'""") {
+  Then("""^'(.*)' date on the right Selection Details menu for Production ID '(.*)' of '(.*)' is '(.*)'""") {
     (statusDatesOnSideBarMenu: String, productionId: String, series: String, date: String) =>
       val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
       reloadPage()

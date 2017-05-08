@@ -15,15 +15,15 @@ Feature: Asset Dates
     Given I am on the 'New Request' page using the following licence number '127093'
     And I complete the fulfilment request for 'Angelby' and ProdID '2/2990/0001#001' with 'not required by date' selecting 'first asset'
     When I enter the following Licence Number '127093'
-    Then 'Required By' date on the left Selection Details menu for Production ID '2/2990/0001#001' of 'Angelby' is '-'
+    Then 'Required By' date on the right Selection Details menu for Production ID '2/2990/0001#001' of 'Angelby' is '-'
 
   Scenario: Required by date is displayed for a requested asset
     Given I am on the 'New Request' page using the following licence number '127099'
     And I complete the fulfilment request for 'An Audience with Victoria Wood' and ProdID '9L/91828' with 'a required by date' selecting 'first asset'
     When I enter the following Licence Number '127099'
-    Then 'Required By' date on the left Selection Details menu for Production ID '9L/91828' of 'An Audience with Victoria Wood' is 'today's date'
-    And  'Requested' date on the left Selection Details menu for Production ID '9L/91828' of 'An Audience with Victoria Wood' is 'today's date'
-    And  'Fulfilled' date on the left Selection Details menu for Production ID '9L/91828' of 'An Audience with Victoria Wood' is '-'
+    Then 'Required By' date on the right Selection Details menu for Production ID '9L/91828' of 'An Audience with Victoria Wood' is 'today's date'
+    And  'Requested' date on the right Selection Details menu for Production ID '9L/91828' of 'An Audience with Victoria Wood' is 'today's date'
+    And  'Fulfilled' date on the right Selection Details menu for Production ID '9L/91828' of 'An Audience with Victoria Wood' is '-'
 
   Scenario: Requested date can be edited and set to the past
     Given I am on the 'New Request' page using the following licence number '127093'
@@ -48,4 +48,4 @@ Feature: Asset Dates
   Scenario: Multiple assets can be set to 'External Requested' at once
     Given I enter the following Licence Number '123665'
     When I can set the status to 'Requested' for multiple assets '1/9946/0001#001,1/9946/0004#001' of 'Hebrides: Islands on the Edge' and licence number '123665'
-    Then 'Requested' date on the left Selection Details menu for Production ID '1/9946/0001#001' of 'Hebrides: Islands on the Edge' is 'today's date'
+    Then 'Requested' date on the right Selection Details menu for Production ID '1/9946/0001#001' of 'Hebrides: Islands on the Edge' is 'today's date'
