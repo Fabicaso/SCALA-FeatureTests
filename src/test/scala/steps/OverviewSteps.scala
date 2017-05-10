@@ -2,10 +2,8 @@ package steps
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
 import org.scalactic.StringNormalizations._
 import itv.fulfilmentplanning.pageobjects._
-
 import scala.concurrent.duration._
 import org.scalatest.time.{Second, Seconds, Span}
 

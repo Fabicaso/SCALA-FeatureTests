@@ -61,7 +61,7 @@ object ExpectedData {
   private val skyJob       = Job("Sky-Test", pullAndDeliver, "HardDrive", "Delivery Method for sky")
   private val bbcJob       = Job("BBC-Test", transcode, "Online", "Delivery Method for bbc")
   private val skyItaliaJob = Job("SKY-ITALIA-Test", tapeAsSource, "Tape", "Delivery Method for sky italia")
-  private val tmzJob       = Job("TMZ-Test", pullAndDeliver, "HardDrive", "Delivery Method for tmz")
+  private val tmzJob       = Job("TMZ-Test", pullAndDeliver, "Online", "Delivery Method for tmz")
   private val raiJob       = Job("RAI-Test", tapeAsSource, "Tape", "Delivery Method for rai")
   private val itvJob       = Job("ITV-Test", tapeAsSource, "Tape", "Delivery Method for itv")
 
