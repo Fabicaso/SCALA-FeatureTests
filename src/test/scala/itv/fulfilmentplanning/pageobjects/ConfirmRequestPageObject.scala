@@ -10,7 +10,6 @@ trait ConfirmRequestPageObject extends WebBrowser {
   def RequestConfirmLoaded                                                  = id("page-loaded-request-confirm")
   def NextButtonOnSendRequestPage                                           = id("request-sidebar-form-button-submit")
   def SendRequestButton                                                     = id("request-requiredby-sidebar-button-submit")
-  def SentRequestConfirmation                                               = xpath("//p[contains(text(),'Request Sent')]")
   def ClientField                                                           = id("request-sidebar-form-client")
   def DeliveryMediumField                                                   = id("request-sidebar-form-deliveryMedium-dropdown")
   def JobField                                                              = id("request-sidebar-form-job-dropdown")
@@ -24,7 +23,7 @@ trait ConfirmRequestPageObject extends WebBrowser {
   def SendRequestsPageLoaded                                                = id("page-loaded-request-confirm")
   def SpecOptionalField                                                     = id("request-sidebar-form-spec")
   def ResolutionOutput                                                      = xpath(s"//*[@id='request-sidebar-form']/form/div/div[4]/div[2]/label")
-
+  def SentRequestConfirmation                                               = xpath("//p[contains(text(),'Request Sent')]")
   def RequiredByDateQuery(requiredDate: String) = {
     requiredDate match {
       case "a required by date" =>

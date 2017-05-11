@@ -1,6 +1,10 @@
 package steps
 
+import itv.fulfilmentplanning.ExpectedAsset
+import itv.fulfilmentplanning.ExpectedData.assetFor
 import itv.fulfilmentplanning.pageobjects._
+import itv.fulfilmentplanning.{ExpectedAsset, Job}
+
 import scala.concurrent.duration._
 
 class SendRequestSteps
@@ -42,6 +46,19 @@ class SendRequestSteps
   And("""^Resolution Outputs and Spec Optional text box are displayed$""") { () =>
     ResolutionOutput.whenIsDisplayed.isDisplayed
     SpecOptionalField.whenIsDisplayed.isDisplayed
+  }
+
+  Then("""^the fields on the Send Request Form are already prepopulated for ProdID '(.*)'$""") {
+    (productionId: String) =>
+      val prodId: ExpectedAsset = assetFor(productionId)
+      eventually {
+        ClientField.element.attribute("value").contains(prodId.job.client)
+        DeliveryMediumField.element.attribute("value").contains(prodId.job.deliveryMedium)
+        JobField.element.attribute("value").contains(prodId.job.jobType)
+        FrameRate.element.attribute("value").contains(prodId.job.preferredOutputFrameRate)
+        SpecField.element.attribute("value").contains(prodId.job.spec)
+        DeliveryMethod.element.attribute("value").contains(prodId.job.deliveryMethod)
+      }
   }
 
   private def waitUntilPageIsLoaded() = {

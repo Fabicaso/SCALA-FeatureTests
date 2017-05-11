@@ -48,16 +48,13 @@ object ExpectedData {
   private val tapeAsSource    = "Tape As Source"
   private val transcode       = "Transcode"
 
-  private val btJob =
-    Job(
-      "Bt",
-      transcodeIfNeed,
-      "Online",
-      "Delivery Method for bt",
-      Some("24"),
-      Some("As Per Source"),
-      Some("http://www.telestream.net/vantage/tech-specs.htm")
-    )
+  private val btJob = Job("Bt",
+                          transcodeIfNeed,
+                          "Online",
+                          "Delivery Method for bt",
+                          Some("24"),
+                          Some("As Per Source"),
+                          Some("http://www.telestream.net/vantage/tech-specs.htm"))
   private val skyJob       = Job("Sky-Test", pullAndDeliver, "HardDrive", "Delivery Method for sky")
   private val bbcJob       = Job("BBC-Test", transcode, "Online", "Delivery Method for bbc")
   private val skyItaliaJob = Job("SKY-ITALIA-Test", tapeAsSource, "Tape", "Delivery Method for sky italia")
@@ -66,6 +63,7 @@ object ExpectedData {
   private val itvJob       = Job("ITV-Test", tapeAsSource, "Tape", "Delivery Method for itv")
 
   private val expectedAssets: List[ExpectedAsset] = List(
+    ExpectedAsset("CFD0066/0001", "123156", "Blithe Spirit", "60", "ProRes HD", btJob),
     ExpectedAsset("1/5576/0012#002", "123669", "Miss Marple - Series 5", "60", "ProRes HD", btJob),
     ExpectedAsset("1/9946/0001#001", "123665", "Hebrides: Islands on the Edge", "60", "ProRes HD", skyJob),
     ExpectedAsset("2/1761/0001#001", "123665", "Desert Seas", "60", "ProRes HD", skyJob),
