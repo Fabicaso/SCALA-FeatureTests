@@ -11,7 +11,7 @@ object RunCucumberTest {}
   features = Array("classpath:features"),
   glue = Array("classpath:steps"),
   plugin = Array("pretty", "json:target/cucumber-html-reports/first-json-report.json"),
-  tags = Array("@currentRequests", "~@Ignore")
+  tags = Array("@currentRequests, @sendRequest", "~@Ignore")
 )
 class FirstRunCucumberTest {}
 
@@ -38,6 +38,6 @@ class ThirdRunCucumberTest {}
   features = Array("classpath:features"),
   glue = Array("classpath:steps"),
   plugin = Array("pretty", "json:target/cucumber-html-reports/fourth-json-report.json"),
-  tags = Array("@assetsdates, @sendRequest", "~@Ignore")
+  tags = Array("@assetsdates", "~@Ignore")
 )
 class FourthRunCucumberTest {}
