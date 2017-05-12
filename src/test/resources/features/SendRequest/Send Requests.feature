@@ -60,7 +60,6 @@ Feature: Send Request page
     Then the options for 'Frame Rate Output' are displayed correctly
     And Resolution Outputs and Spec Optional text box are displayed
 
-
   Scenario: Fields on the Send Request Form should be already pre-populated by the text of the previous submission
     Given I am on the 'New Request' page using the following licence number '123156'
     And I complete the fulfilment request for 'Blithe Spirit' and ProdID 'CFD0066/0001' with 'not required by date' selecting 'first asset'

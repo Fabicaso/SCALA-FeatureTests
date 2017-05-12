@@ -1,10 +1,8 @@
 package steps
 
-import itv.fulfilmentplanning.ExpectedAsset
 import itv.fulfilmentplanning.ExpectedData.assetFor
 import itv.fulfilmentplanning.pageobjects._
-import itv.fulfilmentplanning.{ExpectedAsset, Job}
-
+import itv.fulfilmentplanning.{ExpectedAsset}
 import scala.concurrent.duration._
 
 class SendRequestSteps

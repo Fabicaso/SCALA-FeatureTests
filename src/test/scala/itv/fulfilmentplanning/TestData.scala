@@ -61,8 +61,10 @@ object ExpectedData {
   private val tmzJob       = Job("TMZ-Test", pullAndDeliver, "Online", "Delivery Method for tmz")
   private val raiJob       = Job("RAI-Test", tapeAsSource, "Tape", "Delivery Method for rai")
   private val itvJob       = Job("ITV-Test", tapeAsSource, "Tape", "Delivery Method for itv")
+  private val TVEJob       = Job("TVE-Test", transcode, "HardDrive", "Delivery Method for itv")
 
   private val expectedAssets: List[ExpectedAsset] = List(
+    ExpectedAsset("1/7314/0025#002", "126077", "Vera - Series 6", "60", "ProRes HD", TVEJob),
     ExpectedAsset("CFD0066/0001", "123156", "Blithe Spirit", "60", "ProRes HD", btJob),
     ExpectedAsset("1/5576/0012#002", "123669", "Miss Marple - Series 5", "60", "ProRes HD", btJob),
     ExpectedAsset("1/9946/0001#001", "123665", "Hebrides: Islands on the Edge", "60", "ProRes HD", skyJob),
