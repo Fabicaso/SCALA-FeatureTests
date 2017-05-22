@@ -19,5 +19,5 @@ Feature: Fulfilment History
     When I enter the following Licence Number '126631'
     And the Asset Status is 'Outstanding' for Production ID '1/7314/0025#002' and licence number '126631' on the Overview page
     Then 'Vera - Series 6' is flagged as Previous Fulfilled and the ProductionId '1/7314/0025#002' is flagged with a dot as Previous Fulfilled and licence '126631'
-    And the previously fulfilled history details for Production id '1/7314/0025#002' of 'Vera - Series 6' are displayed
+    And the previously fulfilled history details for Production id '1/7314/0025#002' of 'Vera - Series 6' and licence '126077' are displayed
 

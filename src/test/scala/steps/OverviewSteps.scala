@@ -163,17 +163,17 @@ class OverviewSteps
 
   }
 
-  Then("""^the previously fulfilled history details for Production id '(.*)' of '(.*)' are displayed$""") {
-    (productionId: String, series: String) =>
+  Then("""^the previously fulfilled history details for Production id '(.*)' of '(.*)' and licence '(.*)' are displayed$""") {
+    (productionId: String, series: String, licenceId: String) =>
       logger.info(scenarioMarker, s"previously fulfilled history details are correctly dislayed")
       val licence: ExpectedAsset = assetFor(productionId)
       val expectedDate           = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
       ProductionRow(productionId).clickWhenIsDisplayed
       eventually {
         PrevFulfilled_AssetUpdated.whenIsDisplayed.text should ===(expectedDate)
-        PrevFulfilled_LicenceNo.whenIsDisplayed.text should ===(licence.licenceId)
-        PrevFulfilled_FulfilledDate.whenIsDisplayed.text should ===(expectedDate)
-        PrevFulfilled_SourceUsed.whenIsDisplayed.text should ===(licence.format)
+        PrevFulfilled_LicenceNo(licenceId).whenIsDisplayed.text should ===(licence.licenceId)
+        PrevFulfilled_FulfilledDate(licenceId).whenIsDisplayed.text should ===(expectedDate)
+        PrevFulfilled_SourceUsed(licenceId).whenIsDisplayed.text should ===(licence.format)
       }
   }
 
