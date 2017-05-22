@@ -25,4 +25,15 @@ class MenuSteps extends BaseSteps with MenuPageObject {
     ExactText(licenceInvalidWarningMessage).whenIsDisplayed
   }
 
+  Then("""^the 'ITV' logo is displayed$"""){ () =>
+    logger.info(scenarioMarker,s"ITV logo is correctly displayed")
+    ITVLogo.whenIsDisplayed
+  }
+
+  And ("""^the 'Craft' logo is displayed$"""){ () =>
+    logger.info(scenarioMarker,s"Craft logo is correctly displayed")
+    CraftLogo.whenIsDisplayed
+  }
+
+
 }

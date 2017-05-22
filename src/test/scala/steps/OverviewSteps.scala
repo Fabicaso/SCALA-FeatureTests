@@ -170,10 +170,10 @@ class OverviewSteps
       val expectedDate           = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
       ProductionRow(productionId).clickWhenIsDisplayed
       eventually {
-        PrevFulfilled_AssetUpdated.whenIsEnabled.text should ===(expectedDate)
-        PrevFulfilled_LicenceNo.whenIsEnabled.text should ===(licence.licenceId)
-        PrevFulfilled_FulfilledDate.whenIsEnabled.text should ===(expectedDate)
-        PrevFulfilled_SourceUsed.whenIsEnabled.text should ===(licence.format)
+        PrevFulfilled_AssetUpdated.whenIsDisplayed.text should ===(expectedDate)
+        PrevFulfilled_LicenceNo.whenIsDisplayed.text should ===(licence.licenceId)
+        PrevFulfilled_FulfilledDate.whenIsDisplayed.text should ===(expectedDate)
+        PrevFulfilled_SourceUsed.whenIsDisplayed.text should ===(licence.format)
       }
   }
 
