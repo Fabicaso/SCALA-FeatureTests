@@ -78,8 +78,8 @@ class OverviewSteps
   }
 
   And("""^the Asset Status is '(.*)' for Production ID '(.*)' and licence number '(.*)' on the Overview page""") {
-      (fromAssetStatus: String, productionId: String, licenceId: String) =>
-        logger.info(scenarioMarker, s"the Asset Status for $productionId is set to $fromAssetStatus")
+    (fromAssetStatus: String, productionId: String, licenceId: String) =>
+      logger.info(scenarioMarker, s"the Asset Status for $productionId is set to $fromAssetStatus")
       (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
         after being lowerCased)
   }
@@ -163,29 +163,31 @@ class OverviewSteps
 
   }
 
-    Then("""^the previously fulfilled history details for Production id '(.*)' of '(.*)' are displayed$"""){ (productionId: String, series: String) =>
+  Then("""^the previously fulfilled history details for Production id '(.*)' of '(.*)' are displayed$""") {
+    (productionId: String, series: String) =>
       logger.info(scenarioMarker, s"previously fulfilled history details are correctly dislayed")
       val licence: ExpectedAsset = assetFor(productionId)
-      val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
-
+      val expectedDate           = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
       ProductionRow(productionId).clickWhenIsDisplayed
-      eventually{
-        PrevFulfilled_AssetUpdated.element.text should ===(expectedDate)
-        PrevFulfilled_LicenceNo.element.text should ===(licence.licenceId)
-        PrevFulfilled_FulfilledDate.element.text should ===(expectedDate)
-        PrevFulfilled_SourceUsed.element.text should ===(licence.format)
+      eventually {
+        PrevFulfilled_AssetUpdated.whenIsEnabled.text should ===(expectedDate)
+        PrevFulfilled_LicenceNo.whenIsEnabled.text should ===(licence.licenceId)
+        PrevFulfilled_FulfilledDate.whenIsEnabled.text should ===(expectedDate)
+        PrevFulfilled_SourceUsed.whenIsEnabled.text should ===(licence.format)
       }
-    }
+  }
 
-  Then("""^'(.*)' is flagged as Previous Fulfilled and the ProductionId '(.*)' is flagged with a dot as Previous Fulfilled and licence '(.*)'$"""){ (series: String, productionId: String, licence: String) =>
-    val prodId: ExpectedAsset = assetFor(productionId)
-    logger.info(scenarioMarker, s"$series is flagged as Previous Fulfilled")
-    eventually {PrevFulfilledSeriesFlag(series).element.isDisplayed}
-    logger.info(scenarioMarker, s"the $productionId is flagged with a dot as Previous Fulfilled")
-    reloadPage()
-    waitPageToBeLoaded()
-    eventually{SeriesRow(series).clickWhenIsDisplayed}
-    eventually {PrevFulfilledProductionDot(licence, productionId).element.isDisplayed}
+  Then(
+    """^'(.*)' is flagged as Previous Fulfilled and the ProductionId '(.*)' is flagged with a dot as Previous Fulfilled and licence '(.*)'$""") {
+    (series: String, productionId: String, licence: String) =>
+      val prodId: ExpectedAsset = assetFor(productionId)
+      logger.info(scenarioMarker, s"$series is flagged as Previous Fulfilled")
+      eventually { PrevFulfilledSeriesFlag(series).element.isDisplayed }
+      logger.info(scenarioMarker, s"the $productionId is flagged with a dot as Previous Fulfilled")
+      reloadPage()
+      waitPageToBeLoaded()
+      eventually { SeriesRow(series).clickWhenIsDisplayed }
+      eventually { PrevFulfilledProductionDot(licence, productionId).element.isDisplayed }
   }
 
   Then("""^I can set the status to '(.*)' for multiple assets '(.*)' of '(.*)' and licence number '(.*)'""") {

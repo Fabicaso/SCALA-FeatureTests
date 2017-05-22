@@ -24,7 +24,7 @@ trait OverviewPageObject extends WebBrowser {
   def PrevFulfilledSeriesFlag(series: String) = id(s"series-$series-prev-fulfilled-flag")
   def PrevFulfilledProductionDot(licence: String, productionId: String) = id(s"$licence-$productionId-prev-fulfilled-flag")
   def PrevFulfilled_AssetUpdated = xpath ("//*[@id='sidebar-prevFulfilled-entry-updated']/div[2]" )
-  def PrevFulfilled_LicenceNo = xpath("//div[@id='sidebar-prevFulfilled-entry-licenceNo']/a")
+  def PrevFulfilled_LicenceNo = xpath("//*[@id='sidebar-prevFulfilled-entry-licenceNo']/a")
   def PrevFulfilled_FulfilledDate= xpath("//*[@id='sidebar-prevFulfilled-entry-fulfilled']/div[2]")
   def PrevFulfilled_SourceUsed= xpath("//*[@id='sidebar-prevFulfilled-entry-sourceUsed']/div[2]")
   def EditDatesStatus(productionStatus: String) = id(s"menu-dropdown-editDate-$productionStatus")
