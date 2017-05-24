@@ -35,7 +35,7 @@ Feature: Asset Dates
     Given I am on the 'New Request' page using the following licence number '127093'
     And I complete the fulfilment request for 'Endeavour - Series 3' and ProdID '2/1229/0010#002' with 'not required by date' selecting 'first asset'
     When I enter the following Licence Number '127093'
-    And I can change the status from 'Requested' to 'Fulfilled' for ProdId '2/1229/0010#002' and 'Endeavour' and licence number '127093'
+    And I can change the status from 'Requested' to 'Fulfilled' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '127093'
     Then I can edit and set the 'Fulfilled' date to the past for 'Endeavour - Series 3' and production ID '2/1229/0010#002'
 
 #  Scenario: Multiple assets can be set to 'Fulfilled' at once
