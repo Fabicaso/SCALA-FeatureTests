@@ -10,14 +10,13 @@ import scala.concurrent.duration._
 import org.scalatest.time.{Second, Seconds, Span}
 
 class OverviewSteps
-  extends BaseSteps
+    extends BaseSteps
     with OverviewPageObject
     with NewRequestPageObject
     with ConfirmRequestPageObject
-    with MenuPageObject
-{
+    with MenuPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(10.seconds, 200.milliseconds)
 
   Then("""^the 'start date' is displayed on Overview page$""") { () =>
     logger.info(scenarioMarker, s"Licence Start Date should be displayed on the Overview page")
@@ -163,12 +162,16 @@ class OverviewSteps
 
   }
 
-  Then("""^the previously fulfilled history details for Production id '(.*)' of '(.*)' and licence '(.*)' are displayed$""") {
+  Then(
+    """^the previously fulfilled history details for Production id '(.*)' of '(.*)' and licence '(.*)' are displayed$""") {
     (productionId: String, series: String, licenceId: String) =>
       logger.info(scenarioMarker, s"previously fulfilled history details are correctly dislayed")
       val licence: ExpectedAsset = assetFor(productionId)
       val expectedDate           = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
-      ProductionRow(productionId).clickWhenIsDisplayed
+      eventually {
+        SeriesRow(series).clickWhenIsDisplayed
+        ProductionRow(productionId).clickWhenIsDisplayed
+      }
       eventually {
         PrevFulfilled_AssetUpdated.whenIsDisplayed.text should ===(expectedDate)
         PrevFulfilled_LicenceNo(licenceId).whenIsDisplayed.text should ===(licence.licenceId)
@@ -184,10 +187,11 @@ class OverviewSteps
       logger.info(scenarioMarker, s"$series is flagged as Previous Fulfilled")
       eventually { PrevFulfilledSeriesFlag(series).element.isDisplayed }
       logger.info(scenarioMarker, s"the $productionId is flagged with a dot as Previous Fulfilled")
-      reloadPage()
-      waitPageToBeLoaded()
-      eventually { SeriesRow(series).clickWhenIsDisplayed }
-      eventually { PrevFulfilledProductionDot(licence, productionId).element.isDisplayed }
+
+      eventually {
+        SeriesRow(series).clickWhenIsDisplayed
+        PrevFulfilledProductionDot(licence, productionId).element.isDisplayed
+      }
   }
 
   Then("""^I can set the status to '(.*)' for multiple assets '(.*)' of '(.*)' and licence number '(.*)'""") {
@@ -245,6 +249,6 @@ class OverviewSteps
   }
 
   private def waitPageToBeLoaded() =
-    PageLoadedOverview.whenIsEnabled(PatienceConfig(10.seconds, 200.milliseconds), scenarioMarker)
+    PageLoadedOverview.whenIsEnabled(PatienceConfig(15.seconds, 500.milliseconds), scenarioMarker)
 
 }

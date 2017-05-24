@@ -12,12 +12,7 @@ class CurrentRequestsSteps
     with CurrentRequestSideBar
     with MenuPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
-
-  Then("""^the 'Current Requests' page is displayed$""") { () =>
-    logger.info(scenarioMarker, "Go to current request")
-    waitUntilPageIsLoaded()
-  }
+  override implicit val patienceConfig = PatienceConfig(10.seconds, 200.milliseconds)
 
   Then(
     """^asset details with production id '(.*)' and licence number '(\d+)' (?:is|are) displayed on the 'Current Requests' page under '(.*)' section$""") {

@@ -12,7 +12,7 @@ class SendRequestSteps
     with NewRequestPageObject
     with ConfirmRequestPageObject {
 
-  override implicit val patienceConfig = PatienceConfig(4.seconds, 200.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(10.seconds, 200.milliseconds)
 
   Given(
     """^I am on the 'Send Request' page using the following licence number '(.*)' series '(.*)' and ProdID '(.*)' selecting '(.*)'$""") {

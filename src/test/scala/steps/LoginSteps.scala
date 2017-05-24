@@ -8,7 +8,7 @@ import scala.util.Try
 
 class LoginSteps extends BaseSteps with SignInPageObject with GoogleAuthPageObject with OfflineAccess {
 
-  override implicit val patienceConfig = PatienceConfig(2.seconds, 200.milliseconds)
+  override implicit val patienceConfig = PatienceConfig(7.seconds, 200.milliseconds)
 
   Given("""^I am on the 'Login' page$""") { () =>
     logger.info(scenarioMarker, "Open home page")
