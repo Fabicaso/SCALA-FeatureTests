@@ -4,6 +4,8 @@ import org.scalatest.selenium.WebBrowser
 
 trait OverviewPageObject extends WebBrowser {
 
+  def SidebarHeader                           = id("sidebar-header-not-selected")
+  def CollapseAll                             = id("overview-navbar-collapse")
   def PageLoadedOverview                      = id("page-loaded-overview")
   def CreateNewRequestButton                  = id("create-new-request-button")
   def LicenceStartDate                        = id("overview-header-startDate")

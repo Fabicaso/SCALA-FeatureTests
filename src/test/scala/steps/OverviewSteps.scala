@@ -56,29 +56,48 @@ class OverviewSteps
       EditStatus.clickWhenIsDisplayed
 
       if (toAssetStatus == "Not Required") {
+
+        val NotRequiredAssetStatus: String = "notRequired"
+        AssetStatus(NotRequiredAssetStatus).clickWhenIsDisplayed
         eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-          val newtoAssetStatus: String = "notRequired"
-          AssetStatus(newtoAssetStatus).clickWhenIsDisplayed
+          (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
+            after being lowerCased)
+        }
+      }
+      if (toAssetStatus == "Cancelled") {
+        val CancelledAssetStatus: String = "cancelled"
+        AssetStatus(CancelledAssetStatus).clickWhenIsDisplayed
+
+        eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+          (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("Outstanding"))(
+            after being lowerCased)
         }
       }
 
-      if (toAssetStatus != "Not Required") {
+      if (toAssetStatus != "Not Required" && toAssetStatus != "Cancelled") {
+        AssetStatus(toAssetStatus.toLowerCase()).clickWhenIsDisplayed
+        TodaysDate.clickWhenIsDisplayed
+
         eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-          AssetStatus(toAssetStatus.toLowerCase()).clickWhenIsDisplayed
-          TodaysDate.clickWhenIsDisplayed
+          (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
+            after being lowerCased)
         }
-      }
 
-      eventually {
-        (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
-          after being lowerCased)
       }
-
   }
 
-  And("""^the Asset Status is '(.*)' for Production ID '(.*)' and licence number '(.*)' on the Overview page""") {
-    (fromAssetStatus: String, productionId: String, licenceId: String) =>
+  And(
+    """^the Asset Status is '(.*)' for Series '(.*)' and Production ID '(.*)' and licence number '(.*)' on the Overview page$""") {
+    (fromAssetStatus: String, series: String, productionId: String, licenceId: String) =>
       logger.info(scenarioMarker, s"the Asset Status for $productionId is set to $fromAssetStatus")
+      waitPageToBeLoaded()
+
+      if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
+
+      if (SidebarHeader.element.isEnabled) {
+        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+      }
+
       (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
         after being lowerCased)
   }
@@ -99,10 +118,15 @@ class OverviewSteps
     """^the label status on the Overview page has changed to '(.*)' for ProdId '(.*)' and '(.*)' and licence number '(.*)'""") {
     (toAssetStatus: String, productionId: String, series: String, licenceId: String) =>
       logger.info(scenarioMarker, s"the status on the Overview page has changed to Fulfilled")
+      waitPageToBeLoaded()
       reloadPage()
       waitPageToBeLoaded()
-      SeriesRow(series).clickWhenIsDisplayed
-      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+      if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
+
+      if (SidebarHeader.element.isDisplayed) {
+        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+      }
+
       eventually {
         (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
           after being lowerCased)
@@ -112,10 +136,15 @@ class OverviewSteps
   Then("""^'(.*)' date on the right Selection Details menu for Production ID '(.*)' of '(.*)' is '(.*)'""") {
     (statusDatesOnSideBarMenu: String, productionId: String, series: String, date: String) =>
       val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
+      waitPageToBeLoaded()
       reloadPage()
       waitPageToBeLoaded()
-      SeriesRow(series).clickWhenIsDisplayed
-      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+
+      if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
+
+      if (SidebarHeader.element.isEnabled) {
+        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+      }
 
       if (date == "today's date") {
         var date = expectedDate
@@ -123,10 +152,10 @@ class OverviewSteps
           statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
         }
         logger.info(scenarioMarker,
-                    s"'The left Selection Details menu date should be TODAY's DATE and it's displaying : $date ")
+                    s"'The right Selection Details menu date should be TODAY's DATE and it's displaying : $date ")
       } else {
         logger.info(scenarioMarker,
-                    s"'The left Selection Details menu date should be '-' and it's displaying : $date ")
+                    s"'The right Selection Details menu date should be '-' and it's displaying : $date ")
         eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
           statusDatesCheckOnSideBarMenu(statusDatesOnSideBarMenu, date)
         }
@@ -137,6 +166,7 @@ class OverviewSteps
     (productionStatus: String, series: String, productionId: String) =>
       logger.info(scenarioMarker, s"Edit Dates for $productionStatus status of $series")
       val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now().minusDays(1L))
+      waitPageToBeLoaded()
       reloadPage()
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
@@ -152,11 +182,22 @@ class OverviewSteps
       }
   }
 
-  Then("""^the Asset source is set to '(.*)' for ProdId '(.*)' and licence number '(.*)'$""") {
-    (sourceAsset: String, productionId: String, licenceId: String) =>
+  Then("""^the Asset source is set to '(.*)' for ProdId '(.*)' series '(.*)' and licence number '(.*)'$""") {
+    (sourceAsset: String, productionId: String, series: String, licenceId: String) =>
       {
         logger.info(scenarioMarker, s"the status Asset source is set to External for ProdId: $productionId")
-        (SourceAsset(licenceId, productionId).whenIsDisplayed.text should ===(sourceAsset))(after being lowerCased)
+        waitPageToBeLoaded()
+        reloadPage()
+        waitPageToBeLoaded()
+
+        if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
+
+        if (SidebarHeader.element.isEnabled) {
+          ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds),
+                                                           scenarioMarker)
+
+          (SourceAsset(licenceId, productionId).whenIsDisplayed.text should ===(sourceAsset))(after being lowerCased)
+        }
         reloadPage()
       }
 
@@ -168,10 +209,16 @@ class OverviewSteps
       logger.info(scenarioMarker, s"previously fulfilled history details are correctly dislayed")
       val licence: ExpectedAsset = assetFor(productionId)
       val expectedDate           = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
-      eventually {
-        SeriesRow(series).clickWhenIsDisplayed
-        ProductionRow(productionId).clickWhenIsDisplayed
+      waitPageToBeLoaded()
+      reloadPage()
+      waitPageToBeLoaded()
+
+      if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
+
+      if (SidebarHeader.element.isEnabled) {
+        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
       }
+
       eventually {
         PrevFulfilled_AssetUpdated.whenIsDisplayed.text should ===(expectedDate)
         PrevFulfilled_LicenceNo(licenceId).whenIsDisplayed.text should ===(licence.licenceId)
@@ -212,9 +259,7 @@ class OverviewSteps
           click on AssetStatus(toAssetStatus.toLowerCase).elementOrFail
           click on TodaysDate.elementOrFail
         }
-
         eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-//          ProductionStatus(licenceId, production1).elementOrFail.text should ===(toAssetStatus) FIXME Sometimes UI is generating this id: 1/9946/0001#001-123665-1276130-labels-state-node-status
           ProductionStatus(licenceId, production2).elementOrFail.text should ===(toAssetStatus)
         }
       }

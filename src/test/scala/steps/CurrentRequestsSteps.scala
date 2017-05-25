@@ -50,7 +50,6 @@ class CurrentRequestsSteps
       (SideBarResolutionOutput.whenIsDisplayed.text should ===(expectedAsset.job.resolutionOutput.getOrElse("")))(
         after being lowerCased)
       SideBarSpec.whenIsDisplayed
-
   }
 
   Then(
@@ -108,6 +107,14 @@ class CurrentRequestsSteps
         }
       }
 
+  }
+
+  Then("""^I can change the status to '(.*)' on the Current Request page$"""){
+    (toAssetStatus: String) =>
+      logger.info(scenarioMarker, s"Change the Asset Status to Cancelled from the Current Request page")
+      CurrentRequestNavBarMenu.clickWhenIsDisplayed
+      CurrentRequestEditStatus.clickWhenIsDisplayed
+      CurrentRequestAssetStatus(toAssetStatus.toLowerCase()).clickWhenIsDisplayed
   }
 
   private def waitUntilPageIsLoaded() = {

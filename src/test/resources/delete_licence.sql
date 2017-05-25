@@ -18,6 +18,8 @@ insert into licences_for_deletion (licence_id) values (128001);
 insert into licences_for_deletion (licence_id) values (123667);
 insert into licences_for_deletion (licence_id) values (123669);
 insert into licences_for_deletion (licence_id) values (127099);
+insert into licences_for_deletion (licence_id) values (122333);
+
 
 
 
@@ -26,8 +28,6 @@ insert into licences_for_deletion (licence_id, request_id) select licence_id, fu
 delete from event_log where licence_id in (select distinct licence_id from licences_for_deletion);
 
 delete from fulfilment_current_assets where licence_id in (select distinct licence_id from licences_for_deletion);
-
-delete from fulfilment_request_assets where fulfilment_request_id in (select request_id from licences_for_deletion);
 
 delete from fulfilment_production where licence_id in (select distinct licence_id from licences_for_deletion);
 

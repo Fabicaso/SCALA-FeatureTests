@@ -16,7 +16,7 @@ class MenuSteps
     logger.info(scenarioMarker, s"Go to licence number: $licenceId")
     EnterLicenceSection.clickWhenIsDisplayed
     eventually(numberField(LicenceInput)).value = licenceId
-    eventually  {submit()}
+    eventually{submit()}
   }
 
   Then("""^the '(.*)' is displayed$""") { (textDisplayed: String) =>

@@ -55,6 +55,15 @@ object ExpectedData {
                           Some("24"),
                           Some("As Per Source"),
                           Some("http://www.telestream.net/vantage/tech-specs.htm"))
+  private val TMCJob = Job(
+    "TMC-Test",
+    transcodeIfNeed,
+    "HardDrive",
+    "Delivery Method for TMC",
+    Some("25"),
+    Some("As Per Source"),
+    Some("http://www.telestream.net/vantage/tech-specs.htm"))
+
   private val skyJob       = Job("Sky-Test", pullAndDeliver, "HardDrive", "Delivery Method for sky")
   private val bbcJob       = Job("BBC-Test", transcode, "Online", "Delivery Method for bbc")
   private val skyItaliaJob = Job("SKY-ITALIA-Test", tapeAsSource, "Tape", "Delivery Method for sky italia")
@@ -64,7 +73,9 @@ object ExpectedData {
   private val TVEJob       = Job("TVE-Test", transcode, "HardDrive", "Delivery Method for itv")
 
   private val expectedAssets: List[ExpectedAsset] = List(
-    ExpectedAsset("1/7314/0025#002", "126077", "Vera - Series 6", "60", "ProRes HD", TVEJob),
+    ExpectedAsset("Y/1774/0027", "122333", "A Touch of Frost - Series 8 ", "60", "ProRes SD", TMCJob),
+    ExpectedAsset("Y/1774/0028", "122333", "A Touch of Frost - Series 8 ", "60", "ProRes HD", TMCJob),
+    ExpectedAsset("1/7314/0025#002", "126077", "Vera - Series 6", "60", "ProRes HD", TMCJob),
     ExpectedAsset("CFD0066/0001", "123156", "Blithe Spirit", "60", "ProRes HD", btJob),
     ExpectedAsset("1/5576/0012#002", "123669", "Miss Marple - Series 5", "60", "ProRes HD", btJob),
     ExpectedAsset("1/9946/0001#001", "123665", "Hebrides: Islands on the Edge", "60", "ProRes HD", skyJob),
