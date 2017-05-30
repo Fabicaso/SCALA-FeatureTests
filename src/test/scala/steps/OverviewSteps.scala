@@ -50,6 +50,7 @@ class OverviewSteps
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+      SideBarProductionId.element.text should ===(productionId)
       (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
         after being lowerCased)
       NavigationActionMenu.clickWhenIsDisplayed
@@ -96,6 +97,13 @@ class OverviewSteps
 
       if (SidebarHeader.element.isEnabled) {
         ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+        if (SideBarProductionId.element.text != (productionId)) {
+          ProductionRow(productionId).clickWhenIsDisplayed
+          if (SideBarProductionId.element.text != (productionId)) {
+            ProductionRow(productionId).clickWhenIsDisplayed
+            SideBarProductionId.element.text should ===(productionId)
+          }
+        }
       }
 
       (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
@@ -144,6 +152,10 @@ class OverviewSteps
 
       if (SidebarHeader.element.isEnabled) {
         ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+        if (SideBarProductionId.element.text != (productionId)) {
+          ProductionRow(productionId).clickWhenIsDisplayed
+          SideBarProductionId.element.text should ===(productionId)
+        }
       }
 
       if (date == "today's date") {
@@ -172,6 +184,13 @@ class OverviewSteps
       SeriesRow(series).clickWhenIsDisplayed
       eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
         click on ProductionRow(productionId).elementOrFail
+        if (SideBarProductionId.element.text != (productionId)) {
+          ProductionRow(productionId).clickWhenIsDisplayed
+          if (SideBarProductionId.element.text != (productionId)) {
+            ProductionRow(productionId).clickWhenIsDisplayed
+            SideBarProductionId.element.text should ===(productionId)
+          }
+        }
         click on ActionsMenu.elementOrFail
         click on EditDates.elementOrFail
         click on EditDatesStatus((productionStatus: String).toLowerCase).elementOrFail
@@ -195,7 +214,13 @@ class OverviewSteps
         if (SidebarHeader.element.isEnabled) {
           ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds),
                                                            scenarioMarker)
-
+          if (SideBarProductionId.element.text != (productionId)) {
+            ProductionRow(productionId).clickWhenIsDisplayed
+            if (SideBarProductionId.element.text != (productionId)) {
+              ProductionRow(productionId).clickWhenIsDisplayed
+              SideBarProductionId.element.text should ===(productionId)
+            }
+          }
           (SourceAsset(licenceId, productionId).whenIsDisplayed.text should ===(sourceAsset))(after being lowerCased)
         }
         reloadPage()
@@ -216,7 +241,14 @@ class OverviewSteps
       if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
 
       if (SidebarHeader.element.isEnabled) {
-        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(5.seconds, 200.milliseconds), scenarioMarker)
+        if (SideBarProductionId.element.text != (productionId)) {
+          ProductionRow(productionId).clickWhenIsDisplayed
+          if (SideBarProductionId.element.text != (productionId)) {
+            ProductionRow(productionId).clickWhenIsDisplayed
+            SideBarProductionId.element.text should ===(productionId)
+          }
+        }
       }
 
       eventually {

@@ -4,6 +4,7 @@ import org.scalatest.selenium.WebBrowser
 
 trait OverviewPageObject extends WebBrowser {
 
+  def SideBarProductionId                     = id("sidebar-production-id")
   def SidebarHeader                           = id("sidebar-header-not-selected")
   def CollapseAll                             = id("overview-navbar-collapse")
   def PageLoadedOverview                      = id("page-loaded-overview")
