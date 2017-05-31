@@ -15,7 +15,9 @@ Feature: Fulfilment History
     Given I am on the 'New Request' page using the following licence number '126077'
     And I complete the fulfilment request for 'Vera - Series 6' and ProdID '1/7314/0025#002' with 'today's date' selecting 'first asset'
     And I enter the following Licence Number '126077'
-    And I am able to change the status from 'Requested' to 'Fulfilled' for ProdId '1/7314/0025#002' and 'Vera - Series 6' and licence number '126077'
+    And I am able to change the status from 'Requested' to 'In Progress' for ProdId '1/7314/0025#002' and 'Vera - Series 6' and licence number '126077'
+    And I am able to change the status from 'In Progress' to 'Delivered' for ProdId '1/7314/0025#002' and 'Vera - Series 6' and licence number '126077'
+    When I am able to change the status from 'Delivered' to 'Fulfilled' for ProdId '1/7314/0025#002' and 'Vera - Series 6' and licence number '126077'
     When I enter the following Licence Number '126631'
     And the Asset Status is 'Outstanding' for Series 'Vera - Series 6' and Production ID '1/7314/0025#002' and licence number '126631' on the Overview page
     Then 'Vera - Series 6' is flagged as Previous Fulfilled and the ProductionId '1/7314/0025#002' is flagged with a dot as Previous Fulfilled and licence '126631'

@@ -1,7 +1,7 @@
 package steps
 
-import itv.fulfilmentplanning.{Credentials, ExpectedAsset, ExpectedData, TestData}
 import itv.fulfilmentplanning.pageobjects._
+import itv.fulfilmentplanning.{Credentials, ExpectedAsset, ExpectedData, TestData}
 import org.scalactic.StringNormalizations._
 
 import scala.concurrent.duration._
@@ -46,8 +46,8 @@ class CurrentRequestsSteps
       (SideBarDeliveryMedium.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.job.deliveryMedium))(
         after being lowerCased)
       (SideBarPreferredOutputFrameRate.whenIsDisplayed.text should ===(
-        expectedAsset.job.preferredOutputFrameRate.getOrElse("")))(after being lowerCased)
-      (SideBarResolutionOutput.whenIsDisplayed.text should ===(expectedAsset.job.resolutionOutput.getOrElse("")))(
+        expectedAsset.job.preferredOutputFrameRate.getOrElse("-"))) (after being lowerCased)
+      (SideBarResolutionOutput.whenIsDisplayed.text should ===(expectedAsset.job.resolutionOutput.getOrElse("-"))) (
         after being lowerCased)
       SideBarSpec.whenIsDisplayed
   }
@@ -109,12 +109,34 @@ class CurrentRequestsSteps
 
   }
 
-  Then("""^I can change the status to '(.*)' on the Current Request page$"""){
-    (toAssetStatus: String) =>
-      logger.info(scenarioMarker, s"Change the Asset Status to Cancelled from the Current Request page")
-      CurrentRequestNavBarMenu.clickWhenIsDisplayed
-      CurrentRequestEditStatus.clickWhenIsDisplayed
-      CurrentRequestAssetStatus(toAssetStatus.toLowerCase()).clickWhenIsDisplayed
+  Then(
+    """^I can change the status to '(.*)' on the Current Request page for Production Id '(.*)' and licence id '(.*)' under '(.*)' section$""") {
+    (toAssetStatus: String, productionId: String, licenceId: String, requiredBy: String) =>
+      logger.info(scenarioMarker, s"Change the Asset Status to $toAssetStatus from the Current Request page")
+
+      reloadPage()
+      waitUntilPageIsLoaded()
+      RequestedAssetsForDate(TestData.dateFrom(requiredBy)).clickWhenIsDisplayed
+      RequestedAssetRowBy(productionId).clickWhenIsDisplayed
+
+      eventually {
+        CurrentRequestNavBarMenu.clickWhenIsDisplayed
+      }
+      eventually {
+        CurrentRequestEditStatus.clickWhenIsDisplayed
+      }
+
+      toAssetStatus match {
+        case "cancelled" => {
+          CurrentRequestEditAssetStatus(toAssetStatus).clickWhenIsDisplayed
+        }
+        case _ => {
+          CurrentRequestEditAssetStatus(toAssetStatus).clickWhenIsDisplayed
+          eventually {
+            CurrentRequestAssetStatus(TestData.dateFrom(requiredBy), licenceId, toAssetStatus.toLowerCase()).whenIsEnabled.isDisplayed
+          }
+        }
+      }
   }
 
   private def waitUntilPageIsLoaded() = {

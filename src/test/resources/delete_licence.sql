@@ -19,6 +19,7 @@ insert into licences_for_deletion (licence_id) values (123667);
 insert into licences_for_deletion (licence_id) values (123669);
 insert into licences_for_deletion (licence_id) values (127099);
 insert into licences_for_deletion (licence_id) values (122333);
+insert into licences_for_deletion (licence_id) values (128002);
 
 
 insert into licences_for_deletion (licence_id, request_id) select licence_id, fulfilment_request_id from fulfilment_request_licences where licence_id in (select licence_id from licences_for_deletion);

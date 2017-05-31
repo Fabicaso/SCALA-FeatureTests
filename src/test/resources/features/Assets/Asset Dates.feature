@@ -34,15 +34,19 @@ Feature: Asset Dates
     Given I am on the 'New Request' page using the following licence number '127093'
     And I complete the fulfilment request for 'Endeavour - Series 3' and ProdID '2/1229/0010#002' with 'not required by date' selecting 'first asset'
     When I enter the following Licence Number '127093'
-    And I can change the status from 'Requested' to 'Fulfilled' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '127093'
+    And I can change the status from 'Requested' to 'In Progress' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '127093'
+    And I can change the status from 'In Progress' to 'Delivered' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '127093'
+    And I can change the status from 'Delivered' to 'Fulfilled' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '127093'
     Then I can edit and set the 'Fulfilled' date to the past for 'Endeavour - Series 3' and production ID '2/1229/0010#002'
 
-#  Scenario: Multiple assets can be set to 'Fulfilled' at once
-#    Given I am on the 'New Request' page using the following licence number '123333'
-#    And I complete the fulfilment request for 'Vera - Series 2' and ProdID '1/7314/0007#002,1/7314/0009#002,1/7314/0010#002,1/7314/0008#002' with 'not required by date' selecting 'first asset'
-#    When I enter the following Licence Number '123333'
-#    Then I can set the status to 'Fulfilled' for multiple assets '1/7314/0007#002,1/7314/0008#002' of 'Vera - Series 2' and licence number '123333'
-#    And 'Fulfilled' date on the left Selection Details menu for Production ID '1/7314/0008#002' of 'Vera - Series 2' is 'today's date'
+  Scenario: Multiple assets can be set to 'Fulfilled' at once
+    Given I am on the 'New Request' page using the following licence number '123333'
+    And I complete the fulfilment request for 'Vera - Series 2' and ProdID '1/7314/0007#002,1/7314/0009#002,1/7314/0010#002,1/7314/0008#002' with 'not required by date' selecting 'first asset'
+    When I enter the following Licence Number '123333'
+    Then I can set the status to 'In Progress' for multiple assets '1/7314/0007#002,1/7314/0008#002' of 'Vera - Series 2' and licence number '123333'
+    And I can set the status to 'Delivered' for multiple assets '1/7314/0007#002,1/7314/0008#002' of 'Vera - Series 2' and licence number '123333'
+    When I can set the status to 'Fulfilled' for multiple assets '1/7314/0007#002,1/7314/0008#002' of 'Vera - Series 2' and licence number '123333'
+    And 'Fulfilled' date on the right Selection Details menu for Production ID '1/7314/0008#002' of 'Vera - Series 2' is 'today's date'
 
   Scenario: Multiple assets can be set to 'External Requested' at once
     Given I enter the following Licence Number '123665'

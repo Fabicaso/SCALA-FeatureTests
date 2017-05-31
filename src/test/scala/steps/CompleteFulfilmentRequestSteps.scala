@@ -1,8 +1,8 @@
 package steps
 
 import itv.fulfilmentplanning.ExpectedData._
-import itv.fulfilmentplanning.{ExpectedAsset, Job}
 import itv.fulfilmentplanning.pageobjects._
+import itv.fulfilmentplanning.{ExpectedAsset, Job}
 
 import scala.concurrent.duration._
 
@@ -13,7 +13,6 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
   When("""^I complete the fulfilment request for '(.*)' and ProdID '(.*)' with '(.*)' selecting '(.*)'$""") {
     (series: String, productionIds: String, requiredDate: String, expectedAssetsToSelect: String) =>
       logger.info(scenarioMarker, s"Completing the fulfilment request")
-      reloadPage()
       waitUntilPageIsLoaded()
 
       val productionIdsToSelect = productionIds.split(",")
@@ -65,12 +64,6 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
     NextButtonOnSendRequestPage.clickWhenIsDisplayed
   }
 
-  private def waitUntilPageIsLoaded() = {
-    PageLoadedRequest
-      .whenIsEnabled(patienceConfig = PatienceConfig(20.seconds, 1.second), scenarioMarker)
-      .isEnabled shouldBe true
-  }
-
   private def fillRequestFor(job: Job) = {
     textField(ClientField).value = job.client
     DeliveryMediumField.clickWhenIsDisplayed
@@ -85,6 +78,12 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
     job.spec.foreach { value =>
       textField(SpecField).value = value
     }
+  }
+
+  private def waitUntilPageIsLoaded() = {
+    PageLoadedRequest
+      .whenIsEnabled(patienceConfig = PatienceConfig(20.seconds, 1.second), scenarioMarker)
+      .isEnabled shouldBe true
   }
 
   private def setRequiredByToAsset(licenceId: String, productionIds: String, date: Option[Query]) = {

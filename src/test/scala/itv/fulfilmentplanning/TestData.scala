@@ -38,16 +38,10 @@ object ExpectedData {
 
   import org.scalatest.Assertions.fail
 
-  def assetFor(productionId: String): ExpectedAsset =
-    ExpectedData.expectedAssets
-      .find(_.productionId == productionId)
-      .getOrElse(fail(s"Unable to find expected asset for $productionId"))
-
   private val transcodeIfNeed = "Transcode If Needed"
   private val pullAndDeliver  = "Pull And Deliver"
   private val tapeAsSource    = "Tape As Source"
   private val transcode       = "Transcode"
-
   private val btJob = Job("Bt",
                           transcodeIfNeed,
                           "Online",
@@ -62,8 +56,8 @@ object ExpectedData {
     "Delivery Method for TMC",
     Some("25"),
     Some("As Per Source"),
-    Some("http://www.telestream.net/vantage/tech-specs.htm"))
-
+    Some("http://www.telestream.net/vantage/tech-specs.htm")
+  )
   private val skyJob       = Job("Sky-Test", pullAndDeliver, "HardDrive", "Delivery Method for sky")
   private val bbcJob       = Job("BBC-Test", transcode, "Online", "Delivery Method for bbc")
   private val skyItaliaJob = Job("SKY-ITALIA-Test", tapeAsSource, "Tape", "Delivery Method for sky italia")
@@ -71,7 +65,6 @@ object ExpectedData {
   private val raiJob       = Job("RAI-Test", tapeAsSource, "Tape", "Delivery Method for rai")
   private val itvJob       = Job("ITV-Test", tapeAsSource, "Tape", "Delivery Method for itv")
   private val TVEJob       = Job("TVE-Test", transcode, "HardDrive", "Delivery Method for itv")
-
   private val expectedAssets: List[ExpectedAsset] = List(
     ExpectedAsset("Y/1774/0027", "122333", "A Touch of Frost - Series 8 ", "60", "ProRes SD", TMCJob),
     ExpectedAsset("Y/1774/0028", "122333", "A Touch of Frost - Series 8 ", "60", "ProRes HD", TMCJob),
@@ -89,7 +82,14 @@ object ExpectedData {
     ExpectedAsset("2/2990/0001#001", "127093", "Angelby", "60", "ProRes HD", raiJob),
     ExpectedAsset("2/1229/0010#002", "127093", "Endeavour - Series 3", "60", "ProRes HD", raiJob),
     ExpectedAsset("2/4463/0001#001", "127093", "Old Money", "60", "ProRes HD", raiJob),
-    ExpectedAsset("1/7314/0008#002", "123333", "Vera - Series 2", "60", "ProRes HD", itvJob)
+    ExpectedAsset("1/7314/0008#002", "123333", "Vera - Series 2", "60", "ProRes HD", itvJob),
+    ExpectedAsset("2/1229/0012#002", "123888", "Endeavour - Series 3", "60", "ProRes HD", skyJob),
+    ExpectedAsset("2/1229/0011#002", "123888", "Endeavour - Series 3", "60", "ProRes HD", skyJob)
   )
+
+  def assetFor(productionId: String): ExpectedAsset =
+    ExpectedData.expectedAssets
+      .find(_.productionId == productionId)
+      .getOrElse(fail(s"Unable to find expected asset for $productionId"))
 
 }

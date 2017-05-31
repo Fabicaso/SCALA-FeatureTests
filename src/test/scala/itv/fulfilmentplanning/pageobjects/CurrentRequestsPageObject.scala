@@ -6,10 +6,18 @@ trait CurrentRequestsPageObject extends WebBrowser {
   private val noDate = "noDate"
 
   def RequestList: ClassNameQuery = className("page-requestList")
-  def CurrentRequestAssetStatus(status: String) = id(s"menu-dropdown-editStatus-$status")
-  def CurrentRequestNavBarMenu    = id("request-list-menu-dropdown-button")
-  def CurrentRequestEditStatus                  = id("menu-dropdown-editStatus")
-  def CurrentRequestsPageLoaded   = id("page-loaded-request-list")
+
+  def CurrentRequestAssetStatus(requiredBy: Option[String], licenceId: String, toAssetStatus: String) =
+    xpath(
+      s"//*[contains(@id,'request-list-section-content-${requiredBy.getOrElse(noDate)}') and contains(@id,'$licenceId')and contains(@id,'-state-$toAssetStatus')]")
+
+  def CurrentRequestEditAssetStatus(status: String) = id(s"menu-dropdown-editStatus-$status")
+
+  def CurrentRequestNavBarMenu = id("request-list-menu-dropdown-button")
+
+  def CurrentRequestEditStatus = id("menu-dropdown-editStatus")
+
+  def CurrentRequestsPageLoaded = id("page-loaded-request-list")
   def RequestedAssetsForDate(date: Option[String]) =
     id(s"request-list-section-header-${date.getOrElse(noDate)}-date")
   def RequestedAssetRowBy(productionId: String) = xpath(s"//span[contains(text(),'$productionId')] ")

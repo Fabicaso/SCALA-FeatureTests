@@ -5,7 +5,9 @@ import org.scalatest.selenium.WebBrowser
 trait OverviewPageObject extends WebBrowser {
 
   def SideBarProductionId                     = id("sidebar-production-id")
-  def SidebarHeader                           = id("sidebar-header-not-selected")
+
+  def SidebarHeader = xpath(
+    s"//p[contains(@id, 'sidebar')]")
   def CollapseAll                             = id("overview-navbar-collapse")
   def PageLoadedOverview                      = id("page-loaded-overview")
   def CreateNewRequestButton                  = id("create-new-request-button")
@@ -39,7 +41,6 @@ trait OverviewPageObject extends WebBrowser {
   def AssetStatusOnProductionRow(licenceId: String, productionId: String) =
     xpath(
       s"//span[contains(@id, '$licenceId') and contains(@id, '$productionId') and contains(@id, '-labels-state-node-status')]")
-  def ProductionStatus(licenceId: String, productionId: String) =
-    id(s"$licenceId-$productionId-labels-state-node-status")
+
 
 }
