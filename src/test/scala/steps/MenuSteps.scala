@@ -1,6 +1,7 @@
 package steps
 
 import itv.fulfilmentplanning.pageobjects._
+
 import scala.concurrent.duration._
 
 class MenuSteps
@@ -14,9 +15,11 @@ class MenuSteps
 
   And("""^I enter the following Licence Number '(.*)'$""") { (licenceId: String) =>
     logger.info(scenarioMarker, s"Go to licence number: $licenceId")
-    EnterLicenceSection.clickWhenIsDisplayed
-    eventually(numberField(LicenceInput)).value = licenceId
-    eventually{submit()}
+    eventually {
+      EnterLicenceSection.clickWhenIsDisplayed
+      numberField(LicenceInput).value = licenceId
+      submit()
+    }
   }
 
   Then("""^the '(.*)' is displayed$""") { (textDisplayed: String) =>
@@ -29,13 +32,13 @@ class MenuSteps
     ExactText(licenceInvalidWarningMessage).whenIsDisplayed
   }
 
-  Then("""^the 'ITV' logo is displayed$"""){ () =>
-    logger.info(scenarioMarker,s"ITV logo is correctly displayed")
+  Then("""^the 'ITV' logo is displayed$""") { () =>
+    logger.info(scenarioMarker, s"ITV logo is correctly displayed")
     ITVLogo.whenIsDisplayed
   }
 
-  And ("""^the 'Craft' logo is displayed$"""){ () =>
-    logger.info(scenarioMarker,s"Craft logo is correctly displayed")
+  And("""^the 'Craft' logo is displayed$""") { () =>
+    logger.info(scenarioMarker, s"Craft logo is correctly displayed")
     CraftLogo.whenIsDisplayed
   }
 
@@ -46,7 +49,9 @@ class MenuSteps
 
   Then("""^the '(.*)' page is displayed$""") { (page: String) =>
     logger.info(scenarioMarker, s"Checking that $page is opened after clicking the $page breadcrumb")
-    eventually{waitPageToBeLoaded(page)}
+    eventually {
+      waitPageToBeLoaded(page)
+    }
   }
 
   private def waitPageToBeLoaded(page: String) =
