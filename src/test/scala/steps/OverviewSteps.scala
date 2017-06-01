@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter
 
 import itv.fulfilmentplanning.ExpectedAsset
 import itv.fulfilmentplanning.ExpectedData.assetFor
+import itv.fulfilmentplanning.ext._
 import itv.fulfilmentplanning.pageobjects._
 import org.scalactic.StringNormalizations._
 import org.scalatest.time.{Second, Seconds, Span}
@@ -55,12 +56,7 @@ class OverviewSteps
         SeriesRow(series).clickWhenIsDisplayed
       }
 
-      if (SidebarHeader.element.text == ("No production selected")) {
-        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
-        if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
-          ProductionRow(productionId).clickWhenIsDisplayed
-        }
-      }
+      selectProductionRow(productionId)
 
       (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
         after being lowerCased)
@@ -74,7 +70,7 @@ class OverviewSteps
           val NotRequiredAssetStatus: String = "notRequired"
           AssetStatus(NotRequiredAssetStatus).clickWhenIsDisplayed
           eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus)) (
+            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
               after being lowerCased)
           }
         }
@@ -82,7 +78,7 @@ class OverviewSteps
           val CancelledAssetStatus: String = "cancelled"
           AssetStatus(CancelledAssetStatus).clickWhenIsDisplayed
           eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("Outstanding")) (
+            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("Outstanding"))(
               after being lowerCased)
           }
         }
@@ -90,7 +86,7 @@ class OverviewSteps
           val InProgressAssetStatus: String = "inProgress"
           AssetStatus(InProgressAssetStatus).clickWhenIsDisplayed
           eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus)) (
+            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
               after being lowerCased)
           }
         }
@@ -98,7 +94,7 @@ class OverviewSteps
           val DeliveredAssetStatus: String = "delivered"
           AssetStatus(DeliveredAssetStatus).clickWhenIsDisplayed
           eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus)) (
+            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
               after being lowerCased)
           }
         }
@@ -106,7 +102,7 @@ class OverviewSteps
           AssetStatus(toAssetStatus.toLowerCase()).clickWhenIsDisplayed
           TodaysDate.clickWhenIsDisplayed
           eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus)) (
+            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
               after being lowerCased)
           }
         }
@@ -120,14 +116,11 @@ class OverviewSteps
       logger.info(scenarioMarker, s"the Asset Status for $productionId is set to $fromAssetStatus")
       waitPageToBeLoaded()
 
-      if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
-
-      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
-
-      if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
-        ProductionRow(productionId).clickWhenIsDisplayed
-        SideBarProductionId.whenIsDisplayed.text should ===(productionId)
+      if (!CollapseAll.element.isEnabled) {
+        SeriesRow(series).clickWhenIsDisplayed
       }
+
+      selectProductionRow(productionId)
 
       (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
         after being lowerCased)
@@ -152,11 +145,11 @@ class OverviewSteps
       waitPageToBeLoaded()
       reloadPage()
       waitPageToBeLoaded()
-      if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
-
-      if (SidebarHeader.element.isDisplayed) {
-        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+      if (!CollapseAll.element.isEnabled) {
+        SeriesRow(series).clickWhenIsDisplayed
       }
+
+      selectProductionRow(productionId)
 
       eventually {
         (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
@@ -171,14 +164,11 @@ class OverviewSteps
       reloadPage()
       waitPageToBeLoaded()
 
-      if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
-
-      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
-
-      if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
-        ProductionRow(productionId).clickWhenIsDisplayed
-        SideBarProductionId.whenIsDisplayed.text should ===(productionId)
+      if (!CollapseAll.element.isEnabled) {
+        SeriesRow(series).clickWhenIsDisplayed
       }
+
+      selectProductionRow(productionId)
 
       if (date == "today's date") {
         var date = expectedDate
@@ -205,14 +195,7 @@ class OverviewSteps
       waitPageToBeLoaded()
       SeriesRow(series).clickWhenIsDisplayed
       eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-        click on ProductionRow(productionId).elementOrFail
-        if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
-          ProductionRow(productionId).clickWhenIsDisplayed
-          if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
-            ProductionRow(productionId).clickWhenIsDisplayed
-            SideBarProductionId.whenIsDisplayed.text should ===(productionId)
-          }
-        }
+        selectProductionRow(productionId)
         click on ActionsMenu.elementOrFail
         click on EditDates.elementOrFail
         click on EditDatesStatus((productionStatus: String).toLowerCase).elementOrFail
@@ -229,18 +212,13 @@ class OverviewSteps
         logger.info(scenarioMarker, s"the status Asset source is set to External for ProdId: $productionId")
         waitPageToBeLoaded()
 
-        if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
+        if (!CollapseAll.element.isEnabled) {
+          SeriesRow(series).clickWhenIsDisplayed
+        }
 
-        if (SidebarHeader.element.text == ("No production selected")) {
+        selectProductionRow(productionId)
 
-          ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds),
-                                                           scenarioMarker)
-          if (SideBarProductionId.element.text != (productionId)) {
-            ProductionRow(productionId).clickWhenIsDisplayed
-          }
-          (SourceAsset(licenceId, productionId).whenIsDisplayed.text should ===(sourceAsset))(after being lowerCased)
-        } else
-          reloadPage()
+        (SourceAsset(licenceId, productionId).whenIsDisplayed.text should ===(sourceAsset))(after being lowerCased)
       }
 
   }
@@ -255,17 +233,11 @@ class OverviewSteps
       reloadPage()
       waitPageToBeLoaded()
 
-      if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
-
-        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(5.seconds, 200.milliseconds), scenarioMarker)
-      if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
-          ProductionRow(productionId).clickWhenIsDisplayed
-        if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
-            ProductionRow(productionId).clickWhenIsDisplayed
-          SideBarProductionId.whenIsDisplayed.text should ===(productionId)
-
-        }
+      if (!CollapseAll.element.isEnabled) {
+        SeriesRow(series).clickWhenIsDisplayed
       }
+
+      selectProductionRow(productionId)
 
       eventually {
         PrevFulfilled_AssetUpdated.whenIsDisplayed.text should ===(expectedDate)
@@ -280,7 +252,9 @@ class OverviewSteps
     (series: String, productionId: String, licence: String) =>
       val prodId: ExpectedAsset = assetFor(productionId)
       logger.info(scenarioMarker, s"$series is flagged as Previous Fulfilled")
-      eventually { PrevFulfilledSeriesFlag(series).element.isDisplayed }
+      eventually {
+        PrevFulfilledSeriesFlag(series).element.isDisplayed
+      }
       logger.info(scenarioMarker, s"the $productionId is flagged with a dot as Previous Fulfilled")
 
       eventually {
@@ -307,12 +281,7 @@ class OverviewSteps
             firstProduction,
             ExactText(production2).elementOrFail
           )
-          if (SideBarTitle.element.text != ("4 Items Selected")) {
-            dragAndSelect(
-              firstProduction,
-              ExactText(production2).elementOrFail
-            )
-          }
+          SideBarTitle.element.text should include("4 Items Selected")
 
           click on ActionsMenu.elementOrFail
           click on EditStatus.elementOrFail
@@ -350,61 +319,41 @@ class OverviewSteps
   }
 
   And("""^I set to External Fulfilled the status of ProdId '(.*)' and '(.*)' and licence number '(.*)'$""") {
-    (productionId: String, series: String, licenceId: String) => {
-      logger.info(scenarioMarker, s"Change the Asset Status to External Fulfilled")
-      waitPageToBeLoaded()
+    (productionId: String, series: String, licenceId: String) =>
+      {
+        logger.info(scenarioMarker, s"Change the Asset Status to External Fulfilled")
+        waitPageToBeLoaded()
 
-      if (!CollapseAll.element.isEnabled) {
-        SeriesRow(series).clickWhenIsDisplayed
-      }
-
-      if (SidebarHeader.element.text == ("No production selected")) {
-        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds),
-          scenarioMarker)
-        if (SideBarProductionId.element.text != (productionId)) {
-          ProductionRow(productionId).clickWhenIsDisplayed
+        if (!CollapseAll.element.isEnabled) {
+          SeriesRow(series).clickWhenIsDisplayed
         }
-      }
 
-      (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===("Outstanding")) (
-        after being lowerCased)
+        selectProductionRow(productionId)
 
-      NavigationActionMenu.clickWhenIsDisplayed
-      EditStatus.clickWhenIsDisplayed
-      AssetStatus("requested").clickWhenIsDisplayed
-      TodaysDate.clickWhenIsDisplayed
-      eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-        (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("requested")) (
+        (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===("Outstanding"))(
           after being lowerCased)
 
-        NavigationActionMenu.clickWhenIsDisplayed
-        EditStatus.clickWhenIsDisplayed
-        AssetStatus("inProgress").clickWhenIsDisplayed
-        eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-          (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("In Progress")) (
-            after being lowerCased)
+        setAssetState(productionId, licenceId, "requested", Some(TodaysDate))
 
-          NavigationActionMenu.clickWhenIsDisplayed
-          EditStatus.clickWhenIsDisplayed
-          AssetStatus("delivered").clickWhenIsDisplayed
-          eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("Delivered")) (
-              after being lowerCased)
+        setAssetState(productionId, licenceId, "inProgress")
 
-            NavigationActionMenu.clickWhenIsDisplayed
-            EditStatus.clickWhenIsDisplayed
-            AssetStatus("fulfilled").clickWhenIsDisplayed
-            TodaysDate.clickWhenIsDisplayed
-            eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-              (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("Fulfilled")) (
-                after being lowerCased)
+        setAssetState(productionId, licenceId, "delivered")
 
-            }
-          }
-        }
+        setAssetState(productionId, licenceId, "fulfilled", Some(TodaysDate))
+      }
+  }
+
+  private def setAssetState(productionId: String, licenceId: String, state: String, date: Option[Query] = None) =
+    eventually {
+      NavigationActionMenu.clickWhenIsDisplayed
+      EditStatus.clickWhenIsDisplayed
+      AssetStatus(state).clickWhenIsDisplayed
+      date.foreach(_.clickWhenIsDisplayed)
+      eventually {
+        (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text
+          .replaceAll(" ", "") should ===(state))(after being lowerCased.and(withoutWhiteSpaces))
       }
     }
-  }
 
   private def firstAndLastProduction(productionIds: String) = {
     val (production1, production2) = productionIds.split(",") match {
@@ -434,6 +383,15 @@ class OverviewSteps
       case "Requested"   => RequestedSideBarDate.whenIsDisplayed.text should ===(s"$date")
       case "Required By" => RequiredBySideBarDate.whenIsDisplayed.text should ===(s"$date")
       case _             => fail(s"Unsupported dates On Side Bar Menu: $statusDatesOnSideBarMenu")
+    }
+  }
+
+  private def selectProductionRow(productionId: String) = {
+    if (SidebarHeader.element.text == ("No production selected")) {
+      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+      if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
+        ProductionRow(productionId).clickWhenIsDisplayed
+      }
     }
   }
 

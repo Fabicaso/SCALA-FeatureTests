@@ -30,7 +30,7 @@ trait OverviewPageObject extends WebBrowser {
 
   def AssetStatus(status: String) = id(s"menu-dropdown-editStatus-$status")
 
-  def TodaysDate = className("react-datepicker__day--today")
+  def TodaysDate: ClassNameQuery = className("react-datepicker__day--today")
 
   def YesterdaysDate = xpath("//div[contains(@class, 'react-datepicker__day--today')]/preceding-sibling::div[1]")
 
@@ -44,7 +44,7 @@ trait OverviewPageObject extends WebBrowser {
 
   def EditDates = id("menu-dropdown-editDate")
 
-  def PrevFulfilledSeriesFlag(series: String) = id(s"series-$series-prev-fulfilled-flag")
+  def PrevFulfilledSeriesFlag(series: String)              = id(s"series-$series-prev-fulfilled-flag")
   def PrevFulfilled_AssetUpdated                           = id("sidebar-metadata-entry-updated-value")
   def PrevFulfilled_LicenceNo(licenceId: String)           = id(s"sidebar-metadata-entry-$licenceId-licenceNo-value")
   def PrevFulfilled_FulfilledDate(licenceId: String)       = id(s"sidebar-metadata-entry-$licenceId-fulfilled-value")
