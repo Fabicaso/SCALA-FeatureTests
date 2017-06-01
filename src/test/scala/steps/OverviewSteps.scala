@@ -76,7 +76,7 @@ class OverviewSteps
           eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
             (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus)) (
               after being lowerCased)
-        }
+          }
         }
         case "Cancelled" => {
           val CancelledAssetStatus: String = "cancelled"
@@ -108,12 +108,9 @@ class OverviewSteps
           eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
             (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus)) (
               after being lowerCased)
-        }
+          }
         }
 
-        //      eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
-        //        (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===(toAssetStatus))(
-        //          after being lowerCased)
       }
   }
 
@@ -246,9 +243,8 @@ class OverviewSteps
             ProductionRow(productionId).clickWhenIsDisplayed
           }
           (SourceAsset(licenceId, productionId).whenIsDisplayed.text should ===(sourceAsset))(after being lowerCased)
-        }
-        else
-        reloadPage()
+        } else
+          reloadPage()
       }
 
   }
@@ -316,6 +312,14 @@ class OverviewSteps
             firstProduction,
             ExactText(production2).elementOrFail
           )
+          if (SideBarTitle.element.text != ("4 Items Selected")) {
+            dragAndSelect(
+              firstProduction,
+              ExactText(production2).elementOrFail
+            )
+          }
+
+
           click on ActionsMenu.elementOrFail
           click on EditStatus.elementOrFail
 
@@ -345,9 +349,67 @@ class OverviewSteps
 
         }
         eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+          AssetStatusOnProductionRow(production1, licenceId).elementOrFail.text should ===(toAssetStatus)
           AssetStatusOnProductionRow(production2, licenceId).elementOrFail.text should ===(toAssetStatus)
         }
       }
+  }
+
+  And("""^I set to External Fulfilled the status of ProdId '(.*)' and '(.*)' and licence number '(.*)'$""") {
+    (productionId: String, series: String, licenceId: String) => {
+      logger.info(scenarioMarker, s"Change the Asset Status to External Fulfilled")
+      waitPageToBeLoaded()
+
+      if (!CollapseAll.element.isEnabled) {
+        SeriesRow(series).clickWhenIsDisplayed
+      }
+
+      if (SidebarHeader.element.text == ("No production selected")) {
+        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds),
+          scenarioMarker)
+        if (SideBarProductionId.element.text != (productionId)) {
+          ProductionRow(productionId).clickWhenIsDisplayed
+        }
+      }
+
+      (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===("Outstanding")) (
+        after being lowerCased)
+
+      NavigationActionMenu.clickWhenIsDisplayed
+      EditStatus.clickWhenIsDisplayed
+      AssetStatus("requested").clickWhenIsDisplayed
+      TodaysDate.clickWhenIsDisplayed
+      eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+        (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("requested")) (
+          after being lowerCased)
+
+        NavigationActionMenu.clickWhenIsDisplayed
+        EditStatus.clickWhenIsDisplayed
+        AssetStatus("inProgress").clickWhenIsDisplayed
+        eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+          (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("In Progress")) (
+            after being lowerCased)
+
+          NavigationActionMenu.clickWhenIsDisplayed
+          EditStatus.clickWhenIsDisplayed
+          AssetStatus("delivered").clickWhenIsDisplayed
+          eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+            (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("Delivered")) (
+              after being lowerCased)
+
+            NavigationActionMenu.clickWhenIsDisplayed
+            EditStatus.clickWhenIsDisplayed
+            AssetStatus("fulfilled").clickWhenIsDisplayed
+            TodaysDate.clickWhenIsDisplayed
+            eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
+              (AssetStatusOnProductionRow(productionId, licenceId).whenIsDisplayed.text should ===("Fulfilled")) (
+                after being lowerCased)
+
+            }
+          }
+        }
+      }
+    }
   }
 
   private def firstAndLastProduction(productionIds: String) = {

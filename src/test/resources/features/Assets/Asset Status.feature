@@ -10,19 +10,6 @@ Feature: Asset Status
     When I login with the following valid credentials
     Then the 'Current Requests' page is displayed
 
-#  from 'Fulfilled' to 'Requested'
-  Scenario: Asset status can be changed from 'Fulfilled' to 'Requested' on the 'Overview' page for External fulfilment
-    Given I enter the following Licence Number '123888'
-    And I am able to change the status from 'Outstanding' to 'Requested' for ProdId '2/1229/0013#002' and 'Endeavour - Series 3' and licence number '123888'
-    And the Asset source is set to 'External' for ProdId '2/1229/0013#0022' series 'Endeavour - Series 3' and licence number '123888'
-    And I am able to change the status from 'Requested' to 'In Progress' for ProdId '2/1229/0013#002' and 'Endeavour - Series 3' and licence number '123888'
-    And I am able to change the status from 'In Progress' to 'Delivered' for ProdId '2/1229/0013#002' and 'Endeavour - Series 3' and licence number '123888'
-    When I am able to change the status from 'Delivered' to 'Fulfilled' for ProdId '2/1229/0013#002' and 'Endeavour - Series 3' and licence number '123888'
-    Then the Asset source is set to 'External' for ProdId '2/1229/0013#002' series 'Endeavour - Series 3' and licence number '123888'
-    #ToDo Craig to fix this bug:I am able to change the status from 'Fulfilled' to 'Requested'
-    And I am able to change the status from 'Fulfilled' to 'Requested' for ProdId '2/1229/0013#002' and 'Endeavour - Series 3' and licence number '123888'
-
-
 #    Not Required
   Scenario: Asset status can be changed from 'Requested' to 'Not Required' on the 'Overview' page and back to Requested
     Given I enter the following Licence Number '124366'
@@ -30,7 +17,6 @@ Feature: Asset Status
     And the label status on the Overview page has changed to 'Not Required' for ProdId '2/2113/0001#002' and 'Breathless' and licence number '124366'
     When I can change the status from 'Not Required' to 'Requested' for ProdId '2/2113/0001#002' and 'Breathless' and licence number '124366'
     Then the label status on the Overview page has changed to 'Requested' for ProdId '2/2113/0001#002' and 'Breathless' and licence number '124366'
-
 
 #   Cancelled
   Scenario: Asset can be cancelled when it's in the state of Requests from the Overview Page
@@ -57,19 +43,14 @@ Feature: Asset Status
     And I am able to change the status from 'Outstanding' to 'Requested' for ProdId '2/1229/0015#003' and 'Endeavour - Series 4' and licence number '128002'
     When I am able to change the status from 'Requested' to 'In Progress' for ProdId '2/1229/0015#003' and 'Endeavour - Series 4' and licence number '128002'
     And I am able to change the status from 'In Progress' to 'Delivered' for ProdId '2/1229/0015#003' and 'Endeavour - Series 4' and licence number '128002'
-    #ToDo Ask Craig to Fix not able to change Delivered to Cancelled
     Then I can change the status from 'Delivered' to 'Cancelled' for ProdId '2/1229/0015#003' and 'Endeavour - Series 4' and licence number '128002'
 
-
- #----> End 2 end test from 'Outstanding to 'Fulfilled'
-#External Assets on the Overview Page
-  Scenario: Asset status can be changed from 'Outstanding' to 'Fulfilled' on the 'Overview' page for External fulfilment
+#----> End 2 end test from 'Outstanding to 'External Fulfilled'on the Overview Page
+  Scenario: Asset status can be changed from 'Fulfilled' to 'Requested' on the 'Overview' page for External fulfilment
     Given I enter the following Licence Number '123888'
-    And I am able to change the status from 'Outstanding' to 'Requested' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '123888'
-    When I am able to change the status from 'Requested' to 'In Progress' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '123888'
-    And I enter the following Licence Number '123888'
-    Then I am able to change the status from 'In Progress' to 'Delivered' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '123888'
-    And I can change the status from 'Delivered' to 'Fulfilled' for ProdId '2/1229/0010#002' and 'Endeavour - Series 3' and licence number '123888'
+    And I set to External Fulfilled the status of ProdId '2/1229/0013#002' and 'Endeavour - Series 3' and licence number '123888'
+    Then the Asset source is set to 'External' for ProdId '2/1229/0013#002' series 'Endeavour - Series 3' and licence number '123888'
+    And I am able to change the status from 'Fulfilled' to 'Requested' for ProdId '2/1229/0013#002' and 'Endeavour - Series 3' and licence number '123888'
 
 # NOT-External Assets on the Current Request Page
   Scenario: Asset status can be changed from 'Outstanding' to 'Fulfilled'' on the 'Current Request' page for External fulfilment
