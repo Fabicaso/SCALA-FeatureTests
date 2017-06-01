@@ -46,8 +46,8 @@ class CurrentRequestsSteps
       (SideBarDeliveryMedium.whenIsDisplayed.text.replaceAll(" ", "") should ===(expectedAsset.job.deliveryMedium))(
         after being lowerCased)
       (SideBarPreferredOutputFrameRate.whenIsDisplayed.text should ===(
-        expectedAsset.job.preferredOutputFrameRate.getOrElse("-"))) (after being lowerCased)
-      (SideBarResolutionOutput.whenIsDisplayed.text should ===(expectedAsset.job.resolutionOutput.getOrElse("-"))) (
+        expectedAsset.job.preferredOutputFrameRate.getOrElse("-")))(after being lowerCased)
+      (SideBarResolutionOutput.whenIsDisplayed.text should ===(expectedAsset.job.resolutionOutput.getOrElse("-")))(
         after being lowerCased)
       SideBarSpec.whenIsDisplayed
   }
@@ -128,6 +128,7 @@ class CurrentRequestsSteps
 
       toAssetStatus match {
         case "cancelled" => {
+          logger.info(s"!!!!!!!!!!!!!!! $toAssetStatus")
           CurrentRequestEditAssetStatus(toAssetStatus).clickWhenIsDisplayed
         }
         case _ => {

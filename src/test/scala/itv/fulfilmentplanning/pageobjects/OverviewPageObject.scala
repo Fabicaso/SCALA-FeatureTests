@@ -24,8 +24,6 @@ trait OverviewPageObject extends WebBrowser {
 
   def SeriesRow(series: String) = id(s"overview-series-$series-title")
 
-  def NavigationActionMenu = id("overview-navbar-actions")
-
   def EditStatus = id("menu-dropdown-editStatus")
 
   def AssetStatus(status: String) = id(s"menu-dropdown-editStatus-$status")
@@ -40,7 +38,7 @@ trait OverviewPageObject extends WebBrowser {
 
   def RequestedSideBarDate = id("sidebar-dates-requested-value")
 
-  def ActionsMenu = id("overview-navbar-actions-dropdown-button")
+  def NavigationActionMenu = id("overview-navbar-actions")
 
   def EditDates = id("menu-dropdown-editDate")
 
@@ -57,7 +55,7 @@ trait OverviewPageObject extends WebBrowser {
 
   def SidebarHeader = xpath(s"//p[contains(@id, 'sidebar')]")
 
-  def PrevFulfilledProductionDot(licence: String, productionId: String) =
+  def PreviouslyFulfilledProductionDot(licence: String, productionId: String) =
     id(s"$licence-$productionId-prev-fulfilled-flag")
   def AssetStatusOnProductionRow(licenceId: String, productionId: String) =
     xpath(
