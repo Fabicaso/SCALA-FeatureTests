@@ -57,7 +57,7 @@ class OverviewSteps
 
       if (SidebarHeader.element.text == ("No production selected")) {
         ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
-        if (SideBarProductionId.element.text != (productionId)) {
+        if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
           ProductionRow(productionId).clickWhenIsDisplayed
         }
       }
@@ -122,15 +122,11 @@ class OverviewSteps
 
       if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
 
-      if (SidebarHeader.element.isEnabled) {
-        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
-        if (SideBarProductionId.element.text != (productionId)) {
-          ProductionRow(productionId).clickWhenIsDisplayed
-          if (SideBarProductionId.element.text != (productionId)) {
-            ProductionRow(productionId).clickWhenIsDisplayed
-            SideBarProductionId.element.text should ===(productionId)
-          }
-        }
+      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+
+      if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
+        ProductionRow(productionId).clickWhenIsDisplayed
+        SideBarProductionId.whenIsDisplayed.text should ===(productionId)
       }
 
       (AssetStatusOnProductionRow(licenceId, productionId).whenIsDisplayed.text should ===(fromAssetStatus))(
@@ -177,12 +173,11 @@ class OverviewSteps
 
       if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
 
-      if (SidebarHeader.element.isEnabled) {
-        ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
-        if (SideBarProductionId.element.text != (productionId)) {
-          ProductionRow(productionId).clickWhenIsDisplayed
-          SideBarProductionId.element.text should ===(productionId)
-        }
+      ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds), scenarioMarker)
+
+      if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
+        ProductionRow(productionId).clickWhenIsDisplayed
+        SideBarProductionId.whenIsDisplayed.text should ===(productionId)
       }
 
       if (date == "today's date") {
@@ -211,11 +206,11 @@ class OverviewSteps
       SeriesRow(series).clickWhenIsDisplayed
       eventually(timeout(Span(10, Seconds)), interval(Span(1, Second))) {
         click on ProductionRow(productionId).elementOrFail
-        if (SideBarProductionId.element.text != (productionId)) {
+        if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
           ProductionRow(productionId).clickWhenIsDisplayed
-          if (SideBarProductionId.element.text != (productionId)) {
+          if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
             ProductionRow(productionId).clickWhenIsDisplayed
-            SideBarProductionId.element.text should ===(productionId)
+            SideBarProductionId.whenIsDisplayed.text should ===(productionId)
           }
         }
         click on ActionsMenu.elementOrFail
@@ -237,6 +232,7 @@ class OverviewSteps
         if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
 
         if (SidebarHeader.element.text == ("No production selected")) {
+
           ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(10.seconds, 100.milliseconds),
                                                            scenarioMarker)
           if (SideBarProductionId.element.text != (productionId)) {
@@ -261,14 +257,13 @@ class OverviewSteps
 
       if (!CollapseAll.element.isEnabled) { SeriesRow(series).clickWhenIsDisplayed }
 
-      if (SidebarHeader.element.isEnabled) {
         ProductionRow(productionId).clickWhenIsDisplayed(PatienceConfig(5.seconds, 200.milliseconds), scenarioMarker)
-        if (SideBarProductionId.element.text != (productionId)) {
+      if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
           ProductionRow(productionId).clickWhenIsDisplayed
-          if (SideBarProductionId.element.text != (productionId)) {
+        if (SideBarProductionId.whenIsDisplayed.text != (productionId)) {
             ProductionRow(productionId).clickWhenIsDisplayed
-            SideBarProductionId.element.text should ===(productionId)
-          }
+          SideBarProductionId.whenIsDisplayed.text should ===(productionId)
+
         }
       }
 
@@ -318,7 +313,6 @@ class OverviewSteps
               ExactText(production2).elementOrFail
             )
           }
-
 
           click on ActionsMenu.elementOrFail
           click on EditStatus.elementOrFail
