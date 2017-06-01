@@ -13,7 +13,7 @@ libraryDependencies ++= {
     "info.cukes"                 %% "cucumber-scala"    % cucumberVersion % "test",
     "info.cukes"                 % "cucumber-junit"     % cucumberVersion % "test",
     "com.novocode"               % "junit-interface"    % "0.11" % "test",
-    "org.seleniumhq.selenium"    % "selenium-java"      % "3.0.1" % "test",
+    "org.seleniumhq.selenium"    % "selenium-java"      % "3.4.0" % "test",
     "com.typesafe.scala-logging" %% "scala-logging"     % "3.5.0",
     "ch.qos.logback"             % "logback-classic"    % "1.2.2",
     "commons-pool"               % "commons-pool"       % "1.6",
