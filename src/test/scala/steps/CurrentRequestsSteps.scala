@@ -116,6 +116,7 @@ class CurrentRequestsSteps
 
       reloadPage()
       waitUntilPageIsLoaded()
+
       RequestedAssetsForDate(TestData.dateFrom(requiredBy)).clickWhenIsDisplayed
       RequestedAssetRowBy(productionId).clickWhenIsDisplayed
 

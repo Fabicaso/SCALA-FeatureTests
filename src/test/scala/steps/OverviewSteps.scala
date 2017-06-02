@@ -98,8 +98,7 @@ class OverviewSteps
     """^the label status on the Overview page has changed to '(.*)' for ProdId '(.*)' and '(.*)' and licence number '(.*)'""") {
     (toAssetStatus: String, productionId: String, series: String, licenceId: String) =>
       logger.info(scenarioMarker, s"the status on the Overview page has changed to Fulfilled")
-      waitPageToBeLoaded()
-      reloadPage()
+
       waitPageToBeLoaded()
 
       selectSeriesRow(series)
@@ -144,15 +143,13 @@ class OverviewSteps
     (productionStatus: String, series: String, productionId: String, licenceId: String) =>
       logger.info(scenarioMarker, s"Edit Dates for $productionStatus status of $series")
       val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now().minusDays(1L))
-      waitPageToBeLoaded()
-      reloadPage()
+
       waitPageToBeLoaded()
 
       SeriesRow(series).clickWhenIsDisplayed
 
       editAssetDate(productionId, productionStatus)
 
-      setAssetState(productionId, licenceId, productionStatus, Some(YesterdaysDate))
       eventually {
         statusDatesCheckOnSideBarMenu(productionStatus, expectedDate)
       }
@@ -172,6 +169,7 @@ class OverviewSteps
     (sourceAsset: String, productionId: String, series: String, licenceId: String) =>
       {
         logger.info(scenarioMarker, s"the status Asset source is set to External for ProdId: $productionId")
+
         waitPageToBeLoaded()
 
         selectSeriesRow(series)
@@ -189,8 +187,7 @@ class OverviewSteps
       logger.info(scenarioMarker, s"previously fulfilled history details are correctly dislayed")
       val licence: ExpectedAsset = assetFor(productionId)
       val expectedDate           = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now())
-      waitPageToBeLoaded()
-      reloadPage()
+
       waitPageToBeLoaded()
 
       selectSeriesRow(series)
@@ -227,8 +224,6 @@ class OverviewSteps
         logger.info(scenarioMarker, s"the status to $toAssetStatus for multiple assets")
 
         waitPageToBeLoaded()
-        reloadPage()
-        waitPageToBeLoaded()
 
         val (production1, production2) = firstAndLastProduction(productionIds)
 
@@ -257,6 +252,7 @@ class OverviewSteps
     (productionId: String, series: String, licenceId: String) =>
       {
         logger.info(scenarioMarker, s"Change the Asset Status to External Fulfilled")
+
         waitPageToBeLoaded()
 
         selectSeriesRow(series)
