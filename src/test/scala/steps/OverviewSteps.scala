@@ -143,7 +143,8 @@ class OverviewSteps
     (productionStatus: String, series: String, productionId: String, licenceId: String) =>
       logger.info(scenarioMarker, s"Edit Dates for $productionStatus status of $series")
       val expectedDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDate.now().minusDays(1L))
-
+      waitPageToBeLoaded()
+      reloadPage()
       waitPageToBeLoaded()
 
       SeriesRow(series).clickWhenIsDisplayed
