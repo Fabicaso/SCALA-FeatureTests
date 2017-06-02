@@ -32,6 +32,7 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
   }
 
   private def selectAssets(series: String, expectedAssetsToSelect: String, productionIdsToSelect: Array[String]) = {
+    waitUntilPageIsLoaded()
     eventually {
       if (!ProductionIdButton(productionIdsToSelect.head).findElement.exists(_.isDisplayed)) {
         newRequestSeriesRow(series).clickWhenIsDisplayed
@@ -61,6 +62,12 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
     }
   }
 
+  private def waitUntilPageIsLoaded() = {
+    PageLoadedRequest
+      .whenIsEnabled(patienceConfig = PatienceConfig(20.seconds, 1.second), scenarioMarker)
+      .isEnabled shouldBe true
+  }
+
   private def fillRequestDetails(expectedAsset: ExpectedAsset) = {
     fillRequestFor(expectedAsset.job)
     NextButtonOnSendRequestPage.clickWhenIsDisplayed
@@ -80,12 +87,6 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
     job.spec.foreach { value =>
       textField(SpecField).value = value
     }
-  }
-
-  private def waitUntilPageIsLoaded() = {
-    PageLoadedRequest
-      .whenIsEnabled(patienceConfig = PatienceConfig(20.seconds, 1.second), scenarioMarker)
-      .isEnabled shouldBe true
   }
 
   private def setRequiredByToAsset(licenceId: String, productionIds: String, date: Option[Query]) = {
