@@ -170,8 +170,6 @@ class OverviewSteps
       {
         logger.info(scenarioMarker, s"the status Asset source is set to External for ProdId: $productionId")
 
-        waitPageToBeLoaded()
-
         selectSeriesRow(series)
 
         selectProductionRow(productionId)

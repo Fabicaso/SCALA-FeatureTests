@@ -34,7 +34,7 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
   private def selectAssets(series: String, expectedAssetsToSelect: String, productionIdsToSelect: Array[String]) = {
     eventually {
       if (!ProductionIdButton(productionIdsToSelect.head).findElement.exists(_.isDisplayed)) {
-        click on newRequestSeriesRow(series).whenIsDisplayed
+        newRequestSeriesRow(series).clickWhenIsDisplayed
       }
       ProductionIdButton(productionIdsToSelect.head).findElement.map(_.isDisplayed) should ===(Some(true))
     }
