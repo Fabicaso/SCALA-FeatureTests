@@ -44,7 +44,12 @@ class MenuSteps
 
   When("""^I click on the breadcrumb for the '(.*)' page$""") { (page: String) =>
     logger.info(scenarioMarker, s"Checking that $page breadcrumb link is working")
-    PageBreadcrumbLink((page: String).toLowerCase()).clickWhenIsDisplayed
+    page match {
+      case "Current Requests" => PageBreadcrumbLink("current-requests").clickWhenIsDisplayed
+      case "New Request"      => PageBreadcrumbLink("request").clickWhenIsDisplayed
+      case "Send Request"     => PageBreadcrumbLink("send").clickWhenIsDisplayed
+      case "Overview"         => PageBreadcrumbLink("overview").clickWhenIsDisplayed
+    }
   }
 
   Then("""^the '(.*)' page is displayed$""") { (page: String) =>
@@ -64,8 +69,12 @@ class MenuSteps
         CurrentRequestsPageLoaded
           .whenIsEnabled(patienceConfig = PatienceConfig(10.seconds, 500.milliseconds), scenarioMarker)
           .isEnabled shouldBe true
-      case "New Requests" =>
+      case "New Request" =>
         PageLoadedRequest
+          .whenIsEnabled(patienceConfig = PatienceConfig(10.seconds, 500.milliseconds), scenarioMarker)
+          .isEnabled shouldBe true
+      case "Required By" =>
+        PageLoadedAssetRequestDates
           .whenIsEnabled(patienceConfig = PatienceConfig(10.seconds, 500.milliseconds), scenarioMarker)
           .isEnabled shouldBe true
     }

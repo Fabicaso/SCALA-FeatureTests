@@ -2,7 +2,8 @@ package steps
 
 import itv.fulfilmentplanning.ExpectedData.assetFor
 import itv.fulfilmentplanning.pageobjects._
-import itv.fulfilmentplanning.{ExpectedAsset}
+import itv.fulfilmentplanning.{ExpectedAsset, Job}
+
 import scala.concurrent.duration._
 
 class SendRequestSteps
@@ -19,6 +20,15 @@ class SendRequestSteps
     (licenceId: String, series: String, productionIds: String, expectedAssetsToSelect: String) =>
       openNewRequestPage(licenceId)
       openSendRequestPage(series, productionIds, expectedAssetsToSelect)
+  }
+
+  Given(
+    """^I am on the 'Required By' page using the following licence number '(.*)' series '(.*)' and ProdID '(.*)' selecting '(.*)'$""") {
+    (licenceId: String, series: String, productionIds: String, expectedAssetsToSelect: String) =>
+      openNewRequestPage(licenceId)
+      openSendRequestPage(series, productionIds, expectedAssetsToSelect)
+      fillRequestDetails(assetFor(productionIds))
+      PageLoadedAssetRequestDates.whenIsEnabled
   }
 
   When("""^I select '(.*)' as the 'Delivery Medium' and '(.*)' as the 'Job' on the 'Send Request'form$""") {
@@ -59,6 +69,27 @@ class SendRequestSteps
       }
   }
 
+  private def fillRequestDetails(expectedAsset: ExpectedAsset) = {
+    fillRequestFor(expectedAsset.job)
+    NextButtonOnSendRequestPage.clickWhenIsDisplayed
+  }
+
+  private def fillRequestFor(job: Job) = {
+    textField(ClientField).value = job.client
+    DeliveryMediumField.clickWhenIsDisplayed
+    DeliveryMediumValue(job.deliveryMedium).clickWhenIsDisplayed
+    JobField.clickWhenIsDisplayed
+    JobValue(job.jobType).clickWhenIsDisplayed
+    textArea(DeliveryMethod).value = job.deliveryMethod
+    job.preferredOutputFrameRate.foreach { value =>
+      FrameRate.clickWhenIsDisplayed
+      FrameRateValue(value).clickWhenIsDisplayed
+    }
+    job.spec.foreach { value =>
+      textField(SpecField).value = value
+    }
+  }
+
   private def waitUntilPageIsLoaded() = {
     SendRequestsPageLoaded
       .whenIsEnabled(patienceConfig = PatienceConfig(20.seconds, 1.second), scenarioMarker)
@@ -72,17 +103,6 @@ class SendRequestSteps
     RequestNextButton.clickWhenIsDisplayed
     RequestConfirmLoaded.whenIsEnabled
     logger.info(scenarioMarker, s"Send Request Page loaded")
-  }
-
-  private def openNewRequestPage(licenceId: String) = {
-    logger.info(scenarioMarker, s"Go to licence number: $licenceId")
-    EnterLicenceSection.clickWhenIsDisplayed
-    eventually(numberField(LicenceInput)).value = licenceId.toString
-    submit()
-    logger.info(scenarioMarker, s"Overview Page loaded")
-    CreateNewRequestButton.clickWhenIsDisplayed
-    PageLoadedRequest.whenIsEnabled
-    logger.info(scenarioMarker, s"New Request Page loaded")
   }
 
   private def selectAssets(series: String, expectedAssetsToSelect: String, productionIdsToSelect: Array[String]) = {
@@ -113,5 +133,16 @@ class SendRequestSteps
           ProductionIdSelected(productionId).whenIsDisplayed
       }
     }
+  }
+
+  private def openNewRequestPage(licenceId: String) = {
+    logger.info(scenarioMarker, s"Go to licence number: $licenceId")
+    EnterLicenceSection.clickWhenIsDisplayed
+    eventually(numberField(LicenceInput)).value = licenceId.toString
+    submit()
+    logger.info(scenarioMarker, s"Overview Page loaded")
+    CreateNewRequestButton.clickWhenIsDisplayed
+    PageLoadedRequest.whenIsEnabled
+    logger.info(scenarioMarker, s"New Request Page loaded")
   }
 }
