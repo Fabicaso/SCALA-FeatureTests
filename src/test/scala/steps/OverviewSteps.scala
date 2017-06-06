@@ -147,7 +147,7 @@ class OverviewSteps
       reloadPage()
       waitPageToBeLoaded()
 
-      SeriesRow(series).clickWhenIsDisplayed
+      selectSeriesRow(series)
 
       editAssetDate(productionId, productionStatus)
 

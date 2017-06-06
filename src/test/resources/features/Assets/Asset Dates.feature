@@ -10,7 +10,7 @@ Feature: Asset Dates
     When I login with the following valid credentials
     Then the 'Current Requests' page is displayed
 
-  Scenario: '-' is displayed for a requested asset if no required by date is available and then user is able to edit Required By date
+  Scenario: '-' is displayed for a requested asset if no 'Required By' date is available and then user is able to edit Required By date
     Given I am on the 'New Request' page using the following licence number '127093'
     And I complete the fulfilment request for 'Angelby' and ProdID '2/2990/0001#001' with 'not required by date' selecting 'first asset'
     When I enter the following Licence Number '127093'
