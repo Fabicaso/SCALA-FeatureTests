@@ -22,6 +22,7 @@ Feature: License Check
     When I am on the 'New Request' page using the following licence number '123555'
     Then No assets found msg is displayed for 'Lewis - Series 8' and production id - '1/5634/0034#002'
 
+  @smokeTest
   Scenario: License Start date is displayed
     When I enter the following Licence Number '123555'
     Then the 'start date' is displayed on Overview page
