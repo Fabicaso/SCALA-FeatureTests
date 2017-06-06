@@ -34,30 +34,32 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
   private def selectAssets(series: String, expectedAssetsToSelect: String, productionIdsToSelect: Array[String]) = {
     waitUntilPageIsLoaded()
     eventually {
+
       if (!ProductionIdButton(productionIdsToSelect.head).findElement.exists(_.isDisplayed)) {
         newRequestSeriesRow(series).clickWhenIsDisplayed
       }
       ProductionIdButton(productionIdsToSelect.head).findElement.map(_.isDisplayed) should ===(Some(true))
-    }
 
-    productionIdsToSelect.foreach { productionId =>
-      ProductionIdButton(productionId).clickWhenIsEnabled
-      val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
-      if (assetsToSelect.isEmpty)
-        fail(s"Unsupported assets to select type: $expectedAssetsToSelect")
-      else {
-        if (assetsToSelect.size > 1)
-          SelectMultipleAssets.clickWhenIsDisplayed
-        eventually {
-          assetsToSelect.foreach { nextAssetToSelect =>
-            nextAssetToSelect.clickWhenIsDisplayed
+      productionIdsToSelect.foreach { productionId =>
+        ProductionIdButton(productionId).clickWhenIsEnabled
+
+        val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
+        if (assetsToSelect.isEmpty)
+          fail(s"Unsupported assets to select type: $expectedAssetsToSelect")
+        else {
+          if (assetsToSelect.size > 1)
+            SelectMultipleAssets.clickWhenIsDisplayed
+          eventually {
+            assetsToSelect.foreach { nextAssetToSelect =>
+              nextAssetToSelect.clickWhenIsDisplayed
+            }
           }
+          if (assetsToSelect.size > 1) {
+            CloseAssetBoxButton(productionId).clickWhenIsDisplayed
+            ProductionIdMultiple(productionId).whenIsDisplayed
+          } else
+            ProductionIdSelected(productionId).whenIsDisplayed
         }
-        if (assetsToSelect.size > 1) {
-          CloseAssetBoxButton(productionId).clickWhenIsDisplayed
-          ProductionIdMultiple(productionId).whenIsDisplayed
-        } else
-          ProductionIdSelected(productionId).whenIsDisplayed
       }
     }
   }
