@@ -10,12 +10,12 @@ Feature: Asset Dates
     When I login with the following valid credentials
     Then the 'Current Requests' page is displayed
 
-  Scenario: '-' is displayed for a requested asset if no required by date is available and then able to edit Required By date
+  Scenario: '-' is displayed for a requested asset if no required by date is available and then user is able to edit Required By date
     Given I am on the 'New Request' page using the following licence number '127093'
     And I complete the fulfilment request for 'Angelby' and ProdID '2/2990/0001#001' with 'not required by date' selecting 'first asset'
     When I enter the following Licence Number '127093'
     Then 'Required By' date on the right Selection Details menu for Production ID '2/2990/0001#001' of 'Angelby' is '-'
-#    And I can edit and set the 'requiredBy' date to the past for 'Angelby' and production ID '2/2990/0001#001' and licence number '127093'
+    And I can edit and set the 'RequiredBy' date to the past for 'Angelby' and production ID '2/2990/0001#001' and licence number '127093'
 
   Scenario: Required by date is displayed for a requested asset
     Given I am on the 'New Request' page using the following licence number '127099'

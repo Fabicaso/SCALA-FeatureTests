@@ -47,7 +47,6 @@ class SendRequestSteps
     FrameRateValue("25").whenIsDisplayed.isDisplayed
     FrameRateValue("23-98").whenIsDisplayed.isDisplayed
     FrameRateValue("29-97").whenIsDisplayed.isDisplayed
-
     FrameRateValue("24").clickWhenIsDisplayed
   }
 

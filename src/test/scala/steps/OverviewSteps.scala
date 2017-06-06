@@ -328,6 +328,7 @@ class OverviewSteps
       case "Fulfilled"   => FulfilledSideBarDate.whenIsDisplayed.text should ===(s"$date")
       case "Requested"   => RequestedSideBarDate.whenIsDisplayed.text should ===(s"$date")
       case "Required By" => RequiredBySideBarDate.whenIsDisplayed.text should ===(s"$date")
+      case "RequiredBy"  => RequiredBySideBarDate.whenIsDisplayed.text should ===(s"$date")
       case _             => fail(s"Unsupported dates On Side Bar Menu: $statusDatesOnSideBarMenu")
     }
   }
