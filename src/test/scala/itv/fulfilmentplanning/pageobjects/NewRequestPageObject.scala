@@ -4,6 +4,7 @@ import org.scalatest.selenium.WebBrowser
 
 trait NewRequestPageObject extends WebBrowser {
 
+  def CloseOnAssetPickerBox(productionId: String)       = id(s"prod-$productionId-picker-button-close")
   def newRequestSeriesRow(series: String)               = id(s"request-series-$series-selection-name")
   def isRequestedOrFulfilledCheck(productionId: String) = id(s"prod-$productionId-selection-isRequestedOrFulfilled")
   def VerifyAssetHasBeenSelected(productionId: String)  = id(s"prod-$productionId-selection-button-selected")
@@ -17,8 +18,6 @@ trait NewRequestPageObject extends WebBrowser {
   def PageLoadedAssetRequestDates                       = id("page-loaded-request-dates")
   def CloseAssetBoxButton(productionId: String)         = id(s"prod-$productionId-picker-button-close")
 
-  def PickFirstAsset(productionId: String)        = xpath(s"//div[@id='prod-$productionId-picker-assets']//tr[1]/td[1]")
-  def PickSecondAsset(productionId: String)       = xpath(s"//div[@id='prod-$productionId-picker-assets']//tr[2]/td[1]")
   def NewRequestAssetButton(productionId: String) = xpath(s"//span[contains(text(),'$productionId')]")
 
   def AssetsToSelect(assetToSelect: String, productionId: String): List[Query] = assetToSelect match {
@@ -27,5 +26,9 @@ trait NewRequestPageObject extends WebBrowser {
     case _                 => List()
 
   }
+
+  def PickFirstAsset(productionId: String) = xpath(s"//div[@id='prod-$productionId-picker-assets']//tr[1]/td[1]")
+
+  def PickSecondAsset(productionId: String) = xpath(s"//div[@id='prod-$productionId-picker-assets']//tr[2]/td[1]")
 
 }

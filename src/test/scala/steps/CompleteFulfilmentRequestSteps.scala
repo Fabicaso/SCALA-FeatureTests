@@ -41,7 +41,10 @@ class CompleteFulfilmentRequestSteps extends BaseSteps with NewRequestPageObject
       ProductionIdButton(productionIdsToSelect.head).findElement.map(_.isDisplayed) should ===(Some(true))
 
       productionIdsToSelect.foreach { productionId =>
-        ProductionIdButton(productionId).clickWhenIsEnabled
+        eventually {
+          ProductionIdButton(productionId).clickWhenIsEnabled
+          CloseOnAssetPickerBox(productionId).whenIsDisplayed.isDisplayed
+        }
 
         val assetsToSelect = AssetsToSelect(expectedAssetsToSelect, productionId)
         if (assetsToSelect.isEmpty)
