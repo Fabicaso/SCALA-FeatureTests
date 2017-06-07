@@ -1,4 +1,3 @@
-@breadcrumbs
 Feature: Breadcrumbs
 
   As a GE ops user
@@ -16,6 +15,7 @@ Feature: Breadcrumbs
     When I click on the breadcrumb for the 'Current Requests' page
     Then the 'Current Requests' page is displayed
 
+  @breadcrumbs
   Scenario: 'Overview' breadcrumb on the 'New Request' page functions properly
     Given  I am on the 'New Request' page using the following licence number '123555'
     When I click on the breadcrumb for the 'Overview' page
@@ -27,11 +27,13 @@ Feature: Breadcrumbs
     When I click on the breadcrumb for the 'Current Requests' page
     Then the 'Current Requests' page is displayed
 
+  @breadcrumbs
   Scenario: 'Overview' breadcrumb on the 'Send Request' page functions properly
     Given  I am on the 'Send Request' page using the following licence number '123555' series 'Lewis - Series 8' and ProdID '1/5634/0030/31#001' selecting 'first asset'
     When I click on the breadcrumb for the 'Overview' page
     Then the 'Overview' page is displayed
 
+  @breadcrumbs
   Scenario: 'New Request' breadcrumb on the 'Send Request' page functions properly
     Given  I am on the 'Send Request' page using the following licence number '123555' series 'Lewis - Series 8' and ProdID '1/5634/0030/31#001' selecting 'first asset'
     When I click on the breadcrumb for the 'New Request' page
@@ -43,16 +45,19 @@ Feature: Breadcrumbs
     When I click on the breadcrumb for the 'Current Requests' page
     Then the 'Current Requests' page is displayed
 
+  @breadcrumbs
   Scenario: 'Send Request' breadcrumb on the 'Required By' page functions properly
     Given I am on the 'Required By' page using the following licence number '126077' series 'Vera - Series 6' and ProdID '1/7314/0025#002' selecting 'first asset'
     When I click on the breadcrumb for the 'Current Requests' page
     Then the 'Current Requests' page is displayed
 
+  @breadcrumbs
   Scenario: 'New Request' breadcrumb on the 'Required By' page functions properly
     Given I am on the 'Required By' page using the following licence number '126077' series 'Vera - Series 6' and ProdID '1/7314/0025#002' selecting 'first asset'
     When I click on the breadcrumb for the 'New Request' page
     Then the 'New Request' page is displayed
 
+  @breadcrumbs
   Scenario: 'Overview' breadcrumb on the 'Required By' page functions properly
     Given I am on the 'Required By' page using the following licence number '126077' series 'Vera - Series 6' and ProdID '1/7314/0025#002' selecting 'first asset'
     When I click on the breadcrumb for the 'Overview' page

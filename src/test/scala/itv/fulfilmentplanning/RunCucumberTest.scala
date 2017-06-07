@@ -13,7 +13,7 @@ object RunCucumberTest {}
   plugin = Array("pretty", "json:target/cucumber-html-reports/first-json-report.json"),
   tags = Array("@currentRequests, @sendRequest", "~@Ignore")
 )
-class FirstRunCucumberTest {}
+class FirstFeatureTestRunner {}
 
 @RunWith(classOf[Cucumber])
 @CucumberOptions(
@@ -22,7 +22,7 @@ class FirstRunCucumberTest {}
   plugin = Array("pretty", "json:target/cucumber-html-reports/second-json-report.json"),
   tags = Array("@assetsstatus", "~@Ignore")
 )
-class SecondRunCucumberTest {}
+class SecondFeatureTestRunner {}
 
 @RunWith(classOf[Cucumber])
 @CucumberOptions(
@@ -31,7 +31,7 @@ class SecondRunCucumberTest {}
   plugin = Array("pretty", "json:target/cucumber-html-reports/third-json-report.json"),
   tags = Array("@licenceStatus, @breadcrumbs, @fulfilment", "~@Ignore")
 )
-class ThirdRunCucumberTest {}
+class ThirdFeatureTestRunner {}
 
 @RunWith(classOf[Cucumber])
 @CucumberOptions(
@@ -40,4 +40,14 @@ class ThirdRunCucumberTest {}
   plugin = Array("pretty", "json:target/cucumber-html-reports/fourth-json-report.json"),
   tags = Array("@assetsdates, @display, @licence", "~@Ignore")
 )
-class FourthRunCucumberTest {}
+class FourthFeatureTestRunner {}
+
+
+@RunWith(classOf[Cucumber])
+@CucumberOptions(
+  features = Array("classpath:features"),
+  glue = Array("classpath:steps"),
+  plugin = Array("pretty", "json:target/cucumber-html-reports/fourth-json-report.json"),
+  tags = Array("@smokeTest", "~@Ignore")
+)
+class SmokeTestRunner {}
