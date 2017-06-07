@@ -16,6 +16,18 @@ sbt clean test -Denv=stg
 
 You can verify the config running `ConfigRunner` app.
 
+### Run specific tests
+
+If you want to run only feature test you need to execute:
+```
+sbt "test-only *FeatureTestRunner"
+```
+
+If you want to run only feature test you need to execute:
+```
+sbt "test-only *SmokeTestRunner"
+```
+
 ## Report generation
 
 You can generate the report at the end, executing:
