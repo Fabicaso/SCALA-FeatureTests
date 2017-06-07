@@ -18,14 +18,14 @@ You can verify the config running `ConfigRunner` app.
 
 ### Run specific tests
 
-If you want to run only feature test you need to execute:
+If you want to run only feature tests you need to execute:
 ```
-sbt "test-only *FeatureTestRunner"
+sbt -Denv=stg "test-only *FeatureTestRunner"
 ```
 
-If you want to run only feature test you need to execute:
+If you want to run only smoke tests you need to execute:
 ```
-sbt "test-only *SmokeTestRunner"
+sbt -Denv=stg "test-only *SmokeTestRunner"
 ```
 
 ## Report generation
